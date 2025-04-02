@@ -5,11 +5,11 @@ module Decidim
     module AccountabilityUpdateCommandOverride
       extend ActiveSupport::Concern
       included do
-        alias_method :decidim_original_update_result, :update_result
+        alias_method :decidim_original_run_after_hooks, :run_after_hooks
 
-        def update_result
+        def run_after_hooks
           # Update the result without the location
-          decidim_original_update_result
+          decidim_original_run_after_hooks
           location = result.decidim_geo_space_location || Decidim::Geo::SpaceLocation.new
           location.address = form.decidim_geo_space_address
           location.latitude = form.latitude

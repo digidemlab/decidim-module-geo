@@ -42,7 +42,7 @@ module Decidim
         end.compact
         {
           id: "Search",
-          filters: filters,
+          filters:,
           scopes: []
         }
       end

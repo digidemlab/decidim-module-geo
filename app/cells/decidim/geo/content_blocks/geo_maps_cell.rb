@@ -27,7 +27,7 @@ module Decidim
           @data_count ||= ::Decidim::Geo::Api::GeoQuery.new(
             current_organization,
             current_user,
-            { filters: filters, is_index: index?, is_group: group? },
+            { filters:, is_index: index?, is_group: group? },
             current_locale
           ).results_count
         end
@@ -40,25 +40,25 @@ module Decidim
           id = @options[:id] || "HomePage"
           config = {
             locale: current_locale,
-            default_locale: default_locale,
+            default_locale:,
             space_ids: @options[:scopes] || [],
             selected_component: current_component_id || nil,
             selected_point: current_component? && params[:id] ? params[:id] : nil,
             images: {
               not_geolocated: ActionController::Base.helpers.asset_pack_path("media/images/not-geolocated.svg")
             },
-            filters: (@options[:filters] || []).concat([{ timeFilter: { time: "active" } }]),
-            map_config: map_config,
+            filters: (@options[:filters] || []).push({ timeFilter: { time: "active" } }),
+            map_config:,
             active_manifests: ::Decidim::Geo.registry.active_manifests(&:keys),
             is_index: index?,
-            is_group: @options[:is_group] || false,
+            is_group: @options[:is_group] || false
           }.with_indifferent_access
 
           content_tag(
             :div,
             "",
-            id: "DecidimGeo",
-            class: [
+            :id => "DecidimGeo",
+            :class => [
               "js-decidimgeo",
               "decidimgeo__map",
               "decidimgeo__map--#{id.underscore}"

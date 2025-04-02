@@ -8,6 +8,8 @@ module Decidim
       helper_method :scope, :parent_scope, :add_scope_path, :current_scopes_path
       layout "decidim/admin/settings"
 
+      add_breadcrumb_item_from_menu :admin_scopes_menu
+
       def index
         enforce_permission_to :read, :scope
         field = Arel::Nodes::InfixOperation.new("->", Decidim::Scope.arel_table[:name],
@@ -18,6 +20,11 @@ module Decidim
       def new
         enforce_permission_to :create, :scope
         @form = form(ScopeForm).instance
+      end
+
+      def edit
+        enforce_permission_to(:update, :scope, scope:)
+        @form = form(ScopeForm).from_model(scope)
       end
 
       def create
@@ -40,13 +47,8 @@ module Decidim
         end
       end
 
-      def edit
-        enforce_permission_to :update, :scope, scope: scope
-        @form = form(ScopeForm).from_model(scope)
-      end
-
       def update
-        enforce_permission_to :update, :scope, scope: scope
+        enforce_permission_to(:update, :scope, scope:)
         @form = form(ScopeForm).from_params(params)
 
         UpdateScope.call(scope, @form) do
@@ -63,7 +65,7 @@ module Decidim
       end
 
       def destroy
-        enforce_permission_to :destroy, :scope, scope: scope
+        enforce_permission_to(:destroy, :scope, scope:)
 
         DestroyScope.call(scope, current_user) do
           on(:ok) do

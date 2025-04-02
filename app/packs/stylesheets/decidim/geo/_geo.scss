@@ -1,5 +1,5 @@
-@import "stylesheets/decidim/geo/vendor/leaflet";
-@import "stylesheets/decidim/geo/vendor/leaflet.fullscreen";
+@use "stylesheets/decidim/geo/vendor/leaflet";
+@use "stylesheets/decidim/geo/vendor/leaflet_fullscreen";
 
-@import "stylesheets/decidim/geo/geo/decidim_geo_decidimGeo";
-@import "stylesheets/decidim/geo/geo/decidim_geo_override";
+@use "stylesheets/decidim/geo/geo/decidim_geo_decidimGeo";
+@use "stylesheets/decidim/geo/geo/decidim_geo_override";

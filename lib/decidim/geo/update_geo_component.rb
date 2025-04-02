@@ -21,7 +21,7 @@ module Decidim
           registry = Decidim::Geo::ManifestRegistry.instance
           model_klass = registry.model_for(manifest_name)
           attached = model_klass.where(component: component_id)
-          Decidim::Geo::Index.where(component_id: component_id, resource_type: manifest_name).where.not(resource_id: attached.ids).each(&:destroy)
+          Decidim::Geo::Index.where(component_id:, resource_type: manifest_name).where.not(resource_id: attached.ids).each(&:destroy)
           attached.each(&:update_decidim_geo_index)
         rescue StandardError => _e
           Rails.logger.debug { "ERROR: manifest #{manifest_name} not supported" }

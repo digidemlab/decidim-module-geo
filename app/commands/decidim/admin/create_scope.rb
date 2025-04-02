@@ -23,7 +23,7 @@ module Decidim
         return broadcast(:invalid) if form.invalid?
 
         scope = create_scope
-        broadcast(:ok, scope: scope)
+        broadcast(:ok, scope:)
       end
 
       private

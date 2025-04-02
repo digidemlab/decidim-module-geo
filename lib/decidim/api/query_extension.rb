@@ -24,7 +24,7 @@ module Decidim
       end
 
       def geo_shapefiles(title: nil)
-        return Decidim::Geo::Shapefile.where(title: title) if title.present?
+        return Decidim::Geo::Shapefile.where(title:) if title.present?
 
         all_shapefiles = Decidim::Geo::Shapefile.all
         Rails.cache.fetch("decidim_geo/#{all_shapefiles.cache_key_with_version}") do
@@ -45,7 +45,7 @@ module Decidim
       def geo_scope(id: [])
         return Decidim::Scope.includes(:shapedata).all if id.empty?
 
-        Decidim::Scope.includes(:shapedata).where(id: id)
+        Decidim::Scope.includes(:shapedata).where(id:)
       end
 
       private

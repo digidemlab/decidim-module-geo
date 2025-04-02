@@ -1,29 +1,40 @@
-<div class="card">
-  <div class="card-divider">
-    <h2 class="card-title"><%= title %></h2>
-  </div>
-  <div class="card-section">
-    <div class="row column">
-      <fieldset>
-        <div class="row column">
-          <%= form.text_field :title %>
-        </div>
+<div class="form__wrapper">
+  <div class="card" data-component="accordion" id="accordion-title">
+    <div class="card-divider">
+      <button class="card-divider-button" data-open="true" data-controls="panel-title" type="button">
+        <%= icon "arrow-right-s-line" %>
+          <h2 class="card-title" id="title">
+            <%= title %>
+          </h2>
+      </button>
+    </div>
+    <div id="panel-title" class="card-section">
+      <div class="row column">
+        <%= form.text_field :title %>
+      </div>
 
-        <div class="row column">
-          <%= form.text_area :description %>
-        </div>
+      <div class="row column">
+        <%= form.text_area :description %>
+      </div>
 
+      <div class="row column">
         <div class="row column">
-          <div class="row column">
-            <%= label_tag(:shapefile) %> 
-          </div>
-          <legend style="color: #202734; margin-top: -8px; font-size: 13px"><strong><%= t(".attachment_max_size") %></strong></legend>
-          <%= form.file_field :shapefile, optional: false, label: false %>
-          <legend class="help-text"><%= t(".support_shape_overlaping") %></legend>
-          <legend class="help-text"><%= t(".attachment_legend") %></legend>
-          <legend class="help-text"><%= t(".attachment_format") %></legend>
+          <%= label_tag(:shapefile) %>
         </div>
-      </fieldset>
+        <legend style="color: #202734; margin-top: -8px; font-size: 13px"><strong>
+            <%= t(".attachment_max_size") %>
+          </strong></legend>
+        <%= form.file_field :shapefile, optional: false, label: false %>
+          <legend class="help-text">
+            <%= t(".support_shape_overlaping") %>
+          </legend>
+          <legend class="help-text">
+            <%= t(".attachment_legend") %>
+          </legend>
+          <legend class="help-text">
+            <%= t(".attachment_format") %>
+          </legend>
+      </div>
     </div>
   </div>
 </div>

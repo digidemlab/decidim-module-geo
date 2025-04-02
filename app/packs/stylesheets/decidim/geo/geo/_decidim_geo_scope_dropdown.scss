@@ -127,7 +127,7 @@
     padding: 8px 16px 8px 8px;
     float: right;
     text-transform: uppercase;
-    font-family: $header-font-family;
+    @apply font-sans;
     letter-spacing: 0.2px;
 
     &--hidden {

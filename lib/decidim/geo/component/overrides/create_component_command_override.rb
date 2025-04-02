@@ -5,17 +5,18 @@ module Decidim
     module CreateComponentCommandOverride
       extend ActiveSupport::Concern
       included do
-        alias_method :decidim_original_create_component, :create_component
+        alias_method :decidim_original_run_after_hooks, :run_after_hooks
 
         private
 
-        def create_component
-          new_component = decidim_original_create_component
-          avoid_index_relation = new_component.decidim_geo_avoid_index || Decidim::Geo::NoIndex.new
-          avoid_index_relation.decidim_component_id = new_component.id
+        def run_after_hooks
+          decidim_original_run_after_hooks
+          avoid_index_relation = resource.decidim_geo_avoid_index || Decidim::Geo::NoIndex.new
+          avoid_index_relation.decidim_component_id = resource.id
           avoid_index_relation.no_index = form.decidim_geo_avoid_index
-          new_component.decidim_geo_avoid_index = avoid_index_relation
-          @component = new_component.save
+          resource.decidim_geo_avoid_index = avoid_index_relation
+          resource.save
+          resource.reload
         end
       end
     end

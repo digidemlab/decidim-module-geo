@@ -21,7 +21,7 @@ module Decidim
         )
         last_modified = query.maximum(:updated_at) || 1.year.from_now
         etag = "#{query.cache_key_with_version}/params-#{Digest::MD5.hexdigest(permitted_params.to_json)}"
-        return unless stale?(last_modified: last_modified.utc, etag: etag)
+        return unless stale?(last_modified: last_modified.utc, etag:)
 
         last_id = query.maximum(:id)
         geo_scope_ids = query.select(:geo_scope_id).group(:geo_scope_id).pluck(:geo_scope_id).compact

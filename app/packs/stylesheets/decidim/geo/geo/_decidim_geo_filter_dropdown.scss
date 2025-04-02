@@ -60,9 +60,9 @@
 
   .decidimGeo__filterToggle__button {
     @include decidimGeo__clickableText;
+    @apply font-sans;
     padding: 8px;
     text-transform: uppercase;
-    font-family: $header-font-family;
     letter-spacing: 0.2px;
     margin-bottom: 0;
     color: #808080 !important;

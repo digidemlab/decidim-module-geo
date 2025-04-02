@@ -1,5 +1,5 @@
 import "src/decidim/map/controller/markers";
-import "src/decidim/map/icon";
+// import "src/decidim/map/icon";
 
 import configStore from "./stores/configStore";
 import pointStore from "./stores/pointStore";

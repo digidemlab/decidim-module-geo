@@ -148,6 +148,10 @@ module Decidim
       initializer "decidim_geo.webpacker.assets_path" do
         Decidim.register_assets_path File.expand_path("#{Decidim::Geo::Engine.root}/app/packs")
       end
+
+      initializer "decidim_geo.assets.icons" do |_app|
+        Decidim.icons.register(name: "map", icon: "map-2-fill", category: "system", description: "", engine: :core)
+      end
     end
   end
 end

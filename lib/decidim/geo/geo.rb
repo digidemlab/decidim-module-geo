@@ -33,9 +33,9 @@ module Decidim
     def self.register(manifest_name, time_filter:, model:, updater:)
       registry.register(
         manifest_name,
-        time_filter: time_filter,
-        model: model,
-        updater: updater
+        time_filter:,
+        model:,
+        updater:
       )
     end
 

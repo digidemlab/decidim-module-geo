@@ -26,14 +26,14 @@ module Decidim
         upsert_index(process.id, manifest_name,
                      with_scope(
                        with_coords(
-                         resource_url: resource_url,
-                         image_url: image_url,
-                         title: title,
-                         short_description: short_description,
+                         resource_url:,
+                         image_url:,
+                         title:,
+                         short_description:,
                          description_html: description,
                          component_id: nil,
-                         start_date: start_date,
-                         end_date: end_date,
+                         start_date:,
+                         end_date:,
                          participatory_space_id: process.id,
                          participatory_space_type: manifest_name
                        )
@@ -45,7 +45,7 @@ module Decidim
       end
 
       def remove_process
-        match = Decidim::Geo::Index.find_by(resource_id: resource_id, resource_type: manifest_name)
+        match = Decidim::Geo::Index.find_by(resource_id:, resource_type: manifest_name)
         match.destroy if match
         decidim_geo_update_components!(Decidim::ParticipatoryProcess)
       end

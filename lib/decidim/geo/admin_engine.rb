@@ -40,14 +40,12 @@ module Decidim
                         active: is_active_link?(decidim_admin_geo.geo_configs_path, :inclusive),
                         if: defined?(current_user) && current_user&.read_attribute("admin")
         end
-      end
-
-      initializer "decidim_geo.admin_menu" do
         Decidim.menu :admin_geo_menu do |menu|
           menu.add_item :edit_config,
                         I18n.t("menu.geo", scope: "decidim.admin", default: "Configurations"),
                         decidim_admin_geo.geo_configs_path,
                         position: 1,
+                        icon_name: "pencil-line",
                         active: is_active_link?(decidim_admin_geo.geo_configs_path, :inclusive),
                         if: defined?(current_user) && current_user&.read_attribute("admin")
 
@@ -55,6 +53,7 @@ module Decidim
                         I18n.t("menu.geo", scope: "decidim.admin", default: "Shapefiles"),
                         decidim_admin_geo.shapefiles_path,
                         position: 2,
+                        icon_name: "tools-line",
                         active: is_active_link?(decidim_admin_geo.shapefiles_path, :inclusive),
                         if: defined?(current_user) && current_user&.read_attribute("admin")
         end

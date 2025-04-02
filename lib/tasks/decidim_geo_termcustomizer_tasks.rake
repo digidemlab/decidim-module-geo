@@ -34,7 +34,7 @@ namespace :decidim_geo do
         else
           result.push({
                         key: new_key,
-                        value: value,
+                        value:,
                         locale: "en"
                       })
         end

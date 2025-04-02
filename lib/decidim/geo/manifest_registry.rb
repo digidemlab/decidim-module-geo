@@ -34,9 +34,9 @@ module Decidim
 
       def register(manifest_name, time_filter:, model:, updater:)
         @_registration_manifest[manifest_name.to_s] = {
-          time_filter: time_filter,
-          model: model,
-          updater: updater,
+          time_filter:,
+          model:,
+          updater:,
           enabled: false
         }
       end

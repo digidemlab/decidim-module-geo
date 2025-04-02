@@ -4,8 +4,8 @@ module Decidim
   module Geo
     module Admin
       class ShapefilesController < ApplicationController
-        layout "decidim/decidim_geo/admin/application"
         before_action :authenticate_user!
+        add_breadcrumb_item_from_menu :admin_geo_menu
 
         def index
           # enforce_permission_to :list

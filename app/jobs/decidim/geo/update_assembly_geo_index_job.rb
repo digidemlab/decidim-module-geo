@@ -24,10 +24,10 @@ module Decidim
         return remove_assembly if remove_from_index?
 
         index_payload = {
-          resource_url: resource_url,
-          image_url: image_url,
-          title: title,
-          short_description: short_description,
+          resource_url:,
+          image_url:,
+          title:,
+          short_description:,
           description_html: description,
           component_id: nil,
           participatory_space_id: assembly.id,
@@ -54,7 +54,7 @@ module Decidim
       end
 
       def remove_assembly
-        match = Decidim::Geo::Index.find_by(resource_id: resource_id, resource_type: manifest_name)
+        match = Decidim::Geo::Index.find_by(resource_id:, resource_type: manifest_name)
         match.destroy if match
         decidim_geo_update_components!(Decidim::Assembly)
       end

@@ -4,7 +4,7 @@ stages:
   - publish
 
 publish_gem:
-  image: ruby
+  image: ruby:3.2.7
   stage: publish
   script:
     - echo "---" > .credentials
@@ -18,7 +18,7 @@ publish_gem:
 
 upload-translations:
   stage: translations
-  image: node:16.18
+  image: node:20
   when: manual
   script:
     - npm install -g @crowdin/cli
@@ -28,7 +28,7 @@ upload-translations:
 # Create a MR with the new translation
 mr-translations:
   stage: translations
-  image: node:16.18
+  image: node:20
   when: manual
   before_script:
     - apt-get update && apt-get install -y git
