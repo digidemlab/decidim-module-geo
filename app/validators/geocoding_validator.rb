@@ -4,10 +4,9 @@
 # an existing address and computes its coordinates.
 class GeocodingValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
-    component = record.respond_to?(:component) ? record.component : record
-
+    organization = record.respond_to?(:organization) ? record.organization : record.component.organization
     if Decidim::Map.available?(:geocoding)
-      geocoder = geocoder_for(component.organization)
+      geocoder = geocoder_for(organization)
       coordinates = geocoder.coordinates(value)
 
       if coordinates.present?

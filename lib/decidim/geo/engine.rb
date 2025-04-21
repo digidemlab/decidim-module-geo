@@ -21,6 +21,10 @@ module Decidim
       end
 
       config.to_prepare do
+        # CSP extras
+        Decidim::ApplicationController.include(Decidim::Geo::ContentSecurityPolicy)
+        Decidim::Admin::ApplicationController.include(Decidim::Geo::ContentSecurityPolicy)
+
         # API overrides
         Decidim::Api::QueryType.include Decidim::Geo::QueryExtension
         Decidim::ParticipatoryProcesses::ParticipatoryProcessInputFilter.include Decidim::Geo::HasScopeableInputFilter
@@ -125,6 +129,18 @@ module Decidim
 
       initializer "decidim_geo.content_blocks" do
         Decidim.content_blocks.register(:homepage, :geo_maps) do |content_block|
+          content_block.cell = "decidim/geo/content_blocks/geo_maps"
+          content_block.public_name_key = "decidim.geo.content_blocks.name"
+        end
+        Decidim.content_blocks.register(:participatory_process_group_homepage, :geo_maps) do |content_block|
+          content_block.cell = "decidim/geo/content_blocks/geo_maps"
+          content_block.public_name_key = "decidim.geo.content_blocks.name"
+        end
+        Decidim.content_blocks.register(:assembly_homepage, :geo_maps) do |content_block|
+          content_block.cell = "decidim/geo/content_blocks/geo_maps"
+          content_block.public_name_key = "decidim.geo.content_blocks.name"
+        end
+        Decidim.content_blocks.register(:participatory_process_homepage, :geo_maps) do |content_block|
           content_block.cell = "decidim/geo/content_blocks/geo_maps"
           content_block.public_name_key = "decidim.geo.content_blocks.name"
         end

@@ -2,7 +2,8 @@ import { createStore } from "zustand/vanilla";
 import { subscribeWithSelector } from "zustand/middleware";
 import filterStore from "./filterStore";
 import dropdownFilterStore from "./dropdownFilterStore";
-
+import geoStore from "./geoStore";
+import pointStore from "./pointStore";
 const store = createStore(
   subscribeWithSelector((set, get) => ({
     locale: "en",
@@ -81,4 +82,5 @@ store.subscribe(
     if (isAsideOpen && !wasAsideOpen) dropdownFilterStore.getState().close();
   }
 );
+
 export default store;

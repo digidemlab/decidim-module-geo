@@ -17,6 +17,7 @@ require "decidim/geo/generic_serializer"
 require "decidim/geo/geo_index_methods"
 require "decidim/geo/resource_wrapper"
 require "decidim/geo/update_geo_component"
+require "decidim/geo/content_security_policy"
 
 require "decidim/geo/component/overrides/component_no_index_attr"
 require "decidim/geo/component/overrides/component_form_override"

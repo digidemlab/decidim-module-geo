@@ -11,19 +11,40 @@
 .decidimGeo__container {
   position: relative;
   padding: 16px;
+  &--meetings,
+  &--proposals,
+  &--assemblies,
+  &--processes {
+    padding-left: 0;
+    padding-right: 0;
+    margin-bottom: 32px;
+  }
+
+  &--participatory_process_groups,
+  &--assemblies, 
+  &--participatory_processes  {
+    max-width: 100% !important;
+  }
+
+  &--item {
+    @apply container py-4 lg:px-[11.3rem];
+  }
 
   .js-decidimgeo.decidimgeo__map {
     display: flex;
     min-height: 540px;
-    height: 70vh;
+    height: 30vh;
     width: 100%;
     max-width: 100%;
     border: 1px solid transparent;
     border-radius: 8px;
     background: transparent;
-
+    &--home_page {
+      height: 70vh;
+    }
     * {
       box-sizing: border-box;
     }
+
   }
 }

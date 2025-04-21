@@ -20,18 +20,18 @@ export default class GeoDatasourceNode {
 
   repaint() {
     const { selectedPoint } = geoStore.getState();
-    const { selected_component, selected_point: pinPoint } = configStore.getState();
+    const { selected_component, defaultSelectedPoint: pinPoint } = configStore.getState();
+ 
     if (this.isGeoLocated()) {
       if (pinPoint) {
-        if (selectedPoint === this) {
+        if (selectedPoint && selectedPoint === this) {
           this.marker.setStyle(this.selectedState);
         } else if (
           !selectedPoint &&
           `${this.data.componentId}` == `${selected_component}` &&
-          pinPoint == `${this.data.id}`
+          `${pinPoint}` === `${this.data.resourceId}`
         ) {
-          this.marker.setStyle(this.selectedState);
-          this.marker.bringToFront();
+          this.marker.setStyle(this.selectedState)
         } else {
           this.marker.setStyle(this.staledState);
         }
@@ -131,6 +131,8 @@ export default class GeoDatasourceNode {
           this.repaint();
         }
       );
+
+
     } catch (error) {
       console.error("ERROR: decidim-geo can't initialize ", { error });
     }

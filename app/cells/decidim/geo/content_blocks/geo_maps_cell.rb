@@ -36,14 +36,17 @@ module Decidim
           @options[:filters] || []
         end
 
+        def id 
+          @options[:id] || "HomePage"
+        end
         def insert_map
-          id = @options[:id] || "HomePage"
+          selecting_point = current_component? && params.has_key?(:id)
           config = {
             locale: current_locale,
             default_locale:,
             space_ids: @options[:scopes] || [],
             selected_component: current_component_id || nil,
-            selected_point: current_component? && params[:id] ? params[:id] : nil,
+            selected_point: selecting_point ? params.require(:id).to_i : nil,
             images: {
               not_geolocated: ActionController::Base.helpers.asset_pack_path("media/images/not-geolocated.svg")
             },

@@ -119,6 +119,7 @@
     padding: 8px 16px 8px 8px;
     font-size: 14px;
     text-wrap: nowrap;
+    flex: 1;
   }
 
   .decidimGeo__filterModal__select,
@@ -129,6 +130,7 @@
     text-align: right;
     box-shadow: none;
     color: #1a181d;
+    flex: 3;
   }
   .decidimGeo__filterModal__resetBtn,
   .decidimGeo__filterModal__applyBtn {

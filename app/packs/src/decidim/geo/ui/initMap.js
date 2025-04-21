@@ -8,11 +8,16 @@ const initMap = async () => {
     map_config: { lat, lng, zoom, tile_layer, maptiler_api_key, maptiler_style_id },
     i18n
   } = configStore.getState();
+  if(!document.getElementById(mapID)) {
+    console.warn("No map found with id", mapID);
+    return;
+  }
   const map = L.map(mapID, {
     center: [lat, lng],
     zoom,
     scrollWheelZoom: false,
-    fullscreenControl: false
+    fullscreenControl: false,
+    renderer: L.svg()
   });
 
   map.zoomControl.setPosition("bottomright");
@@ -20,7 +25,7 @@ const initMap = async () => {
   if (maptiler_api_key.length > 0) {
     new MaptilerLayer({
       style: maptiler_style_id,
-      apiKey: maptiler_api_key
+      apiKey: maptiler_api_key 
     }).addTo(map);
   } else {
     L.tileLayer(tile_layer, {

@@ -20,8 +20,8 @@ module Decidim
         end
 
         def image_url
-          @image_url ||= if resource.respond_to?(:banner_image)
-                           resource.attached_uploader(:banner_image).url(only_path: true)
+          @image_url ||= if resource.respond_to?(:hero_image)
+                           resource.attached_uploader(:hero_image).url(only_path: true)
                          elsif resource.respond_to?(:attachments) && resource.attachments.first
                            resource.attachments.first.url
                          end
@@ -104,7 +104,7 @@ module Decidim
           value = value_param.deep_dup
           value.each do |key, v|
             value[key] = if v.is_a?(Hash)
-                           truncate_translated(v, chars, options)
+                           truncate_translated(v, chars, **options)
                          else
                            sanitizer.sanitize(
                              Decidim::HtmlTruncation.new(

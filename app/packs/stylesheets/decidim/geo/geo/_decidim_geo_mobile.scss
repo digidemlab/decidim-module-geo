@@ -7,7 +7,7 @@
   @media (max-width: 768px) {
     padding: 0 !important;
     &:not(&--fullscreen) .js-decidimgeo.decidimgeo__map {
-      z-index: 1;
+      z-index: 0;
       height: 30vh;
       max-height: 30vh;
       min-height: 140px;
