@@ -10,7 +10,6 @@ const customMarker = (location) => {
     riseOnHover: true,
     interactive: true,
   });
-  console.log(circleMarker);
   return circleMarker;
 };
 
