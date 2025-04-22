@@ -13,7 +13,12 @@ const meetings = (node) => {
   );
 
   const infoType = L.DomUtil.create("div", "decidimGeo__drawer__listCardType", info);
-  infoType.textContent = i18n[node.resourceType];
+  const infoTxt = L.DomUtil.create(
+    "span",
+    createClasses("decidimGeo__drawer__listCardTxt"),
+    infoType
+  );
+  infoTxt.textContent = i18n[node.resourceType];
   const notGeoEncodedIcon = L.DomUtil.create(
     "img",
     createClasses("decidimGeo__drawer__listCardIcon", [node.lonlat && "hidden"]),
