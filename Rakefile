@@ -92,7 +92,6 @@ task :prepare_dev do
   File.open(config_file, "w") { |f| YAML.dump(database_yml, f) }
   Dir.chdir("development_app") do
     system("bundle exec rake db:migrate")
-    system("npm install -D webpack-dev-server")
   end
 end
 

@@ -1,6 +1,4 @@
 import "src/decidim/map/controller/markers";
-// import "src/decidim/map/icon";
-
 import configStore from "./stores/configStore";
 import pointStore from "./stores/pointStore";
 import filterStore from "./stores/filterStore";
