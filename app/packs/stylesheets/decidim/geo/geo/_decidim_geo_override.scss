@@ -1,3 +1,6 @@
+.menu-bar, .layout-container > header, #floating-helper-tip {
+  z-index: 999;
+}
 .decidimGeo__container {
   .leaflet-control {
     position: static;

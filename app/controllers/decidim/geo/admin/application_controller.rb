@@ -9,6 +9,8 @@ module Decidim
       # Note that it inherits from `Decidim::Components::BaseController`, which
       # override its layout and provide all kinds of useful methods.
       class ApplicationController < Decidim::Admin::ApplicationController
+        layout "decidim/admin/geo/settings"
+
         def permission_class_chain
           [::Decidim::Geo::Admin::Permissions] + super
         end

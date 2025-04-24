@@ -85,6 +85,7 @@ module Decidim
 
         def indexed_query(query)
           return query.indexed unless process_groups?
+
           query.indexed.or(query.where(
                              participatory_space_id: process_params,
                              avoid_index: true

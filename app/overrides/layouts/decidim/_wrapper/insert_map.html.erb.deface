@@ -1,8 +1,0 @@
-<!-- insert_before '#content' -->
-<%= cell(
-    "decidim/geo/geo_collection_map", 
-    id: "Indexes",
-    hide_empty: true,
-    is_index: true,
-    is_group: false
-) %>

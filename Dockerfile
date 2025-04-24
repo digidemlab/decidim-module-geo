@@ -1,5 +1,5 @@
 
-FROM hfroger/decidim:0.27-dev as bundler
+FROM hfroger/decidim:0.29-dev AS bundler
 COPY . /home/decidim/decidim_module_geo
 RUN cd /home/decidim/app \
     && bundle config set path "vendor" \
@@ -13,7 +13,7 @@ RUN cd /home/decidim/app \
     && echo "gem \"deface\",  \">= 1.8.1\"" >> Gemfile \
     && bundle
     
-FROM hfroger/decidim:0.27-dev
+FROM hfroger/decidim:0.29-dev
 ENV NODE_ENV=development \
     RAILS_ENV=development \
     BUNDLE_WITHOUT=""
@@ -31,7 +31,7 @@ RUN bundle config set path "vendor" \
     && bundle config build.charlock_holmes --with-icu-dir=/usr/include \
     && apt-get upgrade -yq \
     && apt-get update -yq \
-    && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt install -y nodejs \
     && apt-get install -yq libgeos-dev \
     && apt-get clean \

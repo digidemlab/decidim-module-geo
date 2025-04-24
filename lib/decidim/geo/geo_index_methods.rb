@@ -9,7 +9,7 @@ module Decidim
         lat = decidim_geo_hash.delete(:latitude)
         lon = decidim_geo_hash.delete(:longitude)
 
-        index = Decidim::Geo::Index.find_or_initialize_by(resource_id: resource_id, resource_type: resource_type) do |record|
+        index = Decidim::Geo::Index.find_or_initialize_by(resource_id:, resource_type:) do |record|
           record.assign_attributes(decidim_geo_hash)
         end
         index.assign_attributes(decidim_geo_hash)

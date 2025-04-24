@@ -5,21 +5,20 @@ module Decidim
     module AssemblyCreateCommandOverride
       extend ActiveSupport::Concern
       included do
-        alias_method :decidim_original_assembly, :assembly
+        alias_method :decidim_original_run_after_hooks, :run_after_hooks
 
         private
 
-        def assembly
-          serialized_assembly = decidim_original_assembly
-          return serialized_assembly unless form.decidim_geo_has_address?
+        def run_after_hooks
+          decidim_original_run_after_hooks
 
-          location = serialized_assembly.decidim_geo_space_location || Decidim::Geo::SpaceLocation.new
+          location = resource.decidim_geo_space_location || Decidim::Geo::SpaceLocation.new
           location.address = form.decidim_geo_space_address
           location.latitude = form.latitude
           location.longitude = form.longitude
-          serialized_assembly.decidim_geo_space_location = location
+          resource.decidim_geo_space_location = location
           location.save
-          serialized_assembly
+          resource
         end
       end
     end

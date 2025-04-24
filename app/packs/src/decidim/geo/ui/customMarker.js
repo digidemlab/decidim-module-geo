@@ -1,5 +1,5 @@
 const customMarker = (location) => {
-  return new L.circleMarker(location, {
+  const circleMarker = new L.circleMarker(location, {
     radius: 6,
     fillColor: "#ffffff",
     fillOpacity: 1,
@@ -7,8 +7,10 @@ const customMarker = (location) => {
     opacity: 1,
     weight: 5,
     className: "decidimGeo__marker",
-    riseOnHover: true
+    riseOnHover: true,
+    interactive: true,
   });
+  return circleMarker;
 };
 
 export default customMarker;

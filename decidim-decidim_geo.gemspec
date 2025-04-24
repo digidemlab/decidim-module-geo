@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.email = ["hadrien@octree.ch", "renato@octree.ch", "simon@octree.ch"]
   s.license = "AGPL-3.0"
   s.homepage = "https://git.octree.ch/decidim/decidim-module-geo"
-  s.required_ruby_version = ">= 3.0"
+  s.required_ruby_version = "~> 3.2"
 
   s.name = "decidim-decidim_geo"
   s.summary = "A decidim geo module"
@@ -18,17 +18,15 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{app,config,lib,vendor,db}/**/*", "LICENSE-AGPLv3.txt", "Rakefile", "README.md"]
 
-  s.add_dependency "activerecord-postgis-adapter", ">= 6.0"
+  s.add_dependency "activerecord-postgis-adapter"
   s.add_dependency "decidim-admin", Decidim::Geo.decidim_version
   s.add_dependency "decidim-api", Decidim::Geo.decidim_version
   s.add_dependency "decidim-core", Decidim::Geo.decidim_version
-  s.add_dependency "deface", ">= 1.8.1"
-  s.add_dependency "ffi-geos", "~> 2.4"
-  s.add_dependency "rgeo", ">= 3.0"
-  s.add_dependency "rgeo-geojson", ">= 1.0"
-  s.add_dependency "rgeo-shapefile", ">= 1.0"
+  s.add_dependency "deface", "~> 1.9.0"
+  s.add_dependency "ffi-geos", "~> 2.5"
+  s.add_dependency "rgeo", "~> 3.0"
+  s.add_dependency "rgeo-geojson", "~> 2.2"
+  s.add_dependency "rgeo-shapefile", "~> 3.1"
 
-  s.add_development_dependency "decidim-dev", Decidim::Geo.decidim_version
-  s.add_development_dependency "rubocop-faker"
   s.metadata["rubygems_mfa_required"] = "true"
 end

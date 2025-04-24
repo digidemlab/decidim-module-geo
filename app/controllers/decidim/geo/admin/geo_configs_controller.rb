@@ -4,10 +4,8 @@ module Decidim
   module Geo
     module Admin
       class GeoConfigsController < Decidim::Geo::Admin::ApplicationController
-        layout "decidim/decidim_geo/admin/application"
-
         before_action :authenticate_user!
-
+        add_breadcrumb_item_from_menu :admin_geo_menu
         def index
           @form = form(Decidim::Geo::Admin::GeoConfigForm).from_model(geo_config_default)
         end

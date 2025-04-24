@@ -1,6 +1,4 @@
 import "src/decidim/map/controller/markers";
-import "src/decidim/map/icon";
-
 import configStore from "./stores/configStore";
 import pointStore from "./stores/pointStore";
 import filterStore from "./stores/filterStore";
@@ -98,24 +96,10 @@ async function displayMap() {
         const pointInMap = getFilteredPoints().filter(
           (node) => typeof node.isGeoLocated !== "undefined" && node.isGeoLocated()
         );
-
         if (pointInMap.length > 0) {
           pointInMap.forEach(({ marker }) => {
-            pointsLayer.addLayer(marker);
+            marker.addTo(pointsLayer);
           });
-        }
-        if (
-          pointInMap.length > 0 &&
-          !fetchesRunning &&
-          !selectedScope &&
-          !selectedPoint
-        ) {
-          const boundingBox = L.featureGroup(
-            pointInMap.map(({ marker }) => marker)
-          ).getBounds();
-          if (map.getBounds().contains(boundingBox)) {
-            return;
-          }
         }
       }
     );

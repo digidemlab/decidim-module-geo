@@ -11,7 +11,12 @@
   },
   {
     "key": "activemodel.attributes.component.decidim_geo_avoid_index",
-    "value": "Hide geolocated points outside this process",
+    "value": "Hide geolocated points outside this process.",
+    "locale": "en"
+  },
+  {
+    "key": "activemodel.attributes.component.decidim_geo_avoid_index_within_group",
+    "value": "Hide geolocated points outside process group %{space_name}",
     "locale": "en"
   },
   {
@@ -157,6 +162,11 @@
   {
     "key": "decidim.geo.admin.geo_configs.fields.tile",
     "value": "Tile",
+    "locale": "en"
+  },
+  {
+    "key": "decidim.geo.admin.geo_configs.fields.maptiler_api_key",
+    "value": "Map tiler API Key (Optional)",
     "locale": "en"
   },
   {

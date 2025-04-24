@@ -60,9 +60,9 @@
 
   .decidimGeo__filterToggle__button {
     @include decidimGeo__clickableText;
+    @apply font-sans;
     padding: 8px;
     text-transform: uppercase;
-    font-family: $header-font-family;
     letter-spacing: 0.2px;
     margin-bottom: 0;
     color: #808080 !important;
@@ -119,6 +119,7 @@
     padding: 8px 16px 8px 8px;
     font-size: 14px;
     text-wrap: nowrap;
+    flex: 1;
   }
 
   .decidimGeo__filterModal__select,
@@ -129,6 +130,7 @@
     text-align: right;
     box-shadow: none;
     color: #1a181d;
+    flex: 3;
   }
   .decidimGeo__filterModal__resetBtn,
   .decidimGeo__filterModal__applyBtn {

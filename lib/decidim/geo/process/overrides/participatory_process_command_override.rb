@@ -5,16 +5,19 @@ module Decidim
     module ParticipatoryProcessCommandOverride
       extend ActiveSupport::Concern
       included do
-        alias_method :decidim_original_attributes, :attributes
+        alias_method :decidim_original_run_after_hooks, :run_after_hooks
 
-        def attributes
-          decidim_attributes = decidim_original_attributes
-          location = (@participatory_process || @process).decidim_geo_space_location || Decidim::Geo::SpaceLocation.new
+        def run_after_hooks
+          location = resource.decidim_geo_space_location || Decidim::Geo::SpaceLocation.new(
+            decidim_geo_space_type: resource.class.name,
+            decidim_geo_space_id: resource.id
+          )
           location.address = form.decidim_geo_space_address
           location.latitude = form.latitude
           location.longitude = form.longitude
-          decidim_attributes[:decidim_geo_space_location] = location
-          decidim_attributes
+          location.save!
+          resource.update!(decidim_geo_space_location: location)
+          decidim_original_run_after_hooks
         end
       end
     end

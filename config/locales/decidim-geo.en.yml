@@ -143,6 +143,8 @@ en:
           only_debates: "Debates"
           only_accountabilities: "Accountabilities"
     components:
+      pagination:
+        page_title: "%{component_name}"
       geo:
         name: Geo
         settings:

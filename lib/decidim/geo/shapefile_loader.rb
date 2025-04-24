@@ -52,7 +52,7 @@ module Decidim
 
       def shp_loader(record)
         data = record.attributes
-        @shapefile.shapedatas.create!(data: data, geom: record.geometry)
+        @shapefile.shapedatas.create!(data:, geom: record.geometry)
       end
 
       ##

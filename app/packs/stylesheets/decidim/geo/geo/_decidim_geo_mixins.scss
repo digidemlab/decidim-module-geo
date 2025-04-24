@@ -20,7 +20,7 @@
   &--hidden {
     display: none;
   }
-  @include breakpoint(medium down) {
+  @media (max-width: 768px) {
     width: 100%;
     background: lightgray;
     background-color: transparent;

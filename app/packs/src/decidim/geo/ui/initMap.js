@@ -1,27 +1,31 @@
 import L from "leaflet";
 import configStore from "../stores/configStore";
 import "leaflet.fullscreen";
-import { init as initMapTiler } from "@maptiler/leaflet-maptilersdk";
+import { MaptilerLayer } from "@maptiler/leaflet-maptilersdk";
 const initMap = async () => {
   const {
     mapID,
     map_config: { lat, lng, zoom, tile_layer, maptiler_api_key, maptiler_style_id },
     i18n
   } = configStore.getState();
+  if(!document.getElementById(mapID)) {
+    console.warn("No map found with id", mapID);
+    return;
+  }
   const map = L.map(mapID, {
     center: [lat, lng],
     zoom,
     scrollWheelZoom: false,
-    fullscreenControl: false
+    fullscreenControl: false,
+    renderer: L.svg()
   });
 
   map.zoomControl.setPosition("bottomright");
 
   if (maptiler_api_key.length > 0) {
-    initMapTiler();
-    new L.MaptilerLayer({
+    new MaptilerLayer({
       style: maptiler_style_id,
-      apiKey: maptiler_api_key
+      apiKey: maptiler_api_key 
     }).addTo(map);
   } else {
     L.tileLayer(tile_layer, {

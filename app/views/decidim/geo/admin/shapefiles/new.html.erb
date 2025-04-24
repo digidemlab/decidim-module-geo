@@ -1,8 +1,20 @@
-<%= decidim_form_for(@form, html: { class: "form new_shapefile shapefile_form_admin" }) do |form| %>
-  <%= render partial: "form", locals: { form: form, title: t(".title") } %>
+<% add_decidim_page_title(t("new.title", scope: "decidim.geo.admin.shapefiles" )) %>
+<div class="item_show__header">
+  <h1 class="item_show__header-title">
+    <%= t "new.title", scope: "decidim.geo.admin.shapefiles" %>
+  </h1>
+</div>
+<div class="item__edit item__edit-1col">
+  <div class="item__edit-form">
+    <%= decidim_form_for(@form, html: { class: "form new_shapefile shapefile_form_admin" }) do |form| %>
+      <%= render partial: "form", locals: { form: form, title: t(".title") } %>
 
-  <div class="button--double form-general-submit">
-    <%= form.submit t(".create") %>
+ 
+      <div class="item__edit-sticky">
+        <div class="item__edit-sticky-container">
+          <%= form.submit t(".create"), class: "button button__sm button__secondary" %>
+        </div>
+      </div>
+    <% end %>
   </div>
-<% end %>
-
+</div>

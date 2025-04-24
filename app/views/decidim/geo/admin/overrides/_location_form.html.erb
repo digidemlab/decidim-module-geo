@@ -1,0 +1,27 @@
+<% if Decidim::Map.available?(:geocoding) %>
+  <div class="card" data-component="accordion" id="accordion-decidim-geo">
+    <div class="card-divider">
+      <button class="card-divider-button" data-open="true" data-controls="panel-decidim-geo" type="button">
+        <%= icon "arrow-right-s-line" %>
+          <h2 class="card-title" id="title">
+            <%= t(".decidim_geo_space_address") %>
+          </h2>
+      </button>
+    </div>
+
+    <div id="panel-decidim-geo" class="card-section">
+      <div class="row column">
+        <%= form.geocoding_field :decidim_geo_space_address, autocomplete: true %>
+          <p class="help-text">
+            <%= t(".decidim_geo_space_address_help") %>
+          </p>
+      </div>
+      <div class="row column">
+        <div class="flex flex-row gap-4">
+          <%= form.text_field :latitude, label_options: {class: "field w-1/2" } %>
+            <%= form.text_field :longitude, label_options: {class: "field w-1/2" } %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% end %>

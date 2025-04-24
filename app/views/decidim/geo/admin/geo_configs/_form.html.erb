@@ -1,79 +1,87 @@
-<div class="card with-overflow" id="shapefiles">
-  <div class="card-divider">
-    <h2 class="card-title">
-      <%= t("map_config_title", scope: "decidim.geo.admin.geo_configs") %>
-    </h2>
-  </div>
-  <div class="card-section">
-    <div class="row">
-      <div class="columns xlarge-6">
-        <%= form.number_field :latitude %>
-      </div>
+<div class="form__wrapper">
+  <div class="card" data-component="accordion" id="accordion-title">
+    <div class="card-divider">
+      <button class="card-divider-button" data-open="true" data-controls="panel-title" type="button">
+        <%= icon "arrow-right-s-line" %>
+          <h2 class="card-title" id="title">
+            <%= t("map_config_title", scope: "decidim.geo.admin.geo_configs" ) %>
+          </h2>
+      </button>
     </div>
-    <div class="row">
-      <div class="columns xlarge-6">
-        <%= form.number_field :longitude %>
+
+    <div id="panel-title" class="card-section">
+      <div class="row column">
+        <%= form.number_field :latitude, label_options: {class: "field" } %>
       </div>
-    </div>
-    <div class="row">
-      <div class="columns xlarge-6">
-        <%= form.number_field :zoom %>
+      <div class="row column">
+        <%= form.number_field :longitude, label_options: {class: "field" } %>
       </div>
-    </div>
-    <div class="row">
-      <div class="columns xlarge-6">
-        <%= form.number_field :focus_zoom_level %>
+      <div class="row column">
+        <%= form.number_field :zoom, label_options: {class: "field" } %>
       </div>
-    </div>
-    <div class="row">
-      <div class="columns xlarge-6">
-        <%= form.text_field :tile %>
+      <div class="row column">
+        <%= form.number_field :focus_zoom_level, label_options: {class: "field" } %>
       </div>
-    </div>
-    <div class="row">
-      <div class="columns xlarge-6">
-        <%= form.text_field :maptiler_api_key %>
+      <div class="row column">
+        <%= form.text_field :tile, label_options: {class: "field" } %>
       </div>
-    </div>
-    <div class="row"></div>
-      <div class="columns xlarge-6">
-        <%= form.text_field :maptiler_style_id %>
+      <div class="row column">
+        <%= form.text_field :maptiler_api_key, label_options: {class: "field" } %>
       </div>
-    </div>
-    
-  </div>
-  
-  <div class="card-divider">
-    <h2 class="card-title">
-      <%= t("spaces_config_title", scope: "decidim.geo.admin.geo_configs") %>
-    </h2>
-  </div>
-  <div class="card-section">
-    <div class="row">
-      <div class="columns xlarge-6">
-        <%= form.check_box :only_processes, label: t("only_processes", scope: "decidim.geo.admin.geo_configs") %>
-      </div>
-    </div>
-    <div class="row">
-      <div class="columns xlarge-6">
-        <%= form.check_box :only_assemblies, label: t("only_assemblies", scope: "decidim.geo.admin.geo_configs") %>
+      <div class="row column">
+        <%= form.text_field :maptiler_style_id, label_options: {class: "field" } %>
       </div>
     </div>
   </div>
-  <div class="card-divider">
-    <h2 class="card-title">
-      <%= t("title", scope: "decidim.geo.admin.geo_configs.default_filter") %>
-    </h2>
-  </div>
-  <div class="card-section">
-    <div class="row">
-      <p > <%= t("help_text", scope: "decidim.geo.admin.geo_configs.default_filter") %></p>
+
+  <div class="card" data-component="accordion" id="accordion-config">
+    <div class="card-divider">
+      <button class="card-divider-button" data-open="true" data-controls="panel-config" type="button">
+        <%= icon "arrow-right-s-line" %>
+          <h2 class="card-title" id="title">
+            <%= t("spaces_config_title", scope: "decidim.geo.admin.geo_configs" ) %>
+          </h2>
+      </button>
     </div>
-    <div class="row">
-      <div class="columns xlarge-6">
-        <%= form.select :default_geoencoded_filter, options_for_select(Decidim::Geo::GeoConfig::default_geoencoded_filters.map do |key, value|
-          [t(key, scope: "decidim.geo.admin.geo_configs.default_filter.geoencoded_filter.fields"), key]
-        end, form.object.default_geoencoded_filter), label: t("label", scope: "decidim.geo.admin.geo_configs.default_filter.geoencoded_filter") %>
+
+    <div id="panel-config" class="card-section">
+      <div class="row column">
+        <%= form.check_box :only_processes, label: t("only_processes", scope: "decidim.geo.admin.geo_configs" ),
+          label_options: {class: "field" } %>
+      </div>
+      <div class="row column">
+        <%= form.check_box :only_assemblies, label: t("only_assemblies", scope: "decidim.geo.admin.geo_configs" ),
+          label_options: {class: "field" } %>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-component="accordion" id="accordion-filter">
+    <div class="card-divider">
+      <button class="card-divider-button" data-open="true" data-controls="panel-filter" type="button">
+        <%= icon "arrow-right-s-line" %>
+          <h2 class="card-title" id="title">
+            <%= t("default_filter.title", scope: "decidim.geo.admin.geo_configs" ) %>
+          </h2>
+      </button>
+    </div>
+
+    <div id="panel-filter" class="card-section">
+      <div class="row column">
+        <p>
+          <%= t("help_text", scope: "decidim.geo.admin.geo_configs.default_filter" ) %>
+        </p>
+      </div>
+      <div class="row column">
+        <%= form.select :default_geoencoded_filter,
+          options_for_select(Decidim::Geo::GeoConfig::default_geoencoded_filters.map do |key, value|
+            [ 
+            t("decidim.geo.admin.geo_configs.default_filter.geoencoded_filter.fields.#{key}"), 
+              key,
+            ] 
+          end,
+          form.object.default_geoencoded_filter), label: t("label",
+          scope: "decidim.geo.admin.geo_configs.default_filter.geoencoded_filter" ) %>
       </div>
     </div>
   </div>

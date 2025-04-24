@@ -18,8 +18,12 @@ const proposals = (node) => {
   const metadatas = L.DomUtil.create("div", "decidimGeo__drawer__metas", info);
 
   const infoType = L.DomUtil.create("div", "decidimGeo__drawer__listCardType", metadatas);
-  infoType.textContent = i18n[node.resourceType];
-
+  const infoTxt = L.DomUtil.create(
+    "span",
+    createClasses("decidimGeo__drawer__listCardTxt"),
+    infoType
+  );;
+  infoTxt.textContent = i18n[node.resourceType]
   const notGeoEncodedIcon = L.DomUtil.create(
     "img",
     createClasses("decidimGeo__drawer__listCardIcon", [node.lonlat && "hidden"]),

@@ -5,7 +5,7 @@ module Decidim
     # Data fo the shapfiles uploaded
     class NoIndex < ApplicationRecord
       self.table_name = "decidim_geo_no_indexes"
-      belongs_to :decidim_component
+      belongs_to :decidim_component, class_name: "Decidim::Component"
       def geo_indexed?
         !no_index
       end

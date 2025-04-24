@@ -21,6 +21,10 @@ module Decidim
       end
 
       config.to_prepare do
+        # CSP extras
+        Decidim::ApplicationController.include(Decidim::Geo::ContentSecurityPolicy)
+        Decidim::Admin::ApplicationController.include(Decidim::Geo::ContentSecurityPolicy)
+
         # API overrides
         Decidim::Api::QueryType.include Decidim::Geo::QueryExtension
         Decidim::ParticipatoryProcesses::ParticipatoryProcessInputFilter.include Decidim::Geo::HasScopeableInputFilter
@@ -128,6 +132,18 @@ module Decidim
           content_block.cell = "decidim/geo/content_blocks/geo_maps"
           content_block.public_name_key = "decidim.geo.content_blocks.name"
         end
+        Decidim.content_blocks.register(:participatory_process_group_homepage, :geo_maps) do |content_block|
+          content_block.cell = "decidim/geo/content_blocks/geo_maps"
+          content_block.public_name_key = "decidim.geo.content_blocks.name"
+        end
+        Decidim.content_blocks.register(:assembly_homepage, :geo_maps) do |content_block|
+          content_block.cell = "decidim/geo/content_blocks/geo_maps"
+          content_block.public_name_key = "decidim.geo.content_blocks.name"
+        end
+        Decidim.content_blocks.register(:participatory_process_homepage, :geo_maps) do |content_block|
+          content_block.cell = "decidim/geo/content_blocks/geo_maps"
+          content_block.public_name_key = "decidim.geo.content_blocks.name"
+        end
       end
 
       initializer "add_cells_view_paths" do
@@ -147,6 +163,10 @@ module Decidim
 
       initializer "decidim_geo.webpacker.assets_path" do
         Decidim.register_assets_path File.expand_path("#{Decidim::Geo::Engine.root}/app/packs")
+      end
+
+      initializer "decidim_geo.assets.icons" do |_app|
+        Decidim.icons.register(name: "map", icon: "map-2-fill", category: "system", description: "", engine: :core)
       end
     end
   end
