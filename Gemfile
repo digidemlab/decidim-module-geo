@@ -18,7 +18,11 @@ gem "decidim", DECIDIM_VERSION
 gem "decidim-decidim_geo", path: base_path
 
 gem "bootsnap", "~> 1.18"
-gem "deface", ">= 1.9"
+
+gem "deface", 
+  git: "https://github.com/froger/deface", 
+  branch: "fix/js-overrides"
+
 gem "puma", ">= 6.6"
 gem "uglifier", "~> 4.2"
 

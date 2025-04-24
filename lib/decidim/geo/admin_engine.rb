@@ -33,6 +33,12 @@ module Decidim
         Decidim.register_assets_path File.expand_path("#{Decidim::Geo::Engine.root}/app/packs/admin")
       end
 
+      config.to_prepare do
+        ::Decidim::Admin::UpdateScope.include(Decidim::Geo::Admin::OverrideUpdateScopeCommand)
+        ::Decidim::Admin::CreateScopeType.include(Decidim::Geo::Admin::OverrideCreateScopeType)
+        ::Decidim::Admin::UpdateScopeType.include(Decidim::Geo::Admin::OverrideUpdateScopeType)
+      end
+
       initializer "decidim_geo.admin_menu" do
         if Decidim::Map.available?(:geocoding)
           Decidim.menu :admin_menu do |menu|
