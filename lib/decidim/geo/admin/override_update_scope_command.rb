@@ -4,9 +4,8 @@ module Decidim
   module Geo
     module Admin
       module OverrideUpdateScopeCommand
-        
         def run_after_hooks
-          scope = resource 
+          scope = resource
           scope.shapedata = shapedata
           scope.save!
         end

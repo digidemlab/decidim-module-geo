@@ -4,7 +4,7 @@ const openFullscreen = () => {
   const { map } = configStore.getState();
   map.toggleFullscreen();
   $("body").addClass("noscroll");
-  $("#DecidimGeoContainer").addClass("decidimGeo__container--fullscreen");
+  $(".decidimGeo__container").addClass("decidimGeo__container--fullscreen");
 };
 
 export default openFullscreen;

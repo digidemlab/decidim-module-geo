@@ -96,7 +96,13 @@ export default class GeoScope {
   }
   remove() {
     const { map } = configStore.getState();
-    if (this.layer) map.removeLayer(this.layer);
+    if (this.layer && map.hasLayer(this.layer)) {
+      try {
+        map.removeLayer(this.layer);
+      } catch (e) {
+        console.error(e);
+      }
+    }
   }
   init(scopeLayer) {
     this.markers_group = this.markersForScope();

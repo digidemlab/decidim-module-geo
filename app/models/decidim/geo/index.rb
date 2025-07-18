@@ -6,7 +6,7 @@ module Decidim
       self.table_name = "decidim_geo_indexes"
       # attribute :lonlat, :st_point, srid: 4326, geographic: true
 
-      scope :indexed, -> { where(avoid_index: [false, nil]) }
+      scope :indexed, -> { where.not(avoid_index: true) }
       scope :geolocated, -> { where.not(lonlat: nil) }
       scope :virtual, -> { where(lonlat: nil) }
       scope :components, -> { where.not(component_id: nil) }

@@ -9,7 +9,7 @@ module Decidim
 
         def attributes
           decidim_attributes = decidim_original_attributes
-          location = @assembly.decidim_geo_space_location || Decidim::Geo::SpaceLocation.new
+          location = resource.decidim_geo_space_location || Decidim::Geo::SpaceLocation.new
           location.address = form.decidim_geo_space_address
           location.latitude = form.latitude
           location.longitude = form.longitude

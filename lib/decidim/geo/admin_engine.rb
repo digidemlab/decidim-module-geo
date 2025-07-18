@@ -16,16 +16,14 @@ module Decidim
             resources :attachments
           end
           resources :geo_configs
-            
+
           root to: "geo_configs#index"
         end
       end
 
       initializer "decidim_geo.admin_mount_routes" do
         Decidim::Core::Engine.routes do
-          if Decidim::Map.available?(:geocoding)
-            mount Decidim::Geo::AdminEngine, at: "/admin/geo", as: "decidim_admin_geo"
-          end
+          mount Decidim::Geo::AdminEngine, at: "/admin/geo", as: "decidim_admin_geo" if Decidim::Map.available?(:geocoding)
         end
       end
 

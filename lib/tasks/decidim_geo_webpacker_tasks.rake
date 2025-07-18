@@ -22,7 +22,7 @@ namespace :decidim_geo do
       decidim_geo_npm_dependencies.each do |type, packages|
         puts "install NPM packages. You can also do this manually with this command:"
         puts "npm i --legacy-peer-deps --save-#{type} #{packages.join(" ")}"
-        system! "npm i --legacy-peer-deps --save-#{type} #{packages.join(" ")}"
+        decidim_geo_system! "npm i --legacy-peer-deps --save-#{type} #{packages.join(" ")}"
       end
     end
 
@@ -30,28 +30,30 @@ namespace :decidim_geo do
       @decidim_geo_npm_dependencies ||= begin
         package_json = JSON.parse(File.read(decidim_geo_path.join("package.json")))
 
-        { prod: package_json["dependencies"].map { |package, version| "#{package}@#{version}" },
-          dev: package_json["devDependencies"].map { |package, version| "#{package}@#{version}" } }.freeze
+        {
+          prod: package_json["dependencies"].map { |package, version| "#{package}@#{version}" },
+          dev: package_json["devDependencies"].map { |package, version| "#{package}@#{version}" }
+        }.freeze
       end
     end
 
     def decidim_geo_path
-      @decidim_geo_path ||= Pathname.new(decidim_geo_gemspec.full_gem_path) if Gem.loaded_specs.has_key?(gem_name)
+      @decidim_geo_path ||= Pathname.new(decidim_geo_gemspec.full_gem_path) if Gem.loaded_specs.has_key?(decidim_geo_gem_name)
     end
 
     def decidim_geo_gemspec
-      @decidim_geo_gemspec ||= Gem.loaded_specs[gem_name]
+      @decidim_geo_gemspec ||= Gem.loaded_specs[decidim_geo_gem_name]
     end
 
     def rails_app_path
       @rails_app_path ||= Rails.root
     end
 
-    def system!(command)
+    def decidim_geo_system!(command)
       system("cd #{rails_app_path} && #{command}") || abort("\n== Command #{command} failed ==")
     end
 
-    def gem_name
+    def decidim_geo_gem_name
       "decidim-decidim_geo"
     end
   end

@@ -36,9 +36,10 @@ module Decidim
           @options[:filters] || []
         end
 
-        def id 
+        def id
           @options[:id] || "HomePage"
         end
+
         def insert_map
           selecting_point = current_component? && params.has_key?(:id)
           config = {

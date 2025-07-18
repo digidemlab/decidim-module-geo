@@ -15,7 +15,7 @@ module Decidim
           avoid_index_relation.decidim_component_id = resource.id
           avoid_index_relation.decidim_component_type = resource.class.name
           avoid_index_relation.no_index = form.decidim_geo_avoid_index
-          
+
           resource.decidim_geo_avoid_index = avoid_index_relation
           resource.save
           resource.reload

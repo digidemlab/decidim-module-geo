@@ -56,7 +56,7 @@ module Decidim
       end
 
       def query
-        ::Decidim::Geo::Api::GeoQuery.new(
+        @query ||= ::Decidim::Geo::Api::GeoQuery.new(
           current_organization,
           current_user,
           {
@@ -69,11 +69,11 @@ module Decidim
       end
 
       def index?
-        @index ||= permitted_params[:is_index] || false
+        @index ||= !!permitted_params[:is_index]
       end
 
       def group?
-        @group ||= permitted_params[:is_group] || false
+        @group ||= !!permitted_params[:is_group]
       end
 
       def locale_param
