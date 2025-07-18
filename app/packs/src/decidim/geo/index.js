@@ -61,27 +61,28 @@ async function displayMap() {
       map.addControl(new PageNameControl());
       map.setMinZoom((configStore.getState().map_config.zoom || 15) - 2);
       // Save the first loaded position.
-      await new Promise((resolve) => setTimeout(resolve, 120));
+      await new Promise((resolve) => setTimeout(resolve, 64));
       configStore.getState().setReady();
       removeProcess();
-      setTimeout(setSavedPosition, 320);
+      setTimeout(setSavedPosition, 640);
     });
 
     pointStore.subscribe(
       (state) => [
         !!state.isLoading,
+        state.isInitialized,
         state.getFilteredPoints,
         state.fetchesRunning,
         state._lastResponse
       ],
-      ([isLoading, getFilteredPoints, fetchesRunning]) => {
-        const { isInitialized } = pointStore.getState();
+      ([isLoading, isInitialized, getFilteredPoints, fetchesRunning]) => {
         if (isLoading > 0 || !isInitialized) {
+          console.warn("DecidimGeo: skipping initialization", { isLoading, isInitialized });
           return;
         }
-
         const { map, pointsLayer } = configStore.getState();
         const { selectedPoint, selectedScope } = geoStore.getState();
+        console.log("DecidimGeo: initializing", { fetchesRunning, selectedScope, selectedPoint });
         pointsLayer.clearLayers();
         if (
           fetchesRunning === 0 &&
@@ -100,6 +101,8 @@ async function displayMap() {
           pointInMap.forEach(({ marker }) => {
             marker.addTo(pointsLayer);
           });
+        } else {
+          console.warn("DecidimGeo: No points in map?");
         }
       }
     );
@@ -174,7 +177,7 @@ async function main() {
 
 window.addEventListener("load", function () {
   main().then(() => {
-    console.log("decidim geo ready");
-    setTimeout(() => pointStore.setState(() => ({ isInitialized: true })), 640);
+    console.log("DecidimGeo: ready");
+    pointStore.setState(() => ({ isInitialized: true }))
   });
 });

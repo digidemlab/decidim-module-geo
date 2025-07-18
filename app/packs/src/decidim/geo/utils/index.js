@@ -20,7 +20,7 @@ export async function getDecidimData(query, params) {
       return res;
     })
     .catch((e) => {
-      console.log(`failed to fetch`, { body });
+      console.log(`DecidimGeo: failed to fetch`, { body });
       console.error(e);
       return null;
     });

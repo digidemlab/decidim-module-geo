@@ -4,7 +4,6 @@ module Decidim
   module Geo
     module Admin
       module OverrideUpdateScopeType
-        
         def run_after_hooks
           scope_type = resource
           scope_type.shapefile = shapefile

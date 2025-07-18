@@ -8,6 +8,7 @@ export default class GeoDatasourceNode {
     this.data = node;
     this.map = map;
     this.marker = undefined;
+  
   }
   get isFetched() {
     return true;

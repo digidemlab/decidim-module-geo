@@ -9,8 +9,10 @@ const registerMobile = () => {
   const [mobileBtn] = document.getElementsByClassName(
     "decidimGeo__mobile_btn__mobile_btn"
   );
-  if (!mobileBtn)
-    throw new Error("Can't find mobile button .decidimGeo__mobile_btn__mobile_btn");
+  if (!mobileBtn){
+    console.error("Can't find mobile button .decidimGeo__mobile_btn__mobile_btn");
+    return;
+  }
 
   mobileBtn.addEventListener("click", () => {
     configStore.setState(() => ({ isFullscreen: true }));

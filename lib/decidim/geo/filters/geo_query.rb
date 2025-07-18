@@ -19,77 +19,84 @@ module Decidim
         def results
           query = Decidim::Geo::Index.all
           query = query.geolocated if geolocated? || config.force_geoencoded?
-          return query.indexed if graphql_params.empty?
-
-          query = indexed_query(query) if only_indexed?
-          query = query.virtual if virtual?
-          # Filter on scopes
-          unless scope_ids_params.empty?
-            query = query.where(
-              geo_scope_id: scope_ids_params
-            )
-          end
-
-          # Filter on spaces
-          unless process_params.empty?
-            query = query.where(
-              participatory_space_type: :participatory_processes,
-              participatory_space_id: process_params
-            )
-          end
-
-          unless assembly_params.empty?
-            query = query.where(
-              participatory_space_type: :assemblies,
-              participatory_space_id: assembly_params
-            )
-          end
-
-          if !resource_type_params.empty? && resource_type_params.first != "all"
-            query = query.where(
-              resource_type: resource_type_params
-            )
-          end
-
-          active_time_filter = time_filter_params && time_filter_params[:time_filter][:time]
-
-          if active_time_filter && active_time_filter != "all"
-            time_filters = resource_type_params.map do |manifest|
-              time_filter_class = ::Decidim::Geo.registry.time_filter_for(manifest)
-              filter = time_filter_class.new(self, manifest)
-              case active_time_filter
-              when "active"
-                filter.filter_active(query)
-              when "past"
-                filter.filter_past(query)
-              when "future"
-                filter.filter_future(query)
-              else
-                raise "Unkown time filter #{active_time_filter}"
-              end
-            end
-            unless time_filters.empty?
-              query = begin
-                time_filter_chain = time_filters.pop
-                time_filters.each do |or_time_filter|
-                  time_filter_chain = time_filter_chain.or(or_time_filter)
-                end
-                time_filter_chain
-              end
-            end
-          end
-          query
+          query = indexed!(query)
+          query = virtual!(query)
+          query = scoped!(query)
+          query = scoped_participatory_space!(query, :participatory_processes, process_params)
+          query = scoped_participatory_space!(query, :assemblies, assembly_params)
+          query = scoped_resource_type!(query)
+          scoped_time!(query)
         end
 
         private
 
-        def indexed_query(query)
-          return query.indexed unless process_groups?
+        def active_time_filter
+          @active_time_filter ||= time_filter_params && time_filter_params[:time_filter][:time]
+        end
 
-          query.indexed.or(query.where(
-                             participatory_space_id: process_params,
-                             avoid_index: true
-                           ))
+        def computed_time_filters(query)
+          return [] unless active_time_filter && active_time_filter != "all"
+
+          resource_type_params.map do |manifest|
+            time_filter_class = ::Decidim::Geo.registry.time_filter_for(manifest)
+            filter = time_filter_class.new(self, manifest)
+            case active_time_filter
+            when "active"
+              filter.filter_active(query)
+            when "past"
+              filter.filter_past(query)
+            when "future"
+              filter.filter_future(query)
+            else
+              raise "Unkown time filter #{active_time_filter}"
+            end
+          end
+        end
+
+        def indexed!(query)
+          return query.indexed if only_indexed?
+
+          participatory_where_clause = if process_params.any?
+                                         { participatory_space_id: process_params }
+                                       else
+                                         {}
+                                       end
+          query.where(participatory_where_clause)
+        end
+
+        def virtual!(query)
+          return query.virtual if virtual?
+
+          query
+        end
+
+        def scoped!(query)
+          return query.where(geo_scope_id: scope_ids_params) unless scope_ids_params.empty?
+
+          query
+        end
+
+        def scoped_participatory_space!(query, type, space_params)
+          return query.where(participatory_space_type: type, participatory_space_id: space_params) if space_params.any?
+
+          query
+        end
+
+        def scoped_resource_type!(query)
+          return query.where(resource_type: resource_type_params) unless resource_type_params.empty? || resource_type_params.first == "all"
+
+          query
+        end
+
+        def scoped_time!(query)
+          computed_filters = computed_time_filters(query)
+          return query if computed_filters.empty?
+
+          time_filter_chain = computed_filters.pop
+          computed_filters.each do |or_time_filter|
+            time_filter_chain = time_filter_chain.or(or_time_filter)
+          end
+          time_filter_chain
         end
 
         def config
@@ -118,7 +125,9 @@ module Decidim
           params.has_key?(:is_index) && params[:is_index]
         end
 
-        def process_groups?
+        ##
+        # @deprecated
+        def group?
           params.has_key?(:is_group) && params[:is_group]
         end
 
@@ -178,7 +187,7 @@ module Decidim
 
         def time_filters
           @time_filters ||= ::Decidim::Geo.registry.active_manifests do |manifests|
-            manifests.map { |config| config[:time_filter].new(self) }
+            manifests.map { |config| config.last[:time_filter].new(self, config.first) }
           end
         end
 

@@ -24,11 +24,12 @@ services:
       - 3000:3000
       - 3035:3035
     volumes:
-      - .:/home/decidim/decidim_module_geo
-      - node_modules:/home/decidim/app/node_modules
-      - bundle:/home/decidim/app/vendor
-      - public:/home/decidim/app/public
-      - tmp:/home/decidim/app/tmp
+      - .:/home/decidim_module_geo
+      - node_modules:/home/decidim/node_modules
+      - bundle:/home/decidim/vendor
+      - public:/home/decidim/public
+      - tmp:/home/decidim/tmp
+      - .docker/dump/:/home/decidim/tmp/dump
     networks:
       - private
       - default
@@ -38,7 +39,7 @@ services:
     restart: always
     volumes:
       - pg_data:/var/lib/postgresql/data
-      - .dump/:/tmp/dump
+      - .docker/dump:/tmp/dump
     environment:
       - POSTGRES_PASSWORD=insecure-password
       - POSTGRES_USER=decidim
