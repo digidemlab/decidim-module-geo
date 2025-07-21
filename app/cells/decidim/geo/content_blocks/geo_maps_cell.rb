@@ -35,7 +35,7 @@ module Decidim
         protected
 
         def current_participatory_space_manifest
-          current_participatory_space.manifest.name.to_s
+          current_participatory_space.manifest.name.to_s if current_participatory_space?
         end
         def hide_empty?
           @options[:hide_empty] || false
@@ -161,10 +161,20 @@ module Decidim
           current_component.id
         end
 
-     
+        def current_participatory_space
+          request.env["decidim.current_participatory_space"]
+        end
+
+        def current_component
+          request.env["decidim.current_component"]
+        end
 
         def current_component?
           current_component.present?
+        end
+
+        def current_participatory_space?
+          current_participatory_space.present?
         end
 
         def map_config
