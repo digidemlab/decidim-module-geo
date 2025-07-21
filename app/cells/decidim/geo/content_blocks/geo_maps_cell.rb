@@ -161,7 +161,13 @@ module Decidim
           current_component.id
         end
 
-     
+        def current_participatory_space
+          request.env["decidim.current_participatory_space"]
+        end
+
+        def current_component
+          request.env["decidim.current_component"]
+        end
 
         def current_component?
           current_component.present?
