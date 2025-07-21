@@ -6,6 +6,7 @@ module Decidim
       class SpaceGeoMapsCell < GeoMapsCell
         def initialize(*args, **kwargs)
           super(*args, **kwargs)
+          @options[:is_index] = false
           @options[:id] = "Space#{current_participatory_space_manifest.parameterize}#{current_participatory_space.id}"
           # Scope on the current process
           if current_participatory_space_manifest == "participatory_processes"

@@ -9,6 +9,7 @@ module Decidim
           group = Decidim::ParticipatoryProcessGroup.find(
             model.scoped_resource_id
           )
+          @options[:is_index] = false
           @options[:filters].concat(
             group.participatory_processes.published.ids.map { |id| { process_filter: { id: } } }
           )
