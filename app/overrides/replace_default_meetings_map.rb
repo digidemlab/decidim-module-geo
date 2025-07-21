@@ -7,16 +7,15 @@ Deface::Override.new(virtual_path: "decidim/meetings/shared/_index",
                      closing_selector: "erb[silent]:contains('end')",
                      text: <<~ERB
                        <% if defined?(current_participatory_space) && current_participatory_space.present? %>
-                         <%= cell("decidim/geo/content_blocks/geo_maps", current_participatory_space,#{" "}
+                         <%= cell("decidim/geo/content_blocks/geo_maps", current_participatory_space,
                              id: "Meetings",
                              hide_empty: true,
                              is_index: false,
-                             is_group: false,
                              filters: if current_participatory_space.scope.present?
                                  [
                                    { scopeFilter: { scopeId: current_participatory_space.scope.id } }
                                  ]
-                             else#{" "}
+                             else
                                  []
                              end,
                              scopes: if current_participatory_space.scope.present?

@@ -7,13 +7,18 @@ module Decidim
         delegate :decidim_page_title, to: :view_context
         include Decidim::SanitizeHelper
         include Decidim::LayoutHelper
+        def initialize(*args, **kwargs)
+          super(*args, **kwargs)
+          @options[:filters] ||= []
+        end
+
         def show
           return "<!-- DecidimGeo: Map is empty -->".html_safe if hide_empty? && empty_map?
 
           render
         end
 
-        private
+        protected
 
         def hide_empty?
           @options[:hide_empty] || false
@@ -27,13 +32,13 @@ module Decidim
           @data_count ||= ::Decidim::Geo::Api::GeoQuery.new(
             current_organization,
             current_user,
-            { filters:, is_index: index?, is_group: group? },
+            { filters:, is_index: index? },
             current_locale
           ).results_count
         end
 
         def filters
-          @options[:filters] || []
+          @options[:filters]
         end
 
         def id
@@ -51,11 +56,10 @@ module Decidim
             images: {
               not_geolocated: ActionController::Base.helpers.asset_pack_path("media/images/not-geolocated.svg")
             },
-            filters: (@options[:filters] || []).push({ timeFilter: { time: "active" } }),
+            filters: filters.push({ timeFilter: { time: "active" } }),
             map_config:,
             active_manifests: ::Decidim::Geo.registry.active_manifests(&:keys),
-            is_index: index?,
-            is_group: @options[:is_group] || false
+            is_index: index?
           }.with_indifferent_access
 
           content_tag(
@@ -76,10 +80,6 @@ module Decidim
           @options.has_key?(:is_index) ? @options[:is_index] : true
         end
 
-        def group?
-          @options.has_key?(:is_group) ? @options[:is_group] : false
-        end
-
         def insert_scopes_mobile
           content_tag(:div, "", class: ["js-decidimgeo"])
         end
@@ -93,7 +93,6 @@ module Decidim
           geo_i18n = supported_models.to_h
           {
             **geo_i18n,
-            "decidim.geo.proposals.states": t("decidim.admin.filters.proposals.state_eq.values"),
             "decidim.geo.mobile.open_fullscreen": t("decidim.geo.mobile.open_fullscreen"),
             "decidim.geo.mobile.close_fullscreen": t("decidim.geo.mobile.close_fullscreen"),
             "decidim_geo.scopes.all": t("decidim.geo.scopes.all"),
@@ -147,10 +146,6 @@ module Decidim
 
         def current_component
           request.env["decidim.current_component"]
-        end
-
-        def current_participatory_space
-          request.env["decidim.current_participatory_space"]
         end
 
         def current_component?

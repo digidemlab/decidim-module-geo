@@ -125,12 +125,6 @@ module Decidim
           params.has_key?(:is_index) && params[:is_index]
         end
 
-        ##
-        # @deprecated
-        def group?
-          params.has_key?(:is_group) && params[:is_group]
-        end
-
         def assembly_groups?
           assembly_params.size > 1
         end

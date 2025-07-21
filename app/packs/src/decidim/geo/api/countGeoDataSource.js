@@ -5,7 +5,6 @@ const countGeoDataSource = async (params = {}, callback = undefined) => {
     filters = [],
     locale,
     isIndex = false,
-    isGroup = false,
     after = 0,
     first = 50
   } = params;
@@ -19,9 +18,7 @@ const countGeoDataSource = async (params = {}, callback = undefined) => {
   if (isIndex) {
     searchParams.append("is_index", "true");
   }
-  if (isGroup) {
-    searchParams.append("is_group", "true");
-  }
+
   filters.forEach((f) => {
     searchParams.append("filters[]", JSON.stringify(f));
   });
