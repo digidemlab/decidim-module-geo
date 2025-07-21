@@ -95,7 +95,7 @@ const store = createStore(
       const { points: fetchedPoints } = store.getState();
       if (fetchedPoints.length > 0) return;
 
-      const { locale, isIndex, isGroup } = configStore.getState();
+      const { locale, isIndex } = configStore.getState();
 
       const promises = [];
       const filterWithoutTime = filters.filter(
@@ -103,7 +103,7 @@ const store = createStore(
       );
       set(({ fetchesRunning }) => ({ fetchesRunning: fetchesRunning + 1 }));
       await getGeoDataSource(
-        { filters: filterWithoutTime, locale, isIndex, isGroup },
+        { filters: filterWithoutTime, locale, isIndex },
         true,
         (data, hasMore, meta) => {
           const points = data.map(mapNodeToPoint).filter(Boolean);
@@ -139,7 +139,7 @@ const store = createStore(
     },
 
     pointsForFilters: async (filters = [], forceRefresh = false) => {
-      const { locale, isIndex, isGroup } = configStore.getState();
+      const { locale, isIndex } = configStore.getState();
       const { _lastFilter: lastFilter, _lastResponse: lastResponse } = store.getState();
       const cacheKey = JSON.stringify(filters);
       // cache
@@ -153,7 +153,7 @@ const store = createStore(
       filteredIdsStore.setState(() => ({ activeFilterIds: [] }));
 
       await getGeoDataSource(
-        { filters, locale: locale, isIndex, isGroup },
+        { filters, locale: locale, isIndex },
         false,
         (data, hasMore) => {
           filteredIdsStore.setState(({ activeFilterIds }) => ({

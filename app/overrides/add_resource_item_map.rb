@@ -6,17 +6,16 @@ Deface::Override.new(virtual_path: "layouts/decidim/shared/_layout_item",
                      insert_before: "div[role=complementary]",
                      text: <<~ERB
                        <% component_manifest = current_component.manifest_name %>
-                       <%= cell("decidim/geo/content_blocks/geo_maps", current_participatory_space,#{" "}
+                       <%= cell("decidim/geo/content_blocks/geo_maps", current_participatory_space,
                            id: (component_manifest + "_item").camelize,
                            hide_empty: true,
                            is_index: false,
-                           is_group: false,
                            container_classnames: "decidimGeo__container--item",
                            filters: if current_participatory_space.scope.present?
                                [
                                  { scopeFilter: { scopeId: current_participatory_space.scope.id } }
                                ]
-                           else#{" "}
+                           else
                                []
                            end,
                            scopes: if current_participatory_space.scope.present?
