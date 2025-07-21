@@ -3,8 +3,13 @@ body.noscroll {
   overflow: hidden;
 }
 
-body.noscroll header #sticky-header-container {
-  display: none;
+body.noscroll {
+  #floating-helper-tip,
+  #main-bar,
+  #menu-bar-container,
+  header #sticky-header-container {
+    display: none;
+  }
 }
 
 .decidimGeo__marker {
