@@ -27,6 +27,7 @@ export default class GeoDatasourceNode {
       if (pinPoint) {
         if (selectedPoint && selectedPoint === this) {
           this.marker.setStyle(this.selectedState);
+          this.marker.bringToFront();
         } else if (
           !selectedPoint &&
           `${this.data.componentId}` == `${selected_component}` &&
@@ -39,6 +40,7 @@ export default class GeoDatasourceNode {
       } else {
         if (selectedPoint === this) {
           this.marker.setStyle(this.selectedState);
+          this.marker.bringToFront();
         } else if (
           !selectedPoint &&
           `${this.data.componentId}` === `${selected_component}`
@@ -128,7 +130,9 @@ export default class GeoDatasourceNode {
       geoStore.subscribe(
         (state) => [state.selectedPoint],
         (_np, [unselectedPoint]) => {
-          if (unselectedPoint) unselectedPoint.repaint();
+          if (unselectedPoint) {
+            unselectedPoint.repaint();
+          }
           this.repaint();
         }
       );

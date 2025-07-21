@@ -101,6 +101,7 @@ async function displayMap() {
           pointInMap.forEach(({ marker }) => {
             marker.addTo(pointsLayer);
           });
+          
         } else {
           console.warn("DecidimGeo: No points in map?");
         }

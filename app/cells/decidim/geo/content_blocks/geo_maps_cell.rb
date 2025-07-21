@@ -10,6 +10,20 @@ module Decidim
         def initialize(*args, **kwargs)
           super(*args, **kwargs)
           @options[:filters] ||= []
+
+          # Scope on the current process
+          if current_participatory_space_manifest == "participatory_processes"
+            @options[:filters].push({
+                                      process_filter: { id: current_participatory_space.id }
+                                    })
+          end
+          # Scope on the current assembly and all its children
+          @options[:filters].concat(
+            [{ assembly_filter: { id: current_participatory_space.id } }],
+            Decidim::Assembly.published.where(
+              "parents_path ~ ?", "*.*{#{current_participatory_space.id}}.*"
+            ).pluck(:id).map { |id| { assembly_filter: { id: } } }
+          ) if current_participatory_space_manifest == "assemblies"
         end
 
         def show
@@ -20,6 +34,9 @@ module Decidim
 
         protected
 
+        def current_participatory_space_manifest
+          current_participatory_space.manifest.name.to_s
+        end
         def hide_empty?
           @options[:hide_empty] || false
         end
@@ -144,9 +161,7 @@ module Decidim
           current_component.id
         end
 
-        def current_component
-          request.env["decidim.current_component"]
-        end
+     
 
         def current_component?
           current_component.present?
