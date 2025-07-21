@@ -6,34 +6,8 @@ module Decidim
       queue_as :default
 
       def perform
-        # Select registred spaces
-        spaces = registry.active_manifests do |registry|
-          registry.select do |_manifest_name, options|
-            model = options[:model]
-            model.include?(Decidim::ScopableParticipatorySpace)
-          end
-        end
-        # Select registred components manifest name
-        component_options = registry.active_manifests do |registry|
-          registry.select do |_manifest_name, options|
-            model = options[:model]
-            model.include?(Decidim::HasComponent) && model.include?(Decidim::ScopableResource)
-          end
-        end
-        component_manifests = component_options.keys
         # Select all the components where space's scope is nil
         # and component's scope is nil, and get the component Ids.
-        components_without_scopes = spaces.map do |_manifest_name, space_options|
-          space_options[:model].where(scope: nil).select(:id).map do |space|
-            Decidim::Component.where(
-              participatory_space_type: space_options[:model].name,
-              participatory_space_id: space.id,
-              manifest_name: component_manifests
-            ).to_a.reject do |component|
-              component.settings.scope_id
-            end
-          end.flatten
-        end.flatten
         # loop over all the resources that have no scopes
         component_options.map do |_manifest_name, options|
           model = options[:model]
@@ -55,6 +29,42 @@ module Decidim
       end
 
       private
+
+      def spaces
+        @spaces ||= registry.active_manifests do |registry|
+          registry.select do |_manifest_name, options|
+            model = options[:model]
+            model.include?(Decidim::ScopableParticipatorySpace) && model.include?(Decidim::ScopableResource)
+          end
+        end
+      end
+
+      def components_without_scopes
+        @components_without_scopes ||= spaces.map do |_manifest_name, space_options|
+          space_options[:model].where(scope: nil).select(:id).map do |space|
+            Decidim::Component.where(
+              participatory_space_type: space_options[:model].name,
+              participatory_space_id: space.id,
+              manifest_name: component_manifests
+            ).to_a.reject do |component|
+              component.settings.scope_id
+            end
+          end.flatten
+        end.flatten
+      end
+
+      def component_manifests
+        @component_manifests ||= component_options.keys
+      end
+
+      def component_options
+        @component_options ||= registry.active_manifests do |registry|
+          registry.select do |_manifest_name, options|
+            model = options[:model]
+            model.include?(Decidim::HasComponent)
+          end
+        end
+      end
 
       def latitude(resource)
         if location_overriden?(resource)

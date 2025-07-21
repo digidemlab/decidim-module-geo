@@ -1,7 +1,8 @@
 @mixin decidimGeo__drawerContainer {
   width: 299px;
   height: auto;
-  max-height: 60vh;
+  max-height: 30vh;
+  min-height: 430px;
   border-top: #cccccc 1px solid;
   overflow-y: auto;
   list-style: none;

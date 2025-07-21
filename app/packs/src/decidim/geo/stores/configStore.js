@@ -59,7 +59,6 @@ const store = createStore(
         i18n: mapConfig.i18n,
         images: mapConfig.images || {},
         isIndex: mapConfig.is_index === "true" || mapConfig.is_index === true,
-        isGroup: mapConfig.is_group === "true" || mapConfig.is_group === true,
         activeManifests: mapConfig.active_manifests
       }));
 
