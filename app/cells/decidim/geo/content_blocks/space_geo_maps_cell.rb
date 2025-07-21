@@ -7,11 +7,10 @@ module Decidim
         def initialize(*args, **kwargs)
           super(*args, **kwargs)
           @options[:is_index] = false
-          @options[:id] = "Space#{current_participatory_space_manifest.parameterize}#{current_participatory_space.id}"
+          if current_participatory_space?
+            @options[:id] = "Space##{current_participatory_space.id}"
+          end
         end
-
-     
-
       end
     end
   end
