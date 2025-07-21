@@ -4,8 +4,6 @@ import _ from "lodash";
 
 const proposals = (node) => {
   const { i18n, images, locale, defaultLocale } = configStore.getState();
-  const hasImage = !_.isEmpty(node.imageUrl);
-  const states = i18n["decidim.geo.proposals.states"];
   const listCard = L.DomUtil.create(
     "li",
     "decidimGeo__drawer__listCard decidimGeo__drawer__listCard--proposals"
@@ -33,24 +31,20 @@ const proposals = (node) => {
 
   const infoTitle = L.DomUtil.create("div", "decidimGeo__drawer__listCardTitle", info);
   infoTitle.textContent = node.title[locale] || node.title[defaultLocale];
-  const status = node.resourceStatus || "published";
+  const status = node.resourceStatus || null;
   if (status) {
     const infoStatus = L.DomUtil.create(
       "div",
-      createClasses("decidimGeo__drawer__listCardStatus", [status]),
+      createClasses("decidimGeo__drawer__listCardStatus", [status.toLowerCase()]),
       metadatas
     );
-    infoStatus.textContent = states[status];
+    infoStatus.textContent = status;
   }
 
   if (node.shortDescription) {
     const infoDescription = L.DomUtil.create("div", info);
     infoDescription.textContent =
       node.shortDescription[locale] || node.shortDescription[defaultLocale];
-  }
-  if (hasImage) {
-    // const image = L.DomUtil.create("img", "decidimGeo__drawer__listCardImg", listCard);
-    // image.src = node.imageUrl;
   }
 
   return listCard;

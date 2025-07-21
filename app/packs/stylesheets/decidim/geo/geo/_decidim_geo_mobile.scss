@@ -1,13 +1,11 @@
 .decidimGeo__container {
   $edgeSliderHeight: 66vh;
-  z-index: 0;
   .decidimGeo__mobile_btn__mobile_btn {
     display: none;
   }
   @media (max-width: 768px) {
     padding: 0 !important;
     &:not(&--fullscreen) .js-decidimgeo.decidimgeo__map {
-      z-index: 0;
       height: 30vh;
       max-height: 30vh;
       min-height: 140px;

@@ -19,5 +19,8 @@ namespace :decidim_geo do
       Rails.logger.debug { "index class #{model_klass} " }
       model_klass.all.each(&:update_decidim_geo_index)
     end
+
+    # Clear cache completly
+    Rails.cache.clear
   end
 end

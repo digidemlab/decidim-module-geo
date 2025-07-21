@@ -1,11 +1,13 @@
 .leaflet-control-container {
-  .leaflet-control-zoom-fullscreen.fullscreen-icon {
-    background-image: url("images/decidim/geo/fullscreen.svg");
+  .leaflet-fullscreen-icon {
+    background: url("images/decidim/geo/fullscreen.svg") no-repeat center center;
     box-sizing: border-box;
     background-size: 16px 16px;
-    background-position: center center;
     color: var(--primary);
     fill: var(--primary) !important;
+    z-index: 99999;
+    margin-top: 10px;
+    margin-right: 10px;
   }
 }
 

@@ -31,7 +31,7 @@ module Decidim
                          title:,
                          short_description:,
                          description_html: description,
-                         resource_status: proposal.state,
+                         resource_status: translated_attribute(proposal.proposal_state&.title),
                          component_id: proposal.decidim_component_id,
                          participatory_space_id: proposal.participatory_space.id,
                          participatory_space_type: proposal.participatory_space.manifest.name.to_s,

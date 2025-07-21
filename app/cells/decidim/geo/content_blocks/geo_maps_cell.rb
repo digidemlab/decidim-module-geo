@@ -7,13 +7,18 @@ module Decidim
         delegate :decidim_page_title, to: :view_context
         include Decidim::SanitizeHelper
         include Decidim::LayoutHelper
+        def initialize(*args, **kwargs)
+          super(*args, **kwargs)
+          @options[:filters] ||= []
+        end
+
         def show
           return "<!-- DecidimGeo: Map is empty -->".html_safe if hide_empty? && empty_map?
 
           render
         end
 
-        private
+        protected
 
         def hide_empty?
           @options[:hide_empty] || false
@@ -33,7 +38,7 @@ module Decidim
         end
 
         def filters
-          @options[:filters] || []
+          @options[:filters]
         end
 
         def id
@@ -51,7 +56,7 @@ module Decidim
             images: {
               not_geolocated: ActionController::Base.helpers.asset_pack_path("media/images/not-geolocated.svg")
             },
-            filters: (@options[:filters] || []).push({ timeFilter: { time: "active" } }),
+            filters: filters.push({ timeFilter: { time: "active" } }),
             map_config:,
             active_manifests: ::Decidim::Geo.registry.active_manifests(&:keys),
             is_index: index?
@@ -88,7 +93,6 @@ module Decidim
           geo_i18n = supported_models.to_h
           {
             **geo_i18n,
-            "decidim.geo.proposals.states": t("decidim.admin.filters.proposals.state_eq.values"),
             "decidim.geo.mobile.open_fullscreen": t("decidim.geo.mobile.open_fullscreen"),
             "decidim.geo.mobile.close_fullscreen": t("decidim.geo.mobile.close_fullscreen"),
             "decidim_geo.scopes.all": t("decidim.geo.scopes.all"),
@@ -142,10 +146,6 @@ module Decidim
 
         def current_component
           request.env["decidim.current_component"]
-        end
-
-        def current_participatory_space
-          request.env["decidim.current_participatory_space"]
         end
 
         def current_component?

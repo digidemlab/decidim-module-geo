@@ -132,16 +132,16 @@ module Decidim
           content_block.cell = "decidim/geo/content_blocks/geo_maps"
           content_block.public_name_key = "decidim.geo.content_blocks.name"
         end
-        Decidim.content_blocks.register(:participatory_process_group_homepage, :geo_maps) do |content_block|
-          content_block.cell = "decidim/geo/content_blocks/geo_maps"
+        Decidim.content_blocks.register(:participatory_process_group_homepage, :group_geo_maps) do |content_block|
+          content_block.cell = "decidim/geo/content_blocks/group_geo_maps"
           content_block.public_name_key = "decidim.geo.content_blocks.name"
         end
-        Decidim.content_blocks.register(:assembly_homepage, :geo_maps) do |content_block|
-          content_block.cell = "decidim/geo/content_blocks/geo_maps"
+        Decidim.content_blocks.register(:assembly_homepage, :space_geo_maps) do |content_block|
+          content_block.cell = "decidim/geo/content_blocks/space_geo_maps"
           content_block.public_name_key = "decidim.geo.content_blocks.name"
         end
-        Decidim.content_blocks.register(:participatory_process_homepage, :geo_maps) do |content_block|
-          content_block.cell = "decidim/geo/content_blocks/geo_maps"
+        Decidim.content_blocks.register(:participatory_process_homepage, :space_geo_maps) do |content_block|
+          content_block.cell = "decidim/geo/content_blocks/space_geo_maps"
           content_block.public_name_key = "decidim.geo.content_blocks.name"
         end
       end
