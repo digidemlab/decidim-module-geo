@@ -4,6 +4,7 @@
 Deface::Override.new(virtual_path: "layouts/decidim/shared/_layout_item",
                      name: "geo_add_resource_item_map",
                      insert_before: "div[role=complementary]",
+                     original: '56c9927f0dec745da108c839f7d47b6ecf3dbebf',
                      text: <<~ERB
                        <% component_manifest = current_component.manifest_name %>
                        <%= cell("decidim/geo/content_blocks/geo_maps", current_participatory_space,

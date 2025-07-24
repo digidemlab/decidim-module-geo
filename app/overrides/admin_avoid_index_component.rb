@@ -1,6 +1,14 @@
-<!-- insert_after "erb[silent]:contains('if form.object.settings?')" -->
+# frozen_string_literal: true
+
+Deface::Override.new(
+  virtual_path: "decidim/admin/components/_form",
+  name: "geo_add_avoid_index_component",
+  insert_bottom: "#accordion-title .card-section",
+  original: '1f6fce72a4f854c064c844c8cc8bf8062b920423',
+  text: <<~ERB
+
 <% if ::Decidim::Geo.registry.active_manifests(&:keys).any? {|manifest_name| manifest_name.to_s == form.object.manifest.name.to_s } %>
-    <div class="decidim-geo decidim-geo--admin form-field">
+    <div class="decidim-geo decidim-geo--admin row column">
     <% 
         space = form.object.participatory_space
         has_process_group = space.respond_to?(:participatory_process_group) ? space.participatory_process_group.present? : nil
@@ -18,3 +26,5 @@
 <% else %>
     <%= form.hidden_field :decidim_geo_avoid_index, value: false %>
 <% end %>
+ERB
+)
