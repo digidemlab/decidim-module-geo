@@ -3,7 +3,7 @@ import configStore from "../stores/configStore";
 import geoStore from "../stores/geoStore";
 import _ from "lodash";
 import pointCounterStore from "../stores/pointCounterStore";
-
+import L from "../leaflet";
 export default class AsideToggle {
   constructor(parent) {
     this.parent = parent;

@@ -20,7 +20,7 @@ module Decidim
       field :image_url, String, null: true
       field :start_date, GraphQL::Types::ISO8601Date, "The date this object starts", null: true
       field :end_date, GraphQL::Types::ISO8601Date, "The date this object ends", null: true
-      field :geo_scope_id, ID, null: true
+      # field :geo_scope_id, ID, null: true
       field :coordinates, Decidim::Geo::GeoCoordinatesType, "lat/long", null: true
       field :extended_data, GraphQL::Types::JSON, "metadatas", null: true
     end

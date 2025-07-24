@@ -1,4 +1,5 @@
 import configStore from "../stores/configStore";
+import L from "../leaflet";
 const PageNameControl = L.Control.extend({
   options: {
     collapsed: false,

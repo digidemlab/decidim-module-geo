@@ -5,6 +5,7 @@ import configStore from "../stores/configStore";
 import filterStore from "../stores/filterStore";
 import pointStore from "../stores/pointStore";
 import pointCounterStore from "../stores/pointCounterStore";
+import L from "../leaflet";
 class FilterModal {
   constructor(parent) {
     this.container = L.DomUtil.create(

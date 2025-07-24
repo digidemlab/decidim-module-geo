@@ -1,13 +1,7 @@
 import { _getGeoDataSource, _getGeoDataSourceIds } from "./queries";
 
 const getGeoDataSource = async (params = {}, fetchAll = true, callback) => {
-  const {
-    filters = [],
-    locale,
-    isIndex = false,
-    after = 0,
-    first = 50
-  } = params;
+  const { filters = [], locale, isIndex = false, after = 0, first = 50 } = params;
   const fields = fetchAll
     ? [
         "resourceUrl",

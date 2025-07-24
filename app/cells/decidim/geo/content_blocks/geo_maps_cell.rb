@@ -18,12 +18,14 @@ module Decidim
                                     })
           end
           # Scope on the current assembly and all its children
+          return unless current_participatory_space_manifest == "assemblies"
+
           @options[:filters].concat(
             [{ assembly_filter: { id: current_participatory_space.id } }],
             Decidim::Assembly.published.where(
               "parents_path ~ ?", "*.*{#{current_participatory_space.id}}.*"
             ).pluck(:id).map { |id| { assembly_filter: { id: } } }
-          ) if current_participatory_space_manifest == "assemblies"
+          )
         end
 
         def show
@@ -37,6 +39,7 @@ module Decidim
         def current_participatory_space_manifest
           current_participatory_space.manifest.name.to_s if current_participatory_space?
         end
+
         def hide_empty?
           @options[:hide_empty] || false
         end

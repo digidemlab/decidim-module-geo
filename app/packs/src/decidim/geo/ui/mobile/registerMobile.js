@@ -9,7 +9,7 @@ const registerMobile = () => {
   const [mobileBtn] = document.getElementsByClassName(
     "decidimGeo__mobile_btn__mobile_btn"
   );
-  if (!mobileBtn){
+  if (!mobileBtn) {
     console.error("Can't find mobile button .decidimGeo__mobile_btn__mobile_btn");
     return;
   }

@@ -2,6 +2,7 @@ import configStore from "../../stores/configStore";
 import createClasses from "../createClasses";
 import _ from "lodash";
 import { format, isSameDay } from "date-fns";
+import L from "../../leaflet";
 
 const meetings = (node) => {
   const { i18n, images, locale, defaultLocale } = configStore.getState();

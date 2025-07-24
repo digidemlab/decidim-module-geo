@@ -2,6 +2,7 @@ import _ from "lodash";
 import configStore from "../../stores/configStore";
 import createClasses from "../createClasses";
 import { format, isSameDay } from "date-fns";
+import L from "../../leaflet";
 
 const meetings = (container, node) => {
   const { i18n, images, locale, defaultLocale } = configStore.getState();
@@ -16,13 +17,13 @@ const meetings = (container, node) => {
   }
 
   const infoType = L.DomUtil.create("div", "decidimGeo__drawer__listCardType", container);
-  
+
   const infoTxt = L.DomUtil.create(
     "span",
     createClasses("decidimGeo__drawer__listCardTxt"),
     infoType
-  );;
-  infoTxt.textContent = i18n[node.resourceType]
+  );
+  infoTxt.textContent = i18n[node.resourceType];
 
   const notGeoEncodedIcon = L.DomUtil.create(
     "img",

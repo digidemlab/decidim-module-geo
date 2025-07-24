@@ -1,6 +1,7 @@
 import _ from "lodash";
 import configStore from "../../stores/configStore";
 import createClasses from "../createClasses";
+import L from "../../leaflet";
 const fallback = (container, node) => {
   const { i18n, images, locale, defaultLocale } = configStore.getState();
   if (!_.isEmpty(node.imageUrl)) {
@@ -18,8 +19,8 @@ const fallback = (container, node) => {
     "span",
     createClasses("decidimGeo__drawer__listCardTxt"),
     infoType
-  );;
-  infoTxt.textContent = i18n[node.resourceType]
+  );
+  infoTxt.textContent = i18n[node.resourceType];
   const notGeoEncodedIcon = L.DomUtil.create(
     "img",
     createClasses("decidimGeo__drawer__listCardIcon", [node.lonlat && "hidden"]),

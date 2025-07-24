@@ -11,6 +11,8 @@ import bootstrap from "./bootstrap";
 import registerMobile from "./ui/mobile/registerMobile";
 import FilterControl from "./ui/FilterControl";
 import PageNameControl from "./ui/PageNameControl";
+import L from "./leaflet";
+
 window.debug = window.debug || {};
 window.debug.stores = () => ({
   config: configStore.getState(),
@@ -77,12 +79,10 @@ async function displayMap() {
       ],
       ([isLoading, isInitialized, getFilteredPoints, fetchesRunning]) => {
         if (isLoading > 0 || !isInitialized) {
-          console.warn("DecidimGeo: skipping initialization", { isLoading, isInitialized });
           return;
         }
         const { map, pointsLayer } = configStore.getState();
         const { selectedPoint, selectedScope } = geoStore.getState();
-        console.log("DecidimGeo: initializing", { fetchesRunning, selectedScope, selectedPoint });
         pointsLayer.clearLayers();
         if (
           fetchesRunning === 0 &&
@@ -101,7 +101,6 @@ async function displayMap() {
           pointInMap.forEach(({ marker }) => {
             marker.addTo(pointsLayer);
           });
-          
         } else {
           console.warn("DecidimGeo: No points in map?");
         }
@@ -178,7 +177,9 @@ async function main() {
 
 window.addEventListener("load", function () {
   main().then(() => {
-    console.log("DecidimGeo: ready");
-    pointStore.setState(() => ({ isInitialized: true }))
+    console.log(
+      `DecidimGeo: ready. Using Leaflet ${L.version} (global: ${window.L.version})`
+    );
+    pointStore.setState(() => ({ isInitialized: true }));
   });
 });

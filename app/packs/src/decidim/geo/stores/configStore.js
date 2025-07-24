@@ -2,8 +2,7 @@ import { createStore } from "zustand/vanilla";
 import { subscribeWithSelector } from "zustand/middleware";
 import filterStore from "./filterStore";
 import dropdownFilterStore from "./dropdownFilterStore";
-import geoStore from "./geoStore";
-import pointStore from "./pointStore";
+import L from "../leaflet";
 const store = createStore(
   subscribeWithSelector((set, get) => ({
     locale: "en",

@@ -1,3 +1,4 @@
+import L from "../leaflet";
 const customMarker = (location) => {
   const circleMarker = new L.circleMarker(location, {
     radius: 6,
@@ -8,7 +9,7 @@ const customMarker = (location) => {
     weight: 5,
     className: "decidimGeo__marker",
     riseOnHover: true,
-    interactive: true,
+    interactive: true
   });
   return circleMarker;
 };

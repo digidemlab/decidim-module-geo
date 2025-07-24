@@ -4,7 +4,7 @@ import pointStore from "../stores/pointStore";
 import configStore from "../stores/configStore";
 import dropdownFilterStore from "../stores/dropdownFilterStore";
 import { meetings as meetingDetails, fallback as fallbackDetails } from "./DrawerDetail";
-
+import L from "../leaflet";
 const createSkeletonItem = () => L.DomUtil.create("li", "decidimGeo__drawer__listCard");
 
 export default class Drawer {
