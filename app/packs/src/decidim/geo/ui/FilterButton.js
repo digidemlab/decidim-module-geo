@@ -4,7 +4,7 @@ import geoStore from "../stores/geoStore";
 import configStore from "../stores/configStore";
 import filterStore from "../stores/filterStore";
 import pointStore from "../stores/pointStore";
-
+import L from "../leaflet";
 class FilterButton {
   constructor(parent) {
     this.parent = parent;

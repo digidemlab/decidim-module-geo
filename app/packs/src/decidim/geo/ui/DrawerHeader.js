@@ -5,7 +5,7 @@ import configStore from "../stores/configStore";
 import dropdownFilterStore from "../stores/dropdownFilterStore";
 import _ from "lodash";
 import AsideToggle from "./AsideToggle";
-
+import L from "../leaflet";
 export default class DrawerHeader {
   //View
   constructor(parent) {

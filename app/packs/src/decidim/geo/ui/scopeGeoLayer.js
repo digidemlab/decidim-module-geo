@@ -1,3 +1,4 @@
+import L from "../leaflet";
 const scopeGeoLayer = ({ geoScope, onClick }) => {
   geoScope.geom = {
     ...geoScope.geom,

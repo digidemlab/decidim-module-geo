@@ -1,4 +1,5 @@
 import geoStore from "../stores/geoStore";
+import L from "../leaflet";
 const scopeDropdownItem = ({ label, onClick, scopeId = undefined }) => {
   const menuItem = L.DomUtil.create("li", "decidimGeo__drawerHeader__listItem");
   menuItem.onclick = onClick;

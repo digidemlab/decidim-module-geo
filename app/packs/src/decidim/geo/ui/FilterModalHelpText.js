@@ -1,6 +1,7 @@
 import createClasses from "./createClasses";
 import pointCounterStore from "../stores/pointCounterStore";
 import configStore from "../stores/configStore";
+import L from "../leaflet";
 class FilterModalHelpText {
   constructor(parent) {
     this.parent = parent;

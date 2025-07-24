@@ -1,7 +1,7 @@
 import configStore from "../stores/configStore";
 import geoStore from "../stores/geoStore";
 import createClasses from "./createClasses";
-
+import L from "../leaflet";
 const createControl = (position) =>
   L.Control.extend({
     options: {

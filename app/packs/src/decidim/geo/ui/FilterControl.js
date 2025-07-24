@@ -2,6 +2,7 @@ import FilterButton from "./FilterButton";
 import FilterModal from "./FilterModal";
 import FilterModalOverlay from "./FilterModalOverlay";
 import FilterModalHelpText from "./FilterModalHelpText";
+import L from "../leaflet";
 const FilterControl = L.Control.extend({
   options: {
     collapsed: false,

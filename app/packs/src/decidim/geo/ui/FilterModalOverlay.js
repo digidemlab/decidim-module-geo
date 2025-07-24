@@ -1,7 +1,7 @@
 import createClasses from "./createClasses";
 import dropdownFilterStore from "../stores/dropdownFilterStore";
 import _ from "lodash";
-
+import L from "../leaflet";
 class FilterModalOverlay {
   constructor(parent) {
     this.parent = parent;
