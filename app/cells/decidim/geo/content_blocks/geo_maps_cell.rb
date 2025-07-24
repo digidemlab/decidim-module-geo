@@ -23,8 +23,10 @@ module Decidim
           @options[:filters].concat(
             [{ assembly_filter: { id: current_participatory_space.id } }],
             Decidim::Assembly.published.where(
-              "parents_path ~ ?", "*.*{#{current_participatory_space.id}}.*"
-            ).pluck(:id).map { |id| { assembly_filter: { id: } } }
+              "parents_path ~ ?", "#{current_participatory_space.parents_path}.*"
+            ).where.not(id: current_participatory_space.id)
+            .ids
+            .map { |id| { assembly_filter: { id: } } }
           )
         end
 
@@ -165,7 +167,7 @@ module Decidim
         end
 
         def current_participatory_space
-          request.env["decidim.current_participatory_space"]
+          request.env["decidim.current_participatory_space"] 
         end
 
         def current_component
