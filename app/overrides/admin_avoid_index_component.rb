@@ -4,7 +4,6 @@ Deface::Override.new(
   virtual_path: "decidim/admin/components/_form",
   name: "geo_add_avoid_index_component",
   insert_bottom: "#accordion-title .card-section",
-  original: '1f6fce72a4f854c064c844c8cc8bf8062b920423',
   text: <<~ERB
 
 <% if ::Decidim::Geo.registry.active_manifests(&:keys).any? {|manifest_name| manifest_name.to_s == form.object.manifest.name.to_s } %>

@@ -5,7 +5,6 @@ Deface::Override.new(virtual_path: "decidim/meetings/shared/_index",
                      name: "geo_replace_default_meetings_map",
                      replace: "erb[silent]:contains('if display_map')",
                      closing_selector: "erb[silent]:contains('end')",
-                     original: 'a99bf7f7d21f3b484b051caf14f580ddab504558',
                      text: <<~ERB
                        <% if defined?(current_participatory_space) && current_participatory_space.present? %>
                          <%= cell("decidim/geo/content_blocks/geo_maps", current_participatory_space,

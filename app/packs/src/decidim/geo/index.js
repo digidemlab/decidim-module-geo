@@ -183,3 +183,6 @@ window.addEventListener("load", function () {
     pointStore.setState(() => ({ isInitialized: true }));
   });
 });
+
+
+export default L;
