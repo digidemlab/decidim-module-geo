@@ -2,6 +2,7 @@ import configStore from "../stores/configStore";
 import { MaptilerLayer } from "@maptiler/leaflet-maptilersdk";
 import L from "../leaflet";
 const initMap = async () => {
+  await import("leaflet.fullscreen");
   const {
     mapID,
     map_config: { lat, lng, zoom, tile_layer, maptiler_api_key, maptiler_style_id },
