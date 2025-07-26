@@ -1,17 +1,6 @@
-import L from "leaflet";
 
-if (typeof window !== "undefined") {
-  window.L = L;
-}
-if (typeof global !== "undefined") {
-  global.L = L;
-}
-
-import "leaflet.fullscreen";
+import "leaflet";
 import "leaflet.markercluster/dist/leaflet.markercluster.js";
+import("leaflet.fullscreen");
 
-if (typeof window !== "undefined" && window.L) {
-  Object.freeze(window.L);
-}
-
-export default L
+export default window.L;
