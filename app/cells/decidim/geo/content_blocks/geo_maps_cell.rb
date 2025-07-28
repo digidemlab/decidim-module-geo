@@ -167,7 +167,7 @@ module Decidim
         end
 
         def current_participatory_space
-          request.env["decidim.current_participatory_space"] 
+          request.env["decidim.current_participatory_space"] || (context[:view_context].respond_to?(:current_participatory_space) ? context[:view_context].current_participatory_space : nil)
         end
 
         def current_component
