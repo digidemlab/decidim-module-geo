@@ -2,6 +2,8 @@
 
 module Decidim
   module Geo
+    ##
+    # Dummy serializer to serialize a space page (eg. Assembly, Participatory Process, etc.)
     class UpdateSpacePageGeoIndexSerializer
       include Decidim::Geo::GenericSerializer
       def initialize(space_page)

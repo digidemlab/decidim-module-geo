@@ -22,10 +22,13 @@ module Decidim
 
       def sync_organization
         return remove_organization if remove_from_index?
-
+        # To index the generator organization, we will take its space page 
+        # details (run a serializer over the space page)
         space = organization.space_page
         serializer = UpdateSpacePageGeoIndexSerializer.new(space)
 
+        # Decidim::Geo::Index with resource_types = "space_pages", and details of the 
+        # space page (eg. Assembly, Participatory Process, etc.)
         upsert_index(organization.id, manifest_name,
                      with_scope(
                        latitude: serializer.latitude,
