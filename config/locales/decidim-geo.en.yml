@@ -136,6 +136,7 @@ en:
         type:
           label: "Filter By Type"
           all: "All"
+          only_space_pages: "Organizations"
           only_processes: "Processes"
           only_assemblies: "Assemblies"
           only_proposals: "Proposals"

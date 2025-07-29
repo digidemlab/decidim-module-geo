@@ -1,0 +1,63 @@
+# frozen_string_literal: true
+
+module Decidim
+  module Geo
+    class UpdateOrganizationGeoIndexJob < ::ApplicationJob
+      include Decidim::SanitizeHelper
+      include Decidim::Geo::GeoIndexMethods
+      queue_as :default
+
+      alias organization resource
+      alias organization= resource=
+
+      def perform(organization_id)
+        @resource_id = organization_id
+        @resource = Decidim::Organization.where(id: organization_id).first
+        return remove_organization unless resource
+
+        sync_organization
+      end
+
+      private
+
+      def sync_organization
+        return remove_organization if remove_from_index?
+
+        space = organization.space_page
+        serializer = UpdateSpacePageGeoIndexSerializer.new(space)
+
+        upsert_index(organization.id, manifest_name,
+                     with_scope(
+                       latitude: serializer.latitude,
+                       longitude: serializer.longitude,
+                       resource_url: "https://#{organization.host}",
+                       image_url: serializer.image_url,
+                       title: serializer.title,
+                       short_description: serializer.short_description,
+                       description_html: serializer.description,
+                       start_date: nil,
+                       end_date: nil,
+                       component_id: serializer.component_id,
+                       participatory_space_id: serializer.participatory_space_id,
+                       participatory_space_type: serializer.participatory_space_type
+                     ))
+      rescue StandardError => e
+        Rails.logger.debug { "Can't index #{e}" }
+        false
+      end
+
+      def remove_organization
+        match = Decidim::Geo::Index.find_by(resource_id:, resource_type: manifest_name)
+        match.destroy if match
+      end
+
+      def remove_from_index?
+        false
+      end
+
+      def manifest_name
+        "space_pages"
+      end
+    end
+  end
+end
