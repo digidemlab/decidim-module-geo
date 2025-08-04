@@ -17,7 +17,7 @@ module Decidim
         end
 
         def results
-          query = Decidim::Geo::Index.all
+          query = Decidim::Geo::Index.where(decidim_organization_id: organization.id)
           query = query.geolocated if geolocated? || config.force_geoencoded?
           query = indexed!(query)
           query = virtual!(query)
@@ -100,7 +100,7 @@ module Decidim
         end
 
         def config
-          @config ||= Decidim::Geo::GeoConfig.geo_config_default
+          @config ||= Decidim::Geo::GeoConfig.geo_config_default(organization)
         end
 
         def active_manifests_names

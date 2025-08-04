@@ -5,6 +5,8 @@ module Decidim
     module Admin
       # A command with all the business logic when updating a geo_config.
       class UpdateGeoConfig < Decidim::Geo::Command
+        attr_reader :geo_config, :form
+
         # Public: Initializes the command.
         #
         # geo_config - The geo_config to update
@@ -23,20 +25,18 @@ module Decidim
         def call
           return broadcast(:invalid) if form.invalid?
 
-          @geo_config.nil? ? create_geo_config : update_geo_config
+          geo_config.nil? ? create_geo_config : update_geo_config
           broadcast(:ok)
         end
 
         private
-
-        attr_reader :form
-
+        
         def update_geo_config
-          @geo_config.update(attributes)
+          geo_config.update!(attributes)
         end
 
         def create_geo_config
-          @geo_config = Decidim::Geo::GeoConfig.create!(attributes)
+          Decidim::Geo::GeoConfig.create!(attributes)
         end
 
         def attributes
@@ -50,7 +50,8 @@ module Decidim
             only_assemblies: form.only_assemblies,
             only_processes: form.only_processes,
             focus_zoom_level: form.focus_zoom_level,
-            default_geoencoded_filter: form.default_geoencoded_filter
+            default_geoencoded_filter: form.default_geoencoded_filter,
+            decidim_organization_id: form.organization.id
           }
         end
       end

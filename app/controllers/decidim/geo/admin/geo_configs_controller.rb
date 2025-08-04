@@ -7,7 +7,11 @@ module Decidim
         before_action :authenticate_user!
         add_breadcrumb_item_from_menu :admin_geo_menu
         def index
-          @form = form(Decidim::Geo::Admin::GeoConfigForm).from_model(geo_config_default)
+          redirect_to action: "show", id: geo_config.id
+        end
+
+        def show
+          @form = form(Decidim::Geo::Admin::GeoConfigForm).from_model(geo_config)
         end
 
         def create
@@ -17,23 +21,24 @@ module Decidim
         def update
           @form = form(Decidim::Geo::Admin::GeoConfigForm).from_params(params)
 
-          Admin::UpdateGeoConfig.call(geo_config_default, @form) do
+          Admin::UpdateGeoConfig.call(geo_config, @form) do
             on(:ok) do
               flash[:notice] = I18n.t("geo_configs.actions.update.success", scope: "decidim.geo.admin")
+              redirect_to action: "show", id: geo_config.id
+
             end
 
             on(:invalid) do
-              flash.now[:alert] = @form.errors.full_messages_for(:base).join(",")
+              flash.now[:alert] = form.errors.full_messages.join(",")
+              render action: "show", id: geo_config.id
             end
-
-            render action: "index"
           end
         end
 
         private
 
-        def geo_config_default
-          Decidim::Geo::GeoConfig.geo_config_default
+        def geo_config
+          @geo_config ||= Decidim::Geo::GeoConfig.geo_config_default(current_organization)
         end
       end
     end

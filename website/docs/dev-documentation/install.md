@@ -19,7 +19,7 @@ To install Decidim Geo, you need a [Posgis](https://postgis.net/) extension inst
 
 Add the gem to your Gemfile
 ```
-    gem "decidim-decidim_geo", version: "~> 0.2.6"
+    gem "decidim-decidim_geo", version: "~> 0.3.0"
 ```
 
 Add javascripts libraries

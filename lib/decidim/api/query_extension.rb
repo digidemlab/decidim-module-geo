@@ -33,19 +33,21 @@ module Decidim
       end
 
       def geo_shapedata(name: nil)
-        return Decidim::Geo::Shapedata.where("data->>'NAME' in (?)", name) if name.present?
+        collection = Decidim::Geo::Shapedata.where(decidim_organization_id: current_organization.id)
+        return collection.where("data->>'NAME' in (?)", name) if name.present?
 
-        Decidim::Geo::Shapedata.all
+        collection
       end
 
       def geo_config
-        Decidim::Geo::GeoConfig.geo_config_default
+        @geo_config ||= Decidim::Geo::GeoConfig.geo_config_default(current_organization)
       end
 
       def geo_scope(id: [])
-        return Decidim::Scope.includes(:shapedata).all if id.empty?
+        scopes = Decidim::Scope.where(organization: current_organization).includes(:shapedata)
+        return scopes.all if id.empty?
 
-        Decidim::Scope.includes(:shapedata).where(id:)
+        scopes.where(id:)
       end
 
       private

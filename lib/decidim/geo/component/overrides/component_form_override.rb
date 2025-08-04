@@ -10,7 +10,7 @@ module Decidim
 
         def map_model(model)
           decidim_original_map_model(model)
-          no_index = model.decidim_geo_avoid_index || Decidim::Geo::NoIndex.new
+          no_index = model.decidim_geo_avoid_index || Decidim::Geo::NoIndex.new(decidim_organization_id: model.organization.id, decidim_component_id: model.id)
           self.decidim_geo_avoid_index = no_index.no_index
         end
       end

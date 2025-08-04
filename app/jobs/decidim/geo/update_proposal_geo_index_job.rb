@@ -24,19 +24,21 @@ module Decidim
         return remove_proposal if remove_from_index?
 
         upsert_index(proposal.id, manifest_name,
-                     with_scope(
-                       with_coords(
-                         resource_url:,
-                         image_url:,
-                         title:,
-                         short_description:,
-                         description_html: description,
-                         resource_status: translated_attribute(proposal.proposal_state&.title),
-                         component_id: proposal.decidim_component_id,
-                         participatory_space_id: proposal.participatory_space.id,
-                         participatory_space_type: proposal.participatory_space.manifest.name.to_s,
-                         start_date:,
-                         end_date:
+                     with_organization(
+                       with_scope(
+                         with_coords(
+                           resource_url:,
+                           image_url:,
+                           title:,
+                           short_description:,
+                           description_html: description,
+                           resource_status: translated_attribute(proposal.proposal_state&.title),
+                           component_id: proposal.decidim_component_id,
+                           participatory_space_id: proposal.participatory_space.id,
+                           participatory_space_type: proposal.participatory_space.manifest.name.to_s,
+                           start_date:,
+                           end_date:
+                         )
                        )
                      ))
         true
