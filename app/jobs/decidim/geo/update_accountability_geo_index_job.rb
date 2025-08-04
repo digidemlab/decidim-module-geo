@@ -24,19 +24,21 @@ module Decidim
         return remove_accountability_result if remove_from_index?
 
         upsert_index(accountability_result.id, manifest_name,
-                     with_scope(
-                       with_coords(
-                         resource_url:,
-                         image_url:,
-                         title:,
-                         short_description:,
-                         description_html: description,
-                         end_date:,
-                         start_date:,
-                         resource_status: nil,
-                         component_id: accountability_result.decidim_component_id,
-                         participatory_space_id: accountability_result.participatory_space.id,
-                         participatory_space_type: accountability_result.participatory_space.manifest.name.to_s
+                     with_organization(
+                       with_scope(
+                         with_coords(
+                           resource_url:,
+                           image_url:,
+                           title:,
+                           short_description:,
+                           description_html: description,
+                           end_date:,
+                           start_date:,
+                           resource_status: nil,
+                           component_id: accountability_result.decidim_component_id,
+                           participatory_space_id: accountability_result.participatory_space.id,
+                           participatory_space_type: accountability_result.participatory_space.manifest.name.to_s
+                         )
                        )
                      ))
         true

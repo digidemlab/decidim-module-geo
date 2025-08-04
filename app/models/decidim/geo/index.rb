@@ -11,6 +11,10 @@ module Decidim
       scope :virtual, -> { where(lonlat: nil) }
       scope :components, -> { where.not(component_id: nil) }
       scope :participatory_spaces, -> { where(component_id: nil) }
+      scope :organization, ->(organization) { where(decidim_organization_id: organization.id) }
+      belongs_to :organization, foreign_key: :decidim_organization_id, class_name: "Decidim::Organization"
+      
+      validates :decidim_organization_id, presence: true
 
       def coordinates
         @coordinates ||= if lonlat && !lonlat.x.nan? && !lonlat.y.nan?

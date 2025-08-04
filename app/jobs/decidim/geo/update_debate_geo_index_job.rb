@@ -24,21 +24,23 @@ module Decidim
         return remove_debate if remove_from_index?
 
         upsert_index(debate.id, manifest_name,
-                     with_scope(
-                       with_coords(
-                         resource_url:,
-                         image_url:,
-                         title:,
-                         short_description:,
-                         description_html: description,
-                         end_date:,
-                         component_id: debate.decidim_component_id,
-                         participatory_space_id: debate.participatory_space.id,
-                         participatory_space_type: debate.participatory_space.manifest.name.to_s,
-                         extended_data: {
-                           start_time: debate.start_time,
-                           end_time: debate.end_time
-                         }
+                     with_organization(
+                       with_scope(
+                         with_coords(
+                           resource_url:,
+                           image_url:,
+                           title:,
+                           short_description:,
+                           description_html: description,
+                           end_date:,
+                           component_id: debate.decidim_component_id,
+                           participatory_space_id: debate.participatory_space.id,
+                           participatory_space_type: debate.participatory_space.manifest.name.to_s,
+                           extended_data: {
+                             start_time: debate.start_time,
+                             end_time: debate.end_time
+                           }
+                         )
                        )
                      ))
         true

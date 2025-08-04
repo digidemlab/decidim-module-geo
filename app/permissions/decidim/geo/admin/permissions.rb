@@ -12,7 +12,7 @@ module Decidim
           return permission_action if user.read_attribute("admin").blank?
 
           case permission_action.action
-          when :create, :new, :update
+          when :create, :new, :update, :list
             permission_action.allow!
           end
 

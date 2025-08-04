@@ -9,6 +9,14 @@ en:
       component:
         decidim_geo_avoid_index: Hide geolocated points outside this process.
         decidim_geo_avoid_index_within_group: Hide geolocated points outside process group %{space_name}
+    errors:
+      models:
+        geo_config:
+          attributes:
+            zoom:
+              invalid_range: "must be between 5 and 19"
+            focus_zoom_level:
+              invalid_range: "must be between 5 and 19"
   decidim:
     admin:
       components:
@@ -55,7 +63,7 @@ en:
                 force_geoencoded: "Only points in the map"
                 no_force_geoencoded: "All points"
           default_geoencoded_filter: Filter 
-          index: 
+          show: 
             title: Configurations
             save: Save
           edit:
@@ -136,6 +144,7 @@ en:
         type:
           label: "Filter By Type"
           all: "All"
+          only_space_pages: "Organizations"
           only_processes: "Processes"
           only_assemblies: "Assemblies"
           only_proposals: "Proposals"

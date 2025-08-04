@@ -43,6 +43,10 @@ require "decidim/geo/process/overrides/participatory_process_form_override"
 
 # Custom time filters
 require "decidim/geo/proposal/proposal_filter"
+require "decidim/geo/space_pages/space_page_time_filter"
+require "decidim/geo/space_pages/update_space_page_geo_index"
+require "decidim/geo/space_pages/update_space_page_organization_geo_index"
+require "decidim/geo/space_pages/update_space_page_geo_index_serializer"
 
 module Decidim
   # This namespace holds the logic of the `Geo` component. This component

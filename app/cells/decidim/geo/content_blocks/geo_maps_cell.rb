@@ -80,7 +80,7 @@ module Decidim
             },
             filters: filters.push({ timeFilter: { time: "active" } }),
             map_config:,
-            active_manifests: ::Decidim::Geo.registry.active_manifests(&:keys),
+            active_manifests: active_manifests.keys,
             is_index: index?
           }.with_indifferent_access
 
@@ -105,12 +105,21 @@ module Decidim
         def insert_scopes_mobile
           content_tag(:div, "", class: ["js-decidimgeo"])
         end
+        ##
+        # Get active registered manifests. 
+        # For space pages, avoid displaying a filter for generated orgs.
+        def active_manifests
+          @active_manifests ||= ::Decidim::Geo.registry.active_manifests do |manifests|
+            is_generator = !::Decidim.const_defined?("SpacePage") || current_organization.space_page_generator?
+            manifests.filter do |manifest_key| 
+              is_generator || manifest_key != "space_pages"
+            end
+          end
+        end
 
         def geo_i18n
-          supported_models = ::Decidim::Geo.registry.active_manifests do |manifests|
-            manifests.map do |manifest_name, manifest_config|
-              [manifest_name, manifest_config[:model].model_name.human]
-            end
+          supported_models = active_manifests.map do |manifest_key, manifest_config|
+            [manifest_key, manifest_config[:model].model_name.human]
           end
           geo_i18n = supported_models.to_h
           {
@@ -140,6 +149,7 @@ module Decidim
             "decidim_geo.filters.time.future": t("decidim.geo.filters.time.only_future"),
             "decidim_geo.filters.type.label": t("decidim.geo.filters.type.label"),
             "decidim_geo.filters.type.all": t("decidim.geo.filters.type.all"),
+            "decidim_geo.filters.type.space_pages": t("decidim.geo.filters.type.only_space_pages"),
             "decidim_geo.filters.type.participatory_processes": t("decidim.geo.filters.type.only_processes"),
             "decidim_geo.filters.type.assemblies": t("decidim.geo.filters.type.only_assemblies"),
             "decidim_geo.filters.type.proposals": t("decidim.geo.filters.type.only_proposals"),
@@ -167,7 +177,13 @@ module Decidim
         end
 
         def current_participatory_space
-          request.env["decidim.current_participatory_space"] || (context[:view_context].respond_to?(:current_participatory_space) ? context[:view_context].current_participatory_space : nil)
+          request.env["decidim.current_participatory_space"] || current_participatory_from_view_context
+        end
+
+        def current_participatory_from_view_context
+          return nil unless context[:view_context].respond_to?(:current_participatory_space)
+
+          context[:view_context].current_participatory_space
         end
 
         def current_component
@@ -196,7 +212,7 @@ module Decidim
         end
 
         def config
-          @config ||= Decidim::Geo::GeoConfig.geo_config_default
+          @config ||= Decidim::Geo::GeoConfig.geo_config_default(current_organization)
         end
       end
     end

@@ -73,6 +73,23 @@ module Decidim
           )
           Decidim::Assembly.include(Decidim::Geo::UpdateGeoIndex)
         end
+
+        if Decidim.const_defined?("SpacePage")
+          registry.register(
+            :space_pages,
+            time_filter: Decidim::Geo::SpacePageTimeFilter,
+            model: Decidim::Organization,
+            updater: Decidim::Geo::UpdateOrganizationGeoIndexJob
+          )
+          Decidim::Organization.include(Decidim::Geo::UpdateSpacePageOrganizationGeoIndex)
+          available_space_page_manifests = Decidim.participatory_space_manifests.map do |participatory_space_manifest|
+            participatory_space_manifest.model_class_name.constantize
+          end
+          available_space_page_manifests.each do |space_page_manifest|
+            space_page_manifest.include(Decidim::Geo::UpdateSpacePageGeoIndex)
+          end
+        end
+
         if Decidim.const_defined?("ParticipatoryProcess")
           registry.register(
             :participatory_processes,
@@ -100,7 +117,7 @@ module Decidim
           )
           Decidim::Proposals::Proposal.include(Decidim::Geo::UpdateGeoIndex)
         end
-        if "Decidim::Debates::Debate".safe_constantize
+        if Decidim.const_defined?("Debates")
           registry.register(
             :debates,
             time_filter: Decidim::Geo::Api::DefaultFilter,
@@ -109,7 +126,7 @@ module Decidim
           )
           Decidim::Debates::Debate.include(Decidim::Geo::UpdateGeoIndex)
         end
-        if "Decidim::Accountability::Result".safe_constantize
+        if Decidim.const_defined?("Accountability")
           registry.register(
             :accountability,
             time_filter: Decidim::Geo::Api::DefaultFilter,
