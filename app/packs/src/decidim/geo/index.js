@@ -81,9 +81,26 @@ async function displayMap() {
         if (isLoading > 0 || !isInitialized) {
           return;
         }
-        const { map, pointsLayer } = configStore.getState();
+        const { map, pointsLayer, isSmallScreen} = configStore.getState();
         const { selectedPoint, selectedScope } = geoStore.getState();
+        const pointInMap = getFilteredPoints().filter(
+          (node) => typeof node.isGeoLocated !== "undefined" && node.isGeoLocated()
+        );
         pointsLayer.clearLayers();
+        if (pointInMap.length > 0) {
+          pointInMap.forEach(({ marker }) => {
+            marker.addTo(pointsLayer);
+          });
+          const bounds = L.latLngBounds(pointInMap.map(({ marker }) => marker.getLatLng()));
+          map.fitBounds(bounds, {
+            animate: true,
+            padding: isSmallScreen ? [16, 16, 32, 16] : [32,32, 32, 310],
+            maxZoom: map.getZoom()
+          });
+        } else {
+          console.warn("DecidimGeo: No points in map?");
+          return;
+        }
         if (
           fetchesRunning === 0 &&
           selectedScope?.layer &&
@@ -93,16 +110,6 @@ async function displayMap() {
           map.setView(selectedScope.layer.getBounds().getCenter(), map.getZoom(), {
             animation: true
           });
-        }
-        const pointInMap = getFilteredPoints().filter(
-          (node) => typeof node.isGeoLocated !== "undefined" && node.isGeoLocated()
-        );
-        if (pointInMap.length > 0) {
-          pointInMap.forEach(({ marker }) => {
-            marker.addTo(pointsLayer);
-          });
-        } else {
-          console.warn("DecidimGeo: No points in map?");
         }
       }
     );
