@@ -12,15 +12,15 @@ module Decidim
       def self.geo_config_default(organization)
         Decidim::Geo::GeoConfig
           .find_or_create_by(decidim_organization_id: organization.id) do |geo_config|
-            geo_config.latitude = 0
-            geo_config.longitude = 0
-            geo_config.zoom = 13
-            geo_config.decidim_organization_id = organization.id
-            geo_config.tile = tile_layer_default
-            geo_config.maptiler_api_key = ""
-            geo_config.maptiler_style_id = ""
-            geo_config.default_geoencoded_filter = 1
-            geo_config
+          geo_config.latitude = 0
+          geo_config.longitude = 0
+          geo_config.zoom = 13
+          geo_config.decidim_organization_id = organization.id
+          geo_config.tile = tile_layer_default
+          geo_config.maptiler_api_key = ""
+          geo_config.maptiler_style_id = ""
+          geo_config.default_geoencoded_filter = 1
+          geo_config
         end
       end
 
