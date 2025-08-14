@@ -53,6 +53,10 @@ module Decidim
         Decidim::Admin::CreateComponent.include(Decidim::Geo::CreateComponentCommandOverride)
         Decidim::Admin::UpdateComponent.include(Decidim::Geo::UpdateComponentCommandOverride)
 
+        # Add an extra method to deactive decidim geo without take off the application
+        Decidim::ApplicationController.include(Decidim::Geo::EnableViews)
+        Decidim::Admin::ApplicationController.include(Decidim::Geo::EnableViews)
+        
         # Setup registry
         registry = Decidim::Geo::ManifestRegistry.instance
         if Decidim.const_defined?("Meetings")

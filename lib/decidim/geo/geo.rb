@@ -22,6 +22,7 @@ module Decidim
     autoload :GeoDatasourcesType, "decidim/api/geo_datasources_type"
     autoload :GeoCoordinatesType, "decidim/api/geo_coordinates_type"
 
+
     def self.registry
       Decidim::Geo::ManifestRegistry.instance
     end

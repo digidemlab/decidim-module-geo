@@ -46,7 +46,7 @@ module Decidim
                           icon_name: "map",
                           position: 10,
                           active: is_active_link?(decidim_admin_geo.geo_configs_path, :inclusive),
-                          if: defined?(current_user) && current_user&.read_attribute("admin")
+                          if: defined?(current_user) && current_user&.read_attribute("admin") && enable_view?
           end
           Decidim.menu :admin_geo_menu do |menu|
             menu.add_item :edit_config,

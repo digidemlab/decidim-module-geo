@@ -1,4 +1,4 @@
-<% if Decidim::Map.available?(:geocoding) %>
+<% if Decidim::Map.available?(:geocoding) && enable_view? %>
   <div class="card" data-component="accordion" id="accordion-decidim-geo">
     <div class="card-divider">
       <button class="card-divider-button" data-open="true" data-controls="panel-decidim-geo" type="button">
@@ -24,4 +24,4 @@
       </div>
     </div>
   </div>
-  <% end %>
+<% end %>

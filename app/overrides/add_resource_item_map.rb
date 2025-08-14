@@ -5,6 +5,7 @@ Deface::Override.new(virtual_path: "layouts/decidim/shared/_layout_item",
                      name: "geo_add_resource_item_map",
                      insert_before: "div[role=complementary]",
                      text: <<~ERB
+                     <% if enable_view? %>
                        <% component_manifest = current_component.manifest_name %>
                        <%= cell("decidim/geo/content_blocks/geo_maps", current_participatory_space,
                            id: (component_manifest + "_item").camelize,
@@ -24,5 +25,6 @@ Deface::Override.new(virtual_path: "layouts/decidim/shared/_layout_item",
                                []
                            end
                        ) unless ["budgets", "surveys"].include? component_manifest%>#{"                     "}
+                     <% end %>
                      ERB
                     )

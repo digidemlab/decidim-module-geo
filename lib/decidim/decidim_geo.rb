@@ -48,6 +48,8 @@ require "decidim/geo/space_pages/update_space_page_geo_index"
 require "decidim/geo/space_pages/update_space_page_organization_geo_index"
 require "decidim/geo/space_pages/update_space_page_geo_index_serializer"
 
+require "decidim/geo/enable_views"
+
 module Decidim
   # This namespace holds the logic of the `Geo` component. This component
   # allows users to create geo in a participatory space.
