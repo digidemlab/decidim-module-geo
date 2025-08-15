@@ -53,6 +53,8 @@ module Decidim
         Decidim::Admin::CreateComponent.include(Decidim::Geo::CreateComponentCommandOverride)
         Decidim::Admin::UpdateComponent.include(Decidim::Geo::UpdateComponentCommandOverride)
 
+        Decidim::Organization.include(Decidim::Geo::OrganizationGeoExtensions)
+
         # Setup registry
         registry = Decidim::Geo::ManifestRegistry.instance
         if Decidim.const_defined?("Meetings")
