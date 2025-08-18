@@ -30,7 +30,7 @@ module Decidim
         end
 
         private
-        
+
         def update_geo_config
           geo_config.update!(attributes)
         end

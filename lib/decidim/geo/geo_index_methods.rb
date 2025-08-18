@@ -55,8 +55,6 @@ module Decidim
 
       private
 
-
-
       def has_coordinates?
         latitude && longitude
       end

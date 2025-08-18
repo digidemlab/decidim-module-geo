@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class AddOrganizationToGeoModels < ActiveRecord::Migration[7.0]
   def change
     # Add the reference, accepting null values at first

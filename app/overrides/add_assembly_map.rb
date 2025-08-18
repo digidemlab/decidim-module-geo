@@ -10,6 +10,5 @@ Deface::Override.new(virtual_path: "decidim/assemblies/assemblies/index",
                            hide_empty: true,
                            is_index: true,
                        ) %>
-
                      ERB
                     )

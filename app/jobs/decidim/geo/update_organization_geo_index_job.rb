@@ -27,28 +27,27 @@ module Decidim
         # details (run a serializer over the space page)
         space = organization.space_page
         serializer = UpdateSpacePageGeoIndexSerializer.new(space)
-        generator_id = organization.space_page_settings_attributes['created_by_org'].to_i
+        generator_id = organization.space_page_settings_attributes["created_by_org"].to_i
         # Decidim::Geo::Index with resource_types = "space_pages", and details of the
         # space page (eg. Assembly, Participatory Process, etc.)
         # This will be saved under generator org index, to display it on generator side
         # and not on space page
         upsert_index(organization.id, manifest_name,
-                       with_scope(
-                         decidim_organization_id: generator_id,
-                         latitude: serializer.latitude,
-                         longitude: serializer.longitude,
-                         resource_url: "https://#{organization.host}",
-                         image_url: serializer.image_url,
-                         title: serializer.title,
-                         short_description: serializer.short_description,
-                         description_html: serializer.description,
-                         start_date: nil,
-                         end_date: nil,
-                         component_id: serializer.component_id,
-                         participatory_space_id: serializer.participatory_space_id,
-                         participatory_space_type: serializer.participatory_space_type
-                       )
-                     )
+                     with_scope(
+                       decidim_organization_id: generator_id,
+                       latitude: serializer.latitude,
+                       longitude: serializer.longitude,
+                       resource_url: "https://#{organization.host}",
+                       image_url: serializer.image_url,
+                       title: serializer.title,
+                       short_description: serializer.short_description,
+                       description_html: serializer.description,
+                       start_date: nil,
+                       end_date: nil,
+                       component_id: serializer.component_id,
+                       participatory_space_id: serializer.participatory_space_id,
+                       participatory_space_type: serializer.participatory_space_type
+                     ))
       rescue StandardError => e
         Rails.logger.debug { "Can't index #{e}" }
         false
