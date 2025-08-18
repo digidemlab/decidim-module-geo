@@ -5,7 +5,7 @@ Deface::Override.new(
   name: "geo_add_avoid_index_component",
   insert_bottom: "#accordion-title .card-section",
   text: <<~ERB
-    <% if ::Decidim::Geo.registry.active_manifests(&:keys).any? {|manifest_name| manifest_name.to_s == form.object.manifest.name.to_s } %>
+    <% if current_organization.geo_enabled? && ::Decidim::Geo.registry.active_manifests(&:keys).any? {|manifest_name| manifest_name.to_s == form.object.manifest.name.to_s } %>
         <div class="decidim-geo decidim-geo--admin row column">
         <%#{" "}
             space = form.object.participatory_space

@@ -17,6 +17,7 @@ module Decidim
 
       def shapefiles
         return [] if organization.blank?
+
         Decidim::Geo::Shapefile.where(decidim_organization_id: organization.id)
       end
 

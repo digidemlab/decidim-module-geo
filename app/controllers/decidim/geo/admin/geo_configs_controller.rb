@@ -11,6 +11,8 @@ module Decidim
         end
 
         def show
+          raise ActiveRecord::RecordNotFound unless current_organization.geo_enabled?
+
           @form = form(Decidim::Geo::Admin::GeoConfigForm).from_model(geo_config)
         end
 
@@ -25,7 +27,6 @@ module Decidim
             on(:ok) do
               flash[:notice] = I18n.t("geo_configs.actions.update.success", scope: "decidim.geo.admin")
               redirect_to action: "show", id: geo_config.id
-
             end
 
             on(:invalid) do

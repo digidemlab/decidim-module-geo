@@ -31,6 +31,8 @@ module Decidim
         end
 
         def show
+          return unless current_organization.geo_enabled?
+
           return "<!-- DecidimGeo: Map is empty -->".html_safe if hide_empty? && empty_map?
 
           render
@@ -105,13 +107,14 @@ module Decidim
         def insert_scopes_mobile
           content_tag(:div, "", class: ["js-decidimgeo"])
         end
+
         ##
-        # Get active registered manifests. 
+        # Get active registered manifests.
         # For space pages, avoid displaying a filter for generated orgs.
         def active_manifests
           @active_manifests ||= ::Decidim::Geo.registry.active_manifests do |manifests|
             is_generator = !::Decidim.const_defined?("SpacePage") || current_organization.space_page_generator?
-            manifests.filter do |manifest_key| 
+            manifests.filter do |manifest_key|
               is_generator || manifest_key != "space_pages"
             end
           end

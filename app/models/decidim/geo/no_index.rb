@@ -7,8 +7,7 @@ module Decidim
       self.table_name = "decidim_geo_no_indexes"
       belongs_to :decidim_component, class_name: "Decidim::Component"
       belongs_to :organization, foreign_key: :decidim_organization_id, class_name: "Decidim::Organization"
-      validates :decidim_organization_id, presence: true
-      
+
       def geo_indexed?
         !no_index
       end
