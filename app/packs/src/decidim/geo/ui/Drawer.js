@@ -79,10 +79,6 @@ export default class Drawer {
       "decidimGeo__drawer__listCard",
       this.cardList
     );
-    listCard.onclick = () => {
-      location.href = node.resourceUrl;
-    };
-
     const info = L.DomUtil.create(
       "div",
       "decidimGeo__drawer__listCardInfo decidimGeo__drawer__listCardInfo--large",
@@ -99,6 +95,9 @@ export default class Drawer {
     const viewBtn = L.DomUtil.create("a", "decidimGeo__drawer__viewBtn", listCard);
     viewBtn.textContent = this.i18n()["decidim_geo.actions.view"];
     viewBtn.href = node.resourceUrl;
+    if (node.resourceUrl?.startsWith("https://")) {
+      viewBtn.setAttribute("target", "_blank");
+    }
     this.cardList.scrollTo({ top: 0 });
     return listCard;
   }
