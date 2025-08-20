@@ -24,22 +24,24 @@ module Decidim
         return remove_meeting if remove_from_index?
 
         upsert_index(meeting.id, manifest_name,
-                     with_scope(
-                       with_coords(
-                         resource_url:,
-                         image_url:,
-                         title:,
-                         short_description:,
-                         description_html: description,
-                         start_date:,
-                         end_date:,
-                         component_id: meeting.decidim_component_id,
-                         participatory_space_id: meeting.participatory_space.id,
-                         participatory_space_type: meeting.participatory_space.manifest.name.to_s,
-                         extended_data: {
-                           start_time: meeting.start_time,
-                           end_time: meeting.end_time
-                         }
+                     with_organization(
+                       with_scope(
+                         with_coords(
+                           resource_url:,
+                           image_url:,
+                           title:,
+                           short_description:,
+                           description_html: description,
+                           start_date:,
+                           end_date:,
+                           component_id: meeting.decidim_component_id,
+                           participatory_space_id: meeting.participatory_space.id,
+                           participatory_space_type: meeting.participatory_space.manifest.name.to_s,
+                           extended_data: {
+                             start_time: meeting.start_time,
+                             end_time: meeting.end_time
+                           }
+                         )
                        )
                      ))
         true

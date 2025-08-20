@@ -14,7 +14,7 @@ module Decidim
       end
 
       def shapefiles
-        Decidim::Geo::Shapefile.all
+        Decidim::Geo::Shapefile.where(decidim_organization_id: context.organization.id)
       end
     end
   end

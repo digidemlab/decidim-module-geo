@@ -3,7 +3,7 @@
 module Decidim
   module Geo
     ##
-    # This filter does not filter anything. Space Page (Organization) will be shown in the map, 
+    # This filter does not filter anything. Space Page (Organization) will be shown in the map,
     # no matter the time filter.
     class SpacePageTimeFilter < Api::GenericFilter
       def filter_past(query)

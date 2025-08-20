@@ -6,16 +6,16 @@ Deface::Override.new(virtual_path: "decidim/admin/scope_types/index",
                      text: "<th>Shapefile Name</th>")
 
 Deface::Override.new(virtual_path: "decidim/admin/scope_types/index",
-                     name: "add_scope_types_admin_shapedata_column_tbody",
+                     name: "geo_add_scope_types_admin_shapedata_column_tbody",
                      insert_before: "td.table-list__actions",
                      text: "<td><%= scope_type.shapefile.title unless scope_type.shapefile.nil?  %></td>")
 
 Deface::Override.new(virtual_path: "decidim/admin/scope_types/_form",
-                     name: "add_scope_types_admin_shapedata_input",
+                     name: "geo_add_scope_types_admin_shapedata_input",
                      insert_after: "div.row:has(erb[loud]:contains(':plural'))",
                      text: <<~ERB
                        <div class="row column">
-                           <%= form.collection_select :shapefile, Decidim::Geo::Shapefile.all, :id, :title, :include_blank => true %>
+                           <%= form.collection_select :shapefile, Decidim::Geo::Shapefile.where(decidim_organization_id: current_organization.id), :id, :title, :include_blank => true %>
                        </div>
                      ERB
                     )

@@ -109,7 +109,7 @@ module Decidim
       end
 
       def geo_config
-        Decidim::Geo::GeoConfig.geo_config_default
+        Decidim::Geo::GeoConfig.geo_config_default(current_organization)
       end
     end
   end

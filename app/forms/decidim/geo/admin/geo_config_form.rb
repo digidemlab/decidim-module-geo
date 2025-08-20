@@ -17,6 +17,12 @@ module Decidim
         attribute :focus_zoom_level, Integer
 
         alias organization current_organization
+        validate :zoom_is_valid
+
+        def zoom_is_valid
+          errors.add(:zoom, :invalid_range) if zoom.present? && (zoom < 5 || zoom > 19)
+          errors.add(:focus_zoom_level, :invalid_range) if focus_zoom_level.present? && (focus_zoom_level < 5 || zoom > 19)
+        end
       end
     end
   end
