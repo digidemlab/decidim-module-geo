@@ -79,6 +79,13 @@ export default class Drawer {
       "decidimGeo__drawer__listCard",
       this.cardList
     );
+    listCard.onclick = () => {
+      if (node.resourceUrl?.startsWith("https://")) {
+        window.open(node.resourceUrl, "_blank", "noopener,noreferrer");
+      } else {
+        location.href = node.resourceUrl;
+      }
+    };
     const info = L.DomUtil.create(
       "div",
       "decidimGeo__drawer__listCardInfo decidimGeo__drawer__listCardInfo--large",
