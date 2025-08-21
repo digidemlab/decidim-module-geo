@@ -79,7 +79,8 @@ export default class Drawer {
       "decidimGeo__drawer__listCard",
       this.cardList
     );
-    listCard.onclick = () => {
+    listCard.onclick = (evt) => {
+      evt.stopPropagation();
       if (node.resourceUrl?.startsWith("https://")) {
         window.open(node.resourceUrl, "_blank", "noopener,noreferrer");
       } else {
