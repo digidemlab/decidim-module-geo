@@ -24,6 +24,11 @@ module Decidim
         index.save
       end
 
+      def with_organization(decidim_geo_hash)
+        decidim_geo_hash[:decidim_organization_id] = resource.organization.id if resource.respond_to?(:organization)
+        decidim_geo_hash
+      end
+
       def with_scope(decidim_geo_hash)
         return decidim_geo_hash unless scope
 

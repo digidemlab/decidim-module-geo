@@ -13,8 +13,9 @@ module Decidim
         def update_space_page_geo_index
           # If module is not installed, skip
           return unless Decidim.const_defined?("SpacePage")
-          # If organization is a generator, it might have many assemblies, do nothing. 
-          return unless organization.space_page_generator?
+          # If organization is a generator, it might have many assemblies, do nothing.
+          return if organization.space_page_generator?
+
           # Call organization's update index
           organization.update_decidim_geo_index
         end

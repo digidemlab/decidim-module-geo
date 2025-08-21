@@ -33,6 +33,11 @@ Copy migrations and migrate
     bundle exec rails db:migrate
 ```
 
+Build the index tree from your existing content
+```bash
+  bundle exec rails decidim_geo:rebuild_index
+```
+
 ### Check your installation
 Check javascript libraries got installed
 ```

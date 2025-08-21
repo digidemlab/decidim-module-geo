@@ -8,8 +8,8 @@ module Decidim
         add_breadcrumb_item_from_menu :admin_geo_menu
 
         def index
-          # enforce_permission_to :list
-          @shapefiles = Decidim::Geo::Shapefile.all
+          enforce_permission_to :list, :shapefile
+          @shapefiles = Decidim::Geo::Shapefile.where(decidim_organization_id: current_organization.id)
         end
 
         def new

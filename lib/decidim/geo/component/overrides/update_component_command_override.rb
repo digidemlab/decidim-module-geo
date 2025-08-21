@@ -13,6 +13,7 @@ module Decidim
           decidim_original_update_component
 
           avoid_index_relation = @component.decidim_geo_avoid_index || Decidim::Geo::NoIndex.new
+          avoid_index_relation.decidim_organization_id = @component.organization.id
           avoid_index_relation.decidim_component_id = @component.id
           avoid_index_relation.no_index = form.decidim_geo_avoid_index
           @component.decidim_geo_avoid_index = avoid_index_relation

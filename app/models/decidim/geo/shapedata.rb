@@ -13,6 +13,10 @@ module Decidim
         Shapedata.connection.exec_query(sql)
       end
 
+      def organization
+        scope.organization if scope.present?
+      end
+
       def shapedata?
         false
       end

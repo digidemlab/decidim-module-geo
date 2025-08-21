@@ -31,6 +31,8 @@ module Decidim
         end
 
         def show
+          return unless current_organization.geo_enabled?
+
           return "<!-- DecidimGeo: Map is empty -->".html_safe if hide_empty? && empty_map?
 
           render
@@ -80,7 +82,7 @@ module Decidim
             },
             filters: filters.push({ timeFilter: { time: "active" } }),
             map_config:,
-            active_manifests: ::Decidim::Geo.registry.active_manifests(&:keys),
+            active_manifests: active_manifests.keys,
             is_index: index?
           }.with_indifferent_access
 
@@ -106,11 +108,21 @@ module Decidim
           content_tag(:div, "", class: ["js-decidimgeo"])
         end
 
-        def geo_i18n
-          supported_models = ::Decidim::Geo.registry.active_manifests do |manifests|
-            manifests.map do |manifest_name, manifest_config|
-              [manifest_name, manifest_config[:model].model_name.human]
+        ##
+        # Get active registered manifests.
+        # For space pages, avoid displaying a filter for generated orgs.
+        def active_manifests
+          @active_manifests ||= ::Decidim::Geo.registry.active_manifests do |manifests|
+            is_generator = !::Decidim.const_defined?("SpacePage") || current_organization.space_page_generator?
+            manifests.filter do |manifest_key|
+              is_generator || manifest_key != "space_pages"
             end
+          end
+        end
+
+        def geo_i18n
+          supported_models = active_manifests.map do |manifest_key, manifest_config|
+            [manifest_key, manifest_config[:model].model_name.human]
           end
           geo_i18n = supported_models.to_h
           {
@@ -203,7 +215,7 @@ module Decidim
         end
 
         def config
-          @config ||= Decidim::Geo::GeoConfig.geo_config_default
+          @config ||= Decidim::Geo::GeoConfig.geo_config_default(current_organization)
         end
       end
     end

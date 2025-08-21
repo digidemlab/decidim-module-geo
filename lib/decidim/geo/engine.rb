@@ -53,6 +53,8 @@ module Decidim
         Decidim::Admin::CreateComponent.include(Decidim::Geo::CreateComponentCommandOverride)
         Decidim::Admin::UpdateComponent.include(Decidim::Geo::UpdateComponentCommandOverride)
 
+        Decidim::Organization.include(Decidim::Geo::OrganizationGeoExtensions)
+
         # Setup registry
         registry = Decidim::Geo::ManifestRegistry.instance
         if Decidim.const_defined?("Meetings")
@@ -64,6 +66,7 @@ module Decidim
           )
           Decidim::Meetings::Meeting.include(Decidim::Geo::UpdateGeoIndex)
         end
+
         if Decidim.const_defined?("Assembly")
           registry.register(
             :assemblies,
@@ -138,6 +141,7 @@ module Decidim
         # By default, enable all registered manifests
         registry.enable(*registry.registered_manifests)
       end
+
       initializer "decidim_geo.mount_routes" do
         Decidim::Core::Engine.routes do
           mount Decidim::Geo::Engine, at: "/", as: "decidim_geo"

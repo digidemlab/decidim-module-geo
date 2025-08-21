@@ -16,11 +16,17 @@ module Decidim
       end
 
       def shapefiles
-        Decidim::Geo::Shapefile.all
+        return [] if organization.blank?
+
+        Decidim::Geo::Shapefile.where(decidim_organization_id: organization.id)
       end
 
       def geo_config
-        Decidim::Geo::GeoConfig.geo_config_default
+        @geo_config ||= Decidim::Geo::GeoConfig.geo_config_default(organization)
+      end
+
+      def organization
+        @organization ||= context.organization
       end
     end
   end

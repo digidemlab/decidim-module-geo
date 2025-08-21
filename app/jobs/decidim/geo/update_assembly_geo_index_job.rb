@@ -34,10 +34,12 @@ module Decidim
           participatory_space_type: manifest_name
         }
         upsert_index(assembly.id, manifest_name,
-                     with_scope(
-                       with_coords(
-                         with_dates(
-                           index_payload
+                     with_organization(
+                       with_scope(
+                         with_coords(
+                           with_dates(
+                             index_payload
+                           )
                          )
                        )
                      ))

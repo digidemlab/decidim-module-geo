@@ -13,7 +13,7 @@ module Decidim
       def perform(organization_id)
         @resource_id = organization_id
         @resource = Decidim::Organization.where(id: organization_id).first
-        return remove_organization unless resource
+        return remove_organization unless resource && resource.space_page?
 
         sync_organization
       end
@@ -22,15 +22,19 @@ module Decidim
 
       def sync_organization
         return remove_organization if remove_from_index?
-        # To index the generator organization, we will take its space page 
+
+        # To index the generator organization, we will take its space page
         # details (run a serializer over the space page)
         space = organization.space_page
         serializer = UpdateSpacePageGeoIndexSerializer.new(space)
-
-        # Decidim::Geo::Index with resource_types = "space_pages", and details of the 
+        generator_id = organization.space_page_settings_attributes["created_by_org"].to_i
+        # Decidim::Geo::Index with resource_types = "space_pages", and details of the
         # space page (eg. Assembly, Participatory Process, etc.)
+        # This will be saved under generator org index, to display it on generator side
+        # and not on space page
         upsert_index(organization.id, manifest_name,
                      with_scope(
+                       decidim_organization_id: generator_id,
                        latitude: serializer.latitude,
                        longitude: serializer.longitude,
                        resource_url: "https://#{organization.host}",

@@ -24,18 +24,20 @@ module Decidim
         return remove_process if remove_from_index?
 
         upsert_index(process.id, manifest_name,
-                     with_scope(
-                       with_coords(
-                         resource_url:,
-                         image_url:,
-                         title:,
-                         short_description:,
-                         description_html: description,
-                         component_id: nil,
-                         start_date:,
-                         end_date:,
-                         participatory_space_id: process.id,
-                         participatory_space_type: manifest_name
+                     with_organization(
+                       with_scope(
+                         with_coords(
+                           resource_url:,
+                           image_url:,
+                           title:,
+                           short_description:,
+                           description_html: description,
+                           component_id: nil,
+                           start_date:,
+                           end_date:,
+                           participatory_space_id: process.id,
+                           participatory_space_type: manifest_name
+                         )
                        )
                      ))
         true
