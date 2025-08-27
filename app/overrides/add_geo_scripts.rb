@@ -14,7 +14,7 @@ Deface::Override.new(
   name: "geo_add_scripts",
   insert_after: ".mini-footer",
   text: <<~ERB
-    <% if current_organization.geo_enabled? %> 
+    <% if current_organization.geo_enabled? %>
       <%= append_javascript_pack_tag "decidim_geo" %>
       <%= prepend_javascript_pack_tag "decidim_geo_vendors", defer: false %>
     <% end %>

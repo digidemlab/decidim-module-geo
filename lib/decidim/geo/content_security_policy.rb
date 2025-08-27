@@ -15,7 +15,7 @@ module Decidim
         # Allow tiles for most of the providers
         # https://wiki.openstreetmap.org/wiki/Raster_tile_providers
         [
-          "*.osm.ch", 
+          "*.osm.ch",
           "*.openstreetmap.de",
           "*.memomaps.de",
           "tiles.stadiamaps.com",
@@ -23,8 +23,8 @@ module Decidim
           "tile.thunderforest.com",
           "*.opentopomap.org",
           "api.maptiler.com",
-          "*.openstreetmap.org", 
-          "*.openstreetmap.fr", 
+          "*.openstreetmap.org",
+          "*.openstreetmap.fr",
           "*.cartocdn.com",
           "api.wikiocity.com",
           "maptiles.p.rapidapi.com",
