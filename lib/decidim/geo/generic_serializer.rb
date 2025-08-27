@@ -22,7 +22,7 @@ module Decidim
         def image_url
           @image_url ||= if resource.respond_to?(:hero_image)
                            resource.attached_uploader(:hero_image).url(only_path: true)
-                         elsif resource.respond_to?(:attachments) && resource.attachments.select(&:photo?).present?
+                         elsif resource.respond_to?(:attachments) && resource.attachments.select(&:photo?).any?
                            resource.attachments.select(&:photo?).first&.url
                          end
         end
