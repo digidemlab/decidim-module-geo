@@ -133,6 +133,7 @@ fr:
         type:
           label: "Type"
           all: "Tout"
+          only_space_pages: "Organisations"
           only_processes: "Processus"
           only_assemblies: "Assemblées"
           only_proposals: "Propositions"
