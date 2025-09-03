@@ -3,6 +3,7 @@ import configStore from "../../stores/configStore";
 import createClasses from "../createClasses";
 import { format, isSameDay } from "date-fns";
 import L from "../../leaflet";
+import getHashtagFromNode from "../drawerHelper";
 
 const meetings = (container, node) => {
   const { i18n, images, locale, defaultLocale } = configStore.getState();
@@ -36,7 +37,7 @@ const meetings = (container, node) => {
     "decidimGeo__drawer__listCardTitle",
     container
   );
-  infoTitle.textContent = node.title[locale] || node.title[defaultLocale];
+  infoTitle.textContent = getHashtagFromNode(node, locale, defaultLocale);
   const infoDescription = L.DomUtil.create(
     "div",
     "decidimGeo__drawer__listCardDate",
