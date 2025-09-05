@@ -32,13 +32,16 @@ const fallback = (node) => {
   infoTitle.textContent = node.title[locale] || node.title[defaultLocale];
 
   if (node.shortDescription) {
-    const infoDescription = L.DomUtil.create(
-      "div",
-      "decidimGeo__drawer__listCardDescription",
-      info
-    );
-    infoDescription.textContent =
-      node.shortDescription[locale] || node.shortDescription[defaultLocale];
+  const text = node.shortDescription[locale] || node.shortDescription[defaultLocale];
+
+    if (text && !text.includes("Translation missing")) {
+      const infoDescription = L.DomUtil.create(
+        "div",
+        "decidimGeo__drawer__listCardDescription",
+        info
+      );
+      infoDescription.textContent = text;
+    }
   }
 
   if (hasImage) {
