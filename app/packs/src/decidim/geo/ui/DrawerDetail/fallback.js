@@ -34,14 +34,18 @@ const fallback = (container, node) => {
     container
   );
   infoTitle.textContent = node.title[locale] || node.title[defaultLocale];
+
   if (node.descriptionHtml) {
-    const infoDescription = L.DomUtil.create(
-      "div",
-      "decidimGeo__drawer__listCardDescription decidimGeo__drawer__listCardDescription--large",
-      container
-    );
-    infoDescription.innerHTML =
-      node.descriptionHtml[locale] || node.descriptionHtml[defaultLocale];
+    const text = node.descriptionHtml[locale] || node.descriptionHtml[defaultLocale];
+
+    if (text && !text.includes("Translation missing")) {
+      const infoDescription = L.DomUtil.create(
+        "div",
+        "decidimGeo__drawer__listCardDescription decidimGeo__drawer__listCardDescription--large",
+        container
+      );
+      infoDescription.innerHTML = text;
+    }
   }
 };
 export default fallback;
