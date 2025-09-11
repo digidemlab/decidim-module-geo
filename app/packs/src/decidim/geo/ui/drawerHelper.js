@@ -5,17 +5,11 @@ function getHashtagFromNode(node, locale, defaultLocale) {
   const gidMatch = rawText.match(/gid:.*./);
   if (!gidMatch) return rawText;
 
-  const gid = gidMatch[0];
-  const nameMatch = gid.match(/\/(\d+)\/(.*)$/);
-  if (!nameMatch || !nameMatch[2]) return rawText;
-
-  const encodedName = nameMatch[2];
-
   try {
-    const decodedName = decodeURIComponent(encodedName);
-    return `#${decodedName.trim()}`;
+    const decodedName = rawText.replace(/gid:\/\/rails-app\/Decidim::Hashtag\/\d+\//g, "#");
+    return decodedName.trim();
   } catch (error) {
-    console.warn("Erro ao decodificar nome da hashtag:", encodedName, error);
+    console.warn("Error decoding hashtag name:", encodedName, error);
     return rawText; 
   }
 }

@@ -2,6 +2,7 @@ import configStore from "../../stores/configStore";
 import createClasses from "../createClasses";
 import _ from "lodash";
 import L from "../../leaflet";
+import getHashtagFromNode from "../drawerHelper";
 
 const fallback = (node) => {
   const { i18n, images, locale, defaultLocale } = configStore.getState();
@@ -29,7 +30,7 @@ const fallback = (node) => {
   notGeoEncodedIcon.src = images?.not_geolocated;
 
   const infoTitle = L.DomUtil.create("div", "decidimGeo__drawer__listCardTitle", info);
-  infoTitle.textContent = node.title[locale] || node.title[defaultLocale];
+  infoTitle.textContent = getHashtagFromNode(node, locale, defaultLocale);
 
   if (node.shortDescription) {
   const text = node.shortDescription[locale] || node.shortDescription[defaultLocale];
