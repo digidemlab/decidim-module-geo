@@ -2,6 +2,8 @@ import _ from "lodash";
 import configStore from "../../stores/configStore";
 import createClasses from "../createClasses";
 import L from "../../leaflet";
+import getHashtagFromNode from "../drawerHelper";
+
 const fallback = (container, node) => {
   const { i18n, images, locale, defaultLocale } = configStore.getState();
   if (!_.isEmpty(node.imageUrl)) {
@@ -33,8 +35,8 @@ const fallback = (container, node) => {
     "decidimGeo__drawer__listCardTitle",
     container
   );
-  infoTitle.textContent = node.title[locale] || node.title[defaultLocale];
-
+  infoTitle.textContent = getHashtagFromNode(node, locale, defaultLocale);
+  console.log("infoTitle: " + infoTitle.textContent)
   if (node.descriptionHtml) {
     const text = node.descriptionHtml[locale] || node.descriptionHtml[defaultLocale];
 
