@@ -137,13 +137,15 @@ module Decidim
 
         def resource_type_params
           @resource_type_params ||= begin
-            match = graphql_params.find { |f| f[:resource_type_filter].present? }
-            if match
-              resource = match[:resource_type_filter][:resource_type].to_s
-              if resource == "all"
+            resource_types = graphql_params
+                             .select { |f| f.has_key?("resource_type_filter") }
+                             .map { |f| f["resource_type_filter"]["resource_type"] }
+
+            if resource_types
+              if resource_types.include?("all")
                 active_manifests_names
               else
-                [resource]
+                resource_types
               end
             else
               active_manifests_names

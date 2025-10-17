@@ -10,7 +10,12 @@ module Decidim
         def initialize(*args, **kwargs)
           super(*args, **kwargs)
           @options[:filters] ||= []
-
+          if current_component?
+            @options[:filters].push({ resource_type_filter: { resource_type: "proposals" } })
+            @options[:filters].push({ resource_type_filter: { resource_type: "debates" } })
+            @options[:filters].push({ resource_type_filter: { resource_type: "meetings" } })
+            @options[:filters].push({ resource_type_filter: { resource_type: "accountability" } })
+          end
           # Scope on the current process
           if current_participatory_space_manifest == "participatory_processes"
             @options[:filters].push({
@@ -52,13 +57,17 @@ module Decidim
           data_count < 1
         end
 
-        def data_count
-          @data_count ||= ::Decidim::Geo::Api::GeoQuery.new(
+        def data
+          ::Decidim::Geo::Api::GeoQuery.new(
             current_organization,
             current_user,
             { filters:, is_index: index? },
             current_locale
-          ).results_count
+          )
+        end
+
+        def data_count
+          @data_count ||= data.results_count
         end
 
         def filters
