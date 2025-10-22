@@ -10,7 +10,8 @@ module Decidim
         private
 
         def run_after_hooks
-          result = decidim_original_run_after_hooks
+          decidim_original_run_after_hooks
+          result = @resource
           return result unless form.decidim_geo_has_address?
 
           location = result.decidim_geo_space_location || Decidim::Geo::SpaceLocation.new
