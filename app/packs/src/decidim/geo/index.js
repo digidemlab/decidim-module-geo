@@ -178,7 +178,6 @@ async function main() {
   }
   await prepareLeaflet(isSmallScreen);
   await fetchData();
-
   await displayMap();
 }
 
@@ -188,6 +187,9 @@ window.addEventListener("load", function () {
       `DecidimGeo: ready. Using Leaflet ${L.version} (global: ${window.L.version})`
     );
     pointStore.setState(() => ({ isInitialized: true }));
+  }).catch(error => {
+    console.error("Decidim Geo: Can't initialize.")
+    console.error(error)
   });
 });
 

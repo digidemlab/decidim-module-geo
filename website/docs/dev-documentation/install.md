@@ -22,6 +22,13 @@ Add the gem to your Gemfile
     gem "decidim-decidim_geo", version: "~> 0.3.0"
 ```
 
+Add deface, with our fixes for javascript overrides:
+```
+gem "deface",
+    git: "https://github.com/froger/deface",
+    branch: "fix/js-overrides"
+```
+
 Add javascripts libraries
 ```
     bundle exec rails decidim_geo:webpacker:install

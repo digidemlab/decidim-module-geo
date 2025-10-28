@@ -10,7 +10,7 @@ const initMap = async () => {
   } = configStore.getState();
   if (!document.getElementById(mapID)) {
     console.warn("No map found with id", mapID);
-    return;
+    throw new Error(`no map found with ID ${mapID}`);
   }
   const map = L.map(mapID, {
     center: [lat, lng],
