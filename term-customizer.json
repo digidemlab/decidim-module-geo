@@ -20,6 +20,16 @@
     "locale": "en"
   },
   {
+    "key": "activemodel.errors.models.geo_config.attributes.zoom.invalid_range",
+    "value": "must be between 5 and 19",
+    "locale": "en"
+  },
+  {
+    "key": "activemodel.errors.models.geo_config.attributes.focus_zoom_level.invalid_range",
+    "value": "must be between 5 and 19",
+    "locale": "en"
+  },
+  {
     "key": "decidim.admin.components.form.geo_avoid_index",
     "value": "If checked, points will be hidden of other maps on the platform such as the homepage",
     "locale": "en"
@@ -120,12 +130,12 @@
     "locale": "en"
   },
   {
-    "key": "decidim.geo.admin.geo_configs.index.title",
+    "key": "decidim.geo.admin.geo_configs.show.title",
     "value": "Configurations",
     "locale": "en"
   },
   {
-    "key": "decidim.geo.admin.geo_configs.index.save",
+    "key": "decidim.geo.admin.geo_configs.show.save",
     "value": "Save",
     "locale": "en"
   },
@@ -410,6 +420,11 @@
     "locale": "en"
   },
   {
+    "key": "decidim.geo.filters.type.only_space_pages",
+    "value": "Organizations",
+    "locale": "en"
+  },
+  {
     "key": "decidim.geo.filters.type.only_processes",
     "value": "Processes",
     "locale": "en"
@@ -437,6 +452,11 @@
   {
     "key": "decidim.geo.filters.type.only_accountabilities",
     "value": "Accountabilities",
+    "locale": "en"
+  },
+  {
+    "key": "decidim.components.pagination.page_title",
+    "value": "%{component_name}",
     "locale": "en"
   },
   {
