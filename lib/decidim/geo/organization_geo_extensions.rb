@@ -15,13 +15,6 @@ module Decidim
         delegate :geo_mode, to: :geo_settings, allow_nil: true
 
         def geo_enabled?
-          return true unless Decidim.const_defined?("SpacePage")
-          return true if current_organization.space_page_generator?
-
-          decidim_geo_space_enabled?
-        end
-
-        def decidim_geo_space_enabled?
           current_organization.geo_mode.present? && current_organization.geo_mode != "disabled"
         end
 
