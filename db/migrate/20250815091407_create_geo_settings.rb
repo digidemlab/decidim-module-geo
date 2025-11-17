@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class CreateGeoSettings < ActiveRecord::Migration[7.0]
   def change
     create_table :decidim_geo_geo_settings do |t|
