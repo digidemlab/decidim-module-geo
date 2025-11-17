@@ -1,7 +1,19 @@
+GIT
+  remote: https://github.com/froger/deface
+  revision: fe80c6bc7166d3adb5e99a5ab46a81138f52840a
+  branch: fix/js-overrides
+  specs:
+    deface (1.9.0)
+      actionview (>= 5.2)
+      nokogiri (>= 1.6)
+      polyglot
+      railties (>= 5.2)
+      rainbow (>= 2.1.0)
+
 PATH
   remote: .
   specs:
-    decidim-decidim_geo (0.3.0)
+    decidim-decidim_geo (0.3.5)
       activerecord-postgis-adapter
       decidim-admin (>= 0.29)
       decidim-api (>= 0.29)
@@ -320,12 +332,6 @@ GEM
     declarative-builder (0.1.0)
       declarative-option (< 0.2.0)
     declarative-option (0.1.0)
-    deface (1.9.0)
-      actionview (>= 5.2)
-      nokogiri (>= 1.6)
-      polyglot
-      railties (>= 5.2)
-      rainbow (>= 2.1.0)
     devise (4.9.3)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -481,6 +487,7 @@ GEM
     mime-types-data (3.2023.1003)
     mini_magick (4.12.0)
     mini_mime (1.1.5)
+    mini_portile2 (2.8.9)
     minitest (5.20.0)
     msgpack (1.8.0)
     multi_json (1.15.0)
@@ -495,6 +502,9 @@ GEM
     net-smtp (0.3.4)
       net-protocol
     nio4r (2.7.0)
+    nokogiri (1.18.7)
+      mini_portile2 (~> 2.8.2)
+      racc (~> 1.4)
     nokogiri (1.18.7-x86_64-linux-gnu)
       racc (~> 1.4)
     oauth (1.1.0)
@@ -798,6 +808,7 @@ GEM
     zeitwerk (2.6.12)
 
 PLATFORMS
+  ruby
   x86_64-linux
 
 DEPENDENCIES
@@ -807,7 +818,7 @@ DEPENDENCIES
   decidim (~> 0.29.2)
   decidim-decidim_geo!
   decidim-dev (~> 0.29.2)
-  deface (>= 1.9)
+  deface!
   faker (~> 3.5)
   letter_opener_web (~> 3.0)
   listen (~> 3.9)
@@ -822,4 +833,4 @@ RUBY VERSION
    ruby 3.2.8p263
 
 BUNDLED WITH
-   2.4.19
+   2.4.10
