@@ -17,7 +17,11 @@ module Decidim
         end
 
         def results
-          query = Decidim::Geo::Index.where(decidim_organization_id: organization.id)
+          query = if organization.space_page_settings_attributes["show_children_points"]
+                    Decidim::Geo::Index.all
+                  else
+                    Decidim::Geo::Index.where(decidim_organization_id: organization.id)
+                  end
           query = query.geolocated if geolocated? || config.force_geoencoded?
           query = indexed!(query)
           query = virtual!(query)
