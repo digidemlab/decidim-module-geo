@@ -125,6 +125,7 @@ class FilterModal {
   }
 
   applyValues(filters) {
+    console.log("INICIO 0 filters: ", filters)
     const defaultDropdownValues = {
       GeoScopeFilter: "all",
       GeoShowFilter: "all",
@@ -176,7 +177,7 @@ class FilterModal {
     );
   }
   repaintOptions() {
-    const { isProcessOnly, isAssemblyOnly } = filterStore.getState();
+    const { isProcessOnly, isAssemblyOnly, isChildrenSource } = filterStore.getState();
 
     L.DomUtil.empty(this.fieldset);
     const i18n = this.i18n();
@@ -192,6 +193,9 @@ class FilterModal {
     ]);
     if (!isProcessOnly() && !isAssemblyOnly()) {
       this.typeFields(points);
+    }
+    if (isChildrenSource()) {
+      this.childrenFields();
     }
   }
 
@@ -217,6 +221,24 @@ class FilterModal {
         ])
       ],
       disabledOptions
+    );
+  }
+
+  childrenFields() {
+    const i18n = this.i18n();
+    const i18nPrefix = "decidim_geo.filters";
+
+    const fieldLabel = i18n[`${i18nPrefix}.children.label`];
+
+    this.field(
+      fieldLabel,
+      "GeoSource",
+      [
+        [i18n[`${i18nPrefix}.children.all`], "all"],
+        [i18n[`${i18nPrefix}.children.children_only`], "children_only"],
+        [i18n[`${i18nPrefix}.children.generator_only`], "generator_only"]
+      ],
+      []
     );
   }
 

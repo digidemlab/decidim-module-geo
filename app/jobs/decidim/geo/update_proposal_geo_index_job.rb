@@ -37,7 +37,10 @@ module Decidim
                            participatory_space_id: proposal.participatory_space.id,
                            participatory_space_type: proposal.participatory_space.manifest.name.to_s,
                            start_date:,
-                           end_date:
+                           end_date:,
+                           extended_data: {
+                             component_url:
+                           }
                          )
                        )
                      ))
@@ -45,6 +48,12 @@ module Decidim
       rescue StandardError => e
         Rails.logger.warn { "ERROR:  #{e}" }
         false
+      end
+
+      def component_url
+        return unless resource.organization.space_page?
+
+        "https://#{resource.organization.host}#{resource_url}"
       end
 
       def start_date

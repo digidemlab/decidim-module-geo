@@ -5,6 +5,7 @@ import pointStore from "./pointStore";
 import geoStore from "./geoStore";
 import dropdownFilterStore from "../stores/dropdownFilterStore";
 import pointCounterStore from "../stores/pointCounterStore";
+
 const sortingIteratee = (filter) => JSON.stringify(filter);
 const store = createStore(
   subscribeWithSelector((set, get) => ({
@@ -39,7 +40,9 @@ const store = createStore(
       return _.isEqual(defaultFilters, activeFilters);
     },
     setFilters: (filters = []) => {
+      console.log("filterSore setFilters filters:", filters)
       const activeFilters = _.sortBy(filters, [sortingIteratee]);
+      console.log("filterSore setFilters activeFilters:", activeFilters)
       set((state) => {
         if (_.isEqual(state.activeFilters, activeFilters)) return {};
         return { activeFilters };
@@ -75,6 +78,15 @@ const store = createStore(
       if (!resourceFilter) return false;
       const { resourceType } = resourceFilter.resourceTypeFilter;
       return resourceType === "assemblies";
+    },
+    isChildrenSource() {
+      const { defaultFilters } = get();
+      const childrenFilterMatch = defaultFilters.find(
+        ({ childrenFilter = undefined}) => childrenFilter
+      );
+      if (!childrenFilterMatch) return false;
+      const children = childrenFilterMatch.childrenFilter.children;
+      return !!children
     },
     toFilterOptions: (name, filters) => {
       const { defaultFilters } = dropdownFilterStore.getState();
@@ -113,6 +125,13 @@ const store = createStore(
           const resourceType = typeFilterMatch.resourceTypeFilter.resourceType;
           if (resourceType) return `${resourceType}`;
           return defaultFilters.GeoType;
+        case "GeoSource":
+          const childrenFilterMatch = filters.find(
+            ({ childrenFilter = undefined}) => childrenFilter
+          );
+          if (!childrenFilterMatch) return defaultFilters.GeoSource;
+          const children = childrenFilterMatch.childrenFilter.children;
+          if (children) return `${children}`;
       }
     }
   }))
@@ -158,6 +177,7 @@ store.subscribe(
     setFilter("GeoShowFilter", toFilterOptions("GeoShowFilter", activeFilters));
     setFilter("GeoTimeFilter", toFilterOptions("GeoTimeFilter", activeFilters));
     setFilter("GeoType", toFilterOptions("GeoType", activeFilters));
+    setFilter("GeoSource", toFilterOptions("GeoSource", activeFilters));
 
     // Update active counters.
     const { updateCurrentCountForFilters } = pointCounterStore.getState();

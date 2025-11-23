@@ -58,13 +58,22 @@ export default class Drawer {
     emptyAction.onclick = this.emptyActionHandler.bind(this);
   }
 
+  config() {
+    return configStore.getState();
+  }
+
   i18n() {
     return this.config().i18n;
   }
 
-  config() {
-    return configStore.getState();
+  filters() {
+    return this.config().filters;
   }
+
+  hasAssemblyOrProcess() {
+    return this.filters()?.some(f => f.assembly_filter || f.process_filter);
+  }
+
   emptyActionHandler() {
     const { open } = dropdownFilterStore.getState();
     open();
@@ -81,10 +90,16 @@ export default class Drawer {
     );
     listCard.onclick = (evt) => {
       evt.stopPropagation();
-      if (node.resourceUrl?.startsWith("https://")) {
-        window.open(node.resourceUrl, "_blank", "noopener,noreferrer");
+      let node_url = ""
+      if (this.hasAssemblyOrProcess()) {
+        node_url = node.resourceUrl;
       } else {
-        location.href = node.resourceUrl;
+        node_url = node?.extendedData?.componentUrl ?? node.resourceUrl;
+      }
+      if (node_url?.startsWith("https://")) {
+        window.open(node_url, "_blank", "noopener,noreferrer");
+      } else {
+        location.href = node_url;
       }
     };
     const info = L.DomUtil.create(
@@ -102,10 +117,17 @@ export default class Drawer {
     }
     const viewBtn = L.DomUtil.create("a", "decidimGeo__drawer__viewBtn", listCard);
     viewBtn.textContent = this.i18n()["decidim_geo.actions.view"];
-    viewBtn.href = node.resourceUrl;
-    if (node.resourceUrl?.startsWith("https://")) {
+
+    if (this.hasAssemblyOrProcess()) {
+      viewBtn.href = node.resourceUrl;
+    } else {
+      viewBtn.href = node?.extendedData?.componentUrl ?? node.resourceUrl;
+    }
+
+    if (viewBtn.href?.startsWith("https://")) {
       viewBtn.setAttribute("target", "_blank");
     }
+
     this.cardList.scrollTo({ top: 0 });
     return listCard;
   }

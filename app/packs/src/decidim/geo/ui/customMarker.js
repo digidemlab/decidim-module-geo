@@ -11,6 +11,7 @@ const customMarker = (location) => {
     riseOnHover: true,
     interactive: true
   });
+  
   return circleMarker;
 };
 

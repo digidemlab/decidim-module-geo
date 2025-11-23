@@ -9,7 +9,6 @@
     <%= decidim_form_for(@form, html: { class: "form new_shapefile shapefile_form_admin" }) do |form| %>
       <%= render partial: "form", locals: { form: form, title: t(".title") } %>
 
- 
       <div class="item__edit-sticky">
         <div class="item__edit-sticky-container">
           <%= form.submit t(".create"), class: "button button__sm button__secondary" %>

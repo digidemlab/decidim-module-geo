@@ -11,28 +11,29 @@ module Decidim
           super(*args, **kwargs)
           @options[:filters] ||= []
           if current_component?
-            @options[:filters].push({ resource_type_filter: { resource_type: "proposals" } })
-            @options[:filters].push({ resource_type_filter: { resource_type: "debates" } })
-            @options[:filters].push({ resource_type_filter: { resource_type: "meetings" } })
-            @options[:filters].push({ resource_type_filter: { resource_type: "accountability" } })
+            @options[:filters].push({ resourceTypeFilter: { resourceType: "proposals" } })
+            @options[:filters].push({ resourceTypeFilter: { resourceType: "debates" } })
+            @options[:filters].push({ resourceTypeFilter: { resourceType: "meetings" } })
+            @options[:filters].push({ resourceTypeFilter: { resourceType: "accountability" } })
           end
-          # Scope on the current process
-          if current_participatory_space_manifest == "participatory_processes"
-            @options[:filters].push({
-                                      process_filter: { id: current_participatory_space.id }
-                                    })
-          end
-          # Scope on the current assembly and all its children
-          return unless current_participatory_space_manifest == "assemblies"
 
-          @options[:filters].concat(
-            [{ assembly_filter: { id: current_participatory_space.id } }],
-            Decidim::Assembly.published.where(
-              "parents_path ~ ?", "#{current_participatory_space.parents_path}.*"
-            ).where.not(id: current_participatory_space.id)
-            .ids
-            .map { |id| { assembly_filter: { id: } } }
-          )
+          if current_participatory_space_manifest == "participatory_processes"
+            # Scope on the current process
+            @options[:filters].push({ process_filter: { id: current_participatory_space.id } })
+          elsif current_participatory_space_manifest == "assemblies"
+            # Scope on the current assembly and all its children
+            @options[:filters].concat(
+              [{ assembly_filter: { id: current_participatory_space.id } }],
+              Decidim::Assembly.published.where(
+                "parents_path ~ ?", "#{current_participatory_space.parents_path}.*"
+              ).where.not(id: current_participatory_space.id)
+              .ids
+              .map { |id| { assembly_filter: { id: } } }
+            )
+          end
+
+          # Show children points and filter in generator organization
+          @options[:filters].push({ childrenFilter: { children: "all" } }) if current_organization.space_page_settings_attributes["show_children_points"]
         end
 
         def show
@@ -168,6 +169,10 @@ module Decidim
             "decidim_geo.filters.type.meetings": t("decidim.geo.filters.type.only_meetings"),
             "decidim_geo.filters.type.debates": t("decidim.geo.filters.type.only_debates"),
             "decidim_geo.filters.type.accountability": t("decidim.geo.filters.type.only_accountabilities"),
+            "decidim_geo.filters.children.label": "Source",
+            "decidim_geo.filters.children.all": "All",
+            "decidim_geo.filters.children.children_only": "Show related platforms only",
+            "decidim_geo.filters.children.generator_only": "Show this platform only",
             "decidim_geo.filters.empty.message": t("decidim.geo.filters.empty.message"),
             "decidim_geo.filters.empty.update_button": t("decidim.geo.filters.empty.update_button"),
             "decidim_geo.actions.view": t("decidim.geo.actions.view")

@@ -2,6 +2,7 @@ import { createStore } from "zustand/vanilla";
 import { subscribeWithSelector } from "zustand/middleware";
 import filterStore from "./filterStore";
 import pointCounterStore from "./pointCounterStore";
+import { Children } from "react";
 const store = createStore(
   subscribeWithSelector((set, get) => ({
     isOpen: false,
@@ -9,13 +10,15 @@ const store = createStore(
       GeoScopeFilter: "all",
       GeoShowFilter: "all",
       GeoTimeFilter: "active",
-      GeoType: "all"
+      GeoType: "all",
+      GeoSource: "all"
     },
     selectedFilters: {
       GeoScopeFilter: "all",
       GeoShowFilter: "all",
       GeoTimeFilter: "active",
-      GeoType: "all"
+      GeoType: "all",
+      GeoSource: "all"
     },
     nextFilters: undefined,
 
@@ -26,10 +29,17 @@ const store = createStore(
       }).length;
     },
     fromOptionsToFilters(filters = undefined) {
+      console.log("INICIO filters: ", filters)
+
       if (!filters) filters = get().selectedFilters;
+
       const { activeFilters } = filterStore.getState();
 
+      console.log("activeFilters: ", activeFilters)
+
       let newFilters = [...activeFilters];
+      console.log("newFilters: ", newFilters)
+
       const withoutGeoShowFilter = (filters) =>
         filters.filter((f) => {
           const [filterName] = Object.keys(f);
@@ -50,7 +60,43 @@ const store = createStore(
           const [filterName] = Object.keys(f);
           return filterName !== "scopeFilter";
         });
-
+      const withoutGeoChildrenFilter = (filters) =>
+        filters.filter((f) => {
+          const [filterName] = Object.keys(f);
+          return filterName !== "childrenFilter";
+        });
+      
+      switch (filters.GeoSource) {
+        
+        case "all":
+          newFilters = [
+            ...withoutGeoChildrenFilter(newFilters),
+            {
+              childrenFilter: { children: "all" }
+            }
+          ];
+          console.log("GeoSource newFilters all: ", newFilters)
+          break;
+        case "children_only":
+          newFilters = [
+            ...withoutGeoChildrenFilter(newFilters),
+            {
+              childrenFilter: { children: "children_only" }
+            }
+          ];
+          console.log("GeoSource newFilters children_only: ", newFilters)
+          break;
+        case "generator_only":
+          newFilters = [
+            ...withoutGeoChildrenFilter(newFilters),
+            {
+              childrenFilter: { children: "generator_only" }
+            }
+          ];
+          console.log("GeoSource newFilters generator_only: ", newFilters)
+          break;
+        ;
+      }
       switch (filters.GeoShowFilter) {
         case "all":
           newFilters = withoutGeoShowFilter(newFilters);
@@ -107,6 +153,7 @@ const store = createStore(
           }
         ];
       }
+      console.log("return newFilters: ", newFilters)
       return newFilters;
     },
     setNextFilter(name, value) {
@@ -127,6 +174,7 @@ const store = createStore(
       }));
     },
     setDefaultFilters(newFilters) {
+      console.log("setDefaultFilters newFilters: ", newFilters)
       set(() => ({ defaultFilters: newFilters, selectedFilters: newFilters }));
     },
     setFilter(name, value) {

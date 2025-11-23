@@ -2,6 +2,7 @@ import _ from "lodash";
 import { fallback, meetings, proposals } from ".";
 
 const item = (node) => {
+  console.log("item node: ", node);
   switch (node.resourceType) {
     case "meetings":
       return meetings(node);

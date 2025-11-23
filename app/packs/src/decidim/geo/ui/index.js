@@ -1,5 +1,6 @@
 export { default as initMap } from "./initMap.js";
 export { default as customMarker } from "./customMarker.js";
+export { default as customArrowMarker } from "./customArrowMarker.js";
 export { default as nodeMarker } from "./nodeMarker.js";
 export { default as scopeGeoLayer } from "./scopeGeoLayer.js";
 export { default as scopeDropdownItem } from "./scopeDropdownItem.js";
