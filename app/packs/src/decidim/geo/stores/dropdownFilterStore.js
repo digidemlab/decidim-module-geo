@@ -174,7 +174,6 @@ const store = createStore(
       }));
     },
     setDefaultFilters(newFilters) {
-      console.log("setDefaultFilters newFilters: ", newFilters)
       set(() => ({ defaultFilters: newFilters, selectedFilters: newFilters }));
     },
     setFilter(name, value) {

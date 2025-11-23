@@ -61,7 +61,8 @@ const store = createStore(
         activeManifests: mapConfig.active_manifests,
         filters: mapConfig.filters
       }));
-     
+
+      const { setDefaultFilters, setFilters, toFilterOptions } = filterStore.getState();
       setDefaultFilters(mapConfig.filters);
       setFilters(mapConfig.filters);
 
