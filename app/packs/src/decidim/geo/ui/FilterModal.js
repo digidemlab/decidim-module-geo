@@ -125,7 +125,6 @@ class FilterModal {
   }
 
   applyValues(filters) {
-    console.log("INICIO 0 filters: ", filters)
     const defaultDropdownValues = {
       GeoScopeFilter: "all",
       GeoShowFilter: "all",

@@ -40,9 +40,7 @@ const store = createStore(
       return _.isEqual(defaultFilters, activeFilters);
     },
     setFilters: (filters = []) => {
-      console.log("filterSore setFilters filters:", filters)
       const activeFilters = _.sortBy(filters, [sortingIteratee]);
-      console.log("filterSore setFilters activeFilters:", activeFilters)
       set((state) => {
         if (_.isEqual(state.activeFilters, activeFilters)) return {};
         return { activeFilters };

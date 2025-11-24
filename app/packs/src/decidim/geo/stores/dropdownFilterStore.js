@@ -29,16 +29,11 @@ const store = createStore(
       }).length;
     },
     fromOptionsToFilters(filters = undefined) {
-      console.log("INICIO filters: ", filters)
-
       if (!filters) filters = get().selectedFilters;
 
       const { activeFilters } = filterStore.getState();
 
-      console.log("activeFilters: ", activeFilters)
-
       let newFilters = [...activeFilters];
-      console.log("newFilters: ", newFilters)
 
       const withoutGeoShowFilter = (filters) =>
         filters.filter((f) => {
@@ -75,7 +70,6 @@ const store = createStore(
               childrenFilter: { children: "all" }
             }
           ];
-          console.log("GeoSource newFilters all: ", newFilters)
           break;
         case "children_only":
           newFilters = [
@@ -84,7 +78,6 @@ const store = createStore(
               childrenFilter: { children: "children_only" }
             }
           ];
-          console.log("GeoSource newFilters children_only: ", newFilters)
           break;
         case "generator_only":
           newFilters = [
@@ -93,7 +86,6 @@ const store = createStore(
               childrenFilter: { children: "generator_only" }
             }
           ];
-          console.log("GeoSource newFilters generator_only: ", newFilters)
           break;
         ;
       }
@@ -153,7 +145,6 @@ const store = createStore(
           }
         ];
       }
-      console.log("return newFilters: ", newFilters)
       return newFilters;
     },
     setNextFilter(name, value) {
