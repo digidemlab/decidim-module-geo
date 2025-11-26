@@ -43,14 +43,14 @@ export default class GeoDatasourceNode {
         if (selectedPoint && selectedPoint === this) {
           if (this.marker.setStyle) { 
             this.marker.setStyle(this.selectedState); 
-          } else {
-            this.marker._icon.firstChild.style.background = this.selectedState;
+          } else if (this.marker.__ready && this.marker.getElement) {
+            this.marker.getElement().querySelector(".arrow-inner").style.background = "var(--primary)";
           }
 
           if (this.marker.bringToFront) {
             this.marker.bringToFront();
           } else {
-            this.marker._icon.parentNode.appendChild(this.marker._icon);
+            this.marker.setZIndexOffset(1000);
           }
 
         } else if (
@@ -60,27 +60,27 @@ export default class GeoDatasourceNode {
         ) {
           if (this.marker.setStyle) { 
             this.marker.setStyle(this.selectedState); 
-          } else {
-            this.marker._icon.firstChild.style.background = this.selectedState;
+          } else if (this.marker.__ready && this.marker.getElement) {
+            this.marker.getElement().querySelector(".arrow-inner").style.background = "var(--primary)";
           }
         } else {
           if (this.marker.setStyle) { 
             this.marker.setStyle(this.staledState); 
-          } else {
-            this.marker._icon.firstChild.style.background = this.staledState;
+          } else if (this.marker.__ready && this.marker.getElement) {
+            this.marker.getElement().querySelector(".arrow-inner").style.background = "#404040";
           }
         }
       } else {
         if (selectedPoint === this) {
           if (this.marker.setStyle) { 
             this.marker.setStyle(this.selectedState); 
-          } else {
-            this.marker._icon.firstChild.style.background = this.staledState;
+          } else if (this.marker.__ready && this.marker.getElement) {
+            this.marker.getElement().querySelector(".arrow-inner").style.background = "var(--primary)";
           }
           if (this.marker.bringToFront) {
             this.marker.bringToFront();
           } else {
-            this.marker._icon.parentNode.appendChild(this.marker._icon);
+            this.marker.setZIndexOffset(1000);
           }
         } else if (
           !selectedPoint &&
@@ -88,13 +88,15 @@ export default class GeoDatasourceNode {
         ) {
           if (this.marker.setStyle) { 
             this.marker.setStyle(this.selectedState); 
-          } else {
-            this.marker._icon.firstChild.style.background = this.staledState;
+          } else if (this.marker.__ready && this.marker.getElement) {
+            this.marker.getElement().querySelector(".arrow-inner").style.background = "var(--primary)";
           }
         } else {
           if (this.marker.setStyle) { 
             this.marker.setStyle(this.staledState); 
-          } 
+          } else if (this.marker.__ready && this.marker.getElement) {
+            this.marker.getElement().querySelector(".arrow-inner").style.background = "#404040";
+          }
         }
       }
     }
@@ -170,7 +172,7 @@ export default class GeoDatasourceNode {
       if (this.marker.bringToFront) {
         this.marker.bringToFront();
       } else if (this.marker._icon?.parentNode) {
-        this.marker._icon.parentNode.appendChild(this.marker._icon);
+        this.marker.setZIndexOffset(1000);
       }
     }
     try {

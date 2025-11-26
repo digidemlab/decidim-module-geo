@@ -5,7 +5,7 @@ const customArrowMarker = (location) => {
 
   const arrowNEIcon = L.divIcon({
     className: "unicode-arrow-marker",
-    html: `<div style="
+    html: `<div class="arrow-inner" style="
       width: 16px;
       height: 16px;
       background: #404040;
@@ -24,6 +24,12 @@ const customArrowMarker = (location) => {
   });
 
   let arrowMarker = L.marker(location, { icon: arrowNEIcon, opacity: 8 });
+
+  arrowMarker.__ready = false;
+
+  arrowMarker.on("add", () => {
+    arrowMarker.__ready = true;
+  });
 
   console.log("arrowMarker: ", arrowMarker)
 
