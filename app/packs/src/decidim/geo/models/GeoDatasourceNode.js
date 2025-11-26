@@ -14,7 +14,23 @@ export default class GeoDatasourceNode {
   }
   isGeoLocated() {
     if (!this.marker) return false;
-    const latlng = this.marker.getLatLng();
+
+    let latlng = []
+  
+    if (this.marker.getLatLng) {
+      
+      latlng = this.marker.getLatLng();
+      console.log("getLatLng latlng: ", latlng);
+    } else if (this.marker.getLatLngs) {
+      const points = this.marker.getLatLngs();
+
+      console.log("getLatLngs points: ", points[0][0]);
+      
+      latlng = Array.isArray(points) ? points[0][0] : null;
+      
+      console.log("getLatLngs latlng: ", latlng);
+    }
+    console.log("latlng: ", latlng);
     return latlng.lat && latlng.lng;
   }
 
@@ -25,28 +41,60 @@ export default class GeoDatasourceNode {
     if (this.isGeoLocated()) {
       if (pinPoint) {
         if (selectedPoint && selectedPoint === this) {
-          this.marker.setStyle(this.selectedState);
-          this.marker.bringToFront();
+          if (this.marker.setStyle) { 
+            this.marker.setStyle(this.selectedState); 
+          } else {
+            this.marker._icon.firstChild.style.background = this.selectedState;
+          }
+
+          if (this.marker.bringToFront) {
+            this.marker.bringToFront();
+          } else {
+            this.marker._icon.parentNode.appendChild(this.marker._icon);
+          }
+
         } else if (
           !selectedPoint &&
           `${this.data.componentId}` == `${selected_component}` &&
           `${pinPoint}` === `${this.data.resourceId}`
         ) {
-          this.marker.setStyle(this.selectedState);
+          if (this.marker.setStyle) { 
+            this.marker.setStyle(this.selectedState); 
+          } else {
+            this.marker._icon.firstChild.style.background = this.selectedState;
+          }
         } else {
-          this.marker.setStyle(this.staledState);
+          if (this.marker.setStyle) { 
+            this.marker.setStyle(this.staledState); 
+          } else {
+            this.marker._icon.firstChild.style.background = this.staledState;
+          }
         }
       } else {
         if (selectedPoint === this) {
-          this.marker.setStyle(this.selectedState);
-          this.marker.bringToFront();
+          if (this.marker.setStyle) { 
+            this.marker.setStyle(this.selectedState); 
+          } else {
+            this.marker._icon.firstChild.style.background = this.staledState;
+          }
+          if (this.marker.bringToFront) {
+            this.marker.bringToFront();
+          } else {
+            this.marker._icon.parentNode.appendChild(this.marker._icon);
+          }
         } else if (
           !selectedPoint &&
           `${this.data.componentId}` === `${selected_component}`
         ) {
-          this.marker.setStyle(this.selectedState);
+          if (this.marker.setStyle) { 
+            this.marker.setStyle(this.selectedState); 
+          } else {
+            this.marker._icon.firstChild.style.background = this.staledState;
+          }
         } else {
-          this.marker.setStyle(this.staledState);
+          if (this.marker.setStyle) { 
+            this.marker.setStyle(this.staledState); 
+          } 
         }
       }
     }
@@ -119,7 +167,11 @@ export default class GeoDatasourceNode {
     if (this.data?.lonlat?.latitude && this.data?.lonlat?.longitude) {
       this.marker = nodeMarker(this.data);
       this.marker.on("click", this.select.bind(this));
-      this.marker.bringToFront();
+      if (this.marker.bringToFront) {
+        this.marker.bringToFront();
+      } else if (this.marker._icon?.parentNode) {
+        this.marker._icon.parentNode.appendChild(this.marker._icon);
+      }
     }
     try {
       this.repaint();
