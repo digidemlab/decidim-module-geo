@@ -100,12 +100,37 @@ const store = createStore(
 
       const resourceType = filters.GeoType;
       if (resourceType) {
-        newFilters = [
-          ...withoutTypeFilter(newFilters),
-          {
-            resourceTypeFilter: { resourceType: resourceType }
-          }
-        ];
+        const id = document.querySelector('.decidimGeo__container').id;
+
+        switch (id) {
+          case "GeoAccountability":
+          case "GeoProposals":
+            if (resourceType === "all") {
+              newFilters = [
+                ...withoutTypeFilter(newFilters),
+                { resourceTypeFilter: { resourceType: "proposals" } },
+                { resourceTypeFilter: { resourceType: "debates" } },
+                { resourceTypeFilter: { resourceType: "meetings" } },
+                { resourceTypeFilter: { resourceType: "accountability" } }
+              ];
+            } else {
+              newFilters = [
+                ...withoutTypeFilter(newFilters),
+                {
+                  resourceTypeFilter: { resourceType: resourceType }
+                }
+              ];
+            }
+          break;
+          default:
+            newFilters = [
+              ...withoutTypeFilter(newFilters),
+              {
+                resourceTypeFilter: { resourceType: resourceType }
+              }
+            ];
+            break;
+        }
       }
       return newFilters;
     },
