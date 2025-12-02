@@ -2,7 +2,7 @@ import { createStore } from "zustand/vanilla";
 import { subscribeWithSelector } from "zustand/middleware";
 import filterStore from "./filterStore";
 import pointCounterStore from "./pointCounterStore";
-import { Children } from "react";
+
 const store = createStore(
   subscribeWithSelector((set, get) => ({
     isOpen: false,

@@ -18,20 +18,12 @@ export default class GeoDatasourceNode {
     let latlng = []
   
     if (this.marker.getLatLng) {
-      
       latlng = this.marker.getLatLng();
-      console.log("getLatLng latlng: ", latlng);
     } else if (this.marker.getLatLngs) {
       const points = this.marker.getLatLngs();
-
-      console.log("getLatLngs points: ", points[0][0]);
-      
-      latlng = Array.isArray(points) ? points[0][0] : null;
-      
-      console.log("getLatLngs latlng: ", latlng);
+      latlng = Array.isArray(points) && points.length > 0 && points[0].length > 0 ? points[0][0] : null;
     }
-    console.log("latlng: ", latlng);
-    return latlng.lat && latlng.lng;
+    return latlng?.lat && latlng?.lng;
   }
 
   repaint() {
@@ -43,8 +35,11 @@ export default class GeoDatasourceNode {
         if (selectedPoint && selectedPoint === this) {
           if (this.marker.setStyle) { 
             this.marker.setStyle(this.selectedState); 
-          } else if (this.marker.__ready && this.marker.getElement) {
-            this.marker.getElement().querySelector(".arrow-inner").style.background = "var(--primary)";
+          } else {
+            const markerStyle = this.marker.getElement()?.querySelector(".arrow-inner")?.style
+            if (markerStyle) {
+              markerStyle.background = "var(--primary)";
+            }
           }
 
           if (this.marker.bringToFront) {
@@ -60,42 +55,54 @@ export default class GeoDatasourceNode {
         ) {
           if (this.marker.setStyle) { 
             this.marker.setStyle(this.selectedState); 
-          } else if (this.marker.__ready && this.marker.getElement) {
-            this.marker.getElement().querySelector(".arrow-inner").style.background = "var(--primary)";
+          } else {
+            const markerStyle = this.marker.getElement()?.querySelector(".arrow-inner")?.style
+            if (markerStyle) {
+              markerStyle.background = "var(--primary)";
+            }
           }
         } else {
           if (this.marker.setStyle) { 
             this.marker.setStyle(this.staledState); 
-          } else if (this.marker.__ready && this.marker.getElement) {
-            this.marker.getElement().querySelector(".arrow-inner").style.background = "#404040";
+          } else {
+            const markerStyle = this.marker.getElement()?.querySelector(".arrow-inner")?.style
+            if (markerStyle) {
+              markerStyle.background = "#404040";
+            }
           }
         }
       } else {
         if (selectedPoint === this) {
           if (this.marker.setStyle) { 
             this.marker.setStyle(this.selectedState); 
-          } else if (this.marker.__ready && this.marker.getElement) {
-            this.marker.getElement().querySelector(".arrow-inner").style.background = "var(--primary)";
+          } else {
+            const markerStyle = this.marker.getElement()?.querySelector(".arrow-inner")?.style
+            if (markerStyle) {
+              markerStyle.background = "var(--primary)";
+            }
           }
           if (this.marker.bringToFront) {
             this.marker.bringToFront();
           } else {
             this.marker.setZIndexOffset(1000);
           }
-        } else if (
-          !selectedPoint &&
-          `${this.data.componentId}` === `${selected_component}`
-        ) {
+        } else if (!selectedPoint && `${this.data.componentId}` === `${selected_component}`) {
           if (this.marker.setStyle) { 
             this.marker.setStyle(this.selectedState); 
-          } else if (this.marker.__ready && this.marker.getElement) {
-            this.marker.getElement().querySelector(".arrow-inner").style.background = "var(--primary)";
+          } else {
+            const markerStyle = this.marker.getElement()?.querySelector(".arrow-inner")?.style
+            if (markerStyle) {
+              markerStyle.background = "var(--primary)";
+            }
           }
         } else {
           if (this.marker.setStyle) { 
             this.marker.setStyle(this.staledState); 
-          } else if (this.marker.__ready && this.marker.getElement) {
-            this.marker.getElement().querySelector(".arrow-inner").style.background = "#404040";
+          } else {
+            const markerStyle = this.marker.getElement()?.querySelector(".arrow-inner")?.style
+            if (markerStyle) {
+              markerStyle.background = "#404040";
+            }
           }
         }
       }

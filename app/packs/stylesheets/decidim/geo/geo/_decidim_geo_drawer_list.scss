@@ -85,7 +85,7 @@
         font-size: 16px;   
         display: inline-block; 
         margin-left: 8px;  
-        color: red;
+        color: "var(--primary)";
     }
   }
   .decidimGeo__drawer__listCardImg {
@@ -190,10 +190,10 @@
   }
 
   .decidimGeo__drawer__listTitleTxt {
-    overflow: hidden; // Oculta qualquer transbordo
-    white-space: nowrap; // Impede quebra de linha
-    text-overflow: ellipsis; // Adiciona o efeito ellipsis
-    flex-grow: 1; // Permite que o texto ocupe o espaço restante
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    flex-grow: 1;
 }
 
   .decidimGeo__drawer__listCardDate {

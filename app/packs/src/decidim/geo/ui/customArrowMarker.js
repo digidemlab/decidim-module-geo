@@ -9,12 +9,13 @@ const customArrowMarker = (location) => {
       width: 16px;
       height: 16px;
       background: #404040;
-      border-radius: 70%;
+      border-radius: 32px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
-      font-size: 18px;
+      font-size: 16px;
+      line-height: 1;
       user-select: none;
     ">
       ↗
@@ -22,17 +23,7 @@ const customArrowMarker = (location) => {
     iconSize: [5, 5],
     iconAnchor: [16, 16]
   });
-
   let arrowMarker = L.marker(location, { icon: arrowNEIcon, opacity: 8 });
-
-  arrowMarker.__ready = false;
-
-  arrowMarker.on("add", () => {
-    arrowMarker.__ready = true;
-  });
-
-  console.log("arrowMarker: ", arrowMarker)
-
   return arrowMarker;
 };
 

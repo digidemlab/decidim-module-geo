@@ -67,11 +67,11 @@ export default class Drawer {
   }
 
   filters() {
-    return this.config().filters;
+    return this.config().filters || [];
   }
 
   hasAssemblyOrProcess() {
-    return this.filters()?.some(f => f.assembly_filter || f.process_filter);
+    return this.filters().some(f => f.assembly_filter || f.process_filter);
   }
 
   emptyActionHandler() {

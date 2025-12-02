@@ -31,7 +31,7 @@ module Decidim
         private
 
         def show_children_points
-          if show_children_points? && show_children_points_params == ["all"]
+          if show_children_points? && show_children_points_params.first == "all"
             return Decidim::Geo::Index.where("decidim_organization_id = :org OR resource_type NOT IN (:types)", org: organization.id,
                                                                                                                 types: %w(assemblies processes))
           end
