@@ -11,10 +11,10 @@ module Decidim
           super(*args, **kwargs)
           @options[:filters] ||= []
           if current_component?
-            @options[:filters].push({ resource_type_filter: { resource_type: "proposals" } })
-            @options[:filters].push({ resource_type_filter: { resource_type: "debates" } })
-            @options[:filters].push({ resource_type_filter: { resource_type: "meetings" } })
-            @options[:filters].push({ resource_type_filter: { resource_type: "accountability" } })
+            @options[:filters].push({ resourceTypeFilter: { resourceType: "proposals" } })
+            @options[:filters].push({ resourceTypeFilter: { resourceType: "debates" } })
+            @options[:filters].push({ resourceTypeFilter: { resourceType: "meetings" } })
+            @options[:filters].push({ resourceTypeFilter: { resourceType: "accountability" } })
           end
           # Scope on the current process
           if current_participatory_space_manifest == "participatory_processes"
