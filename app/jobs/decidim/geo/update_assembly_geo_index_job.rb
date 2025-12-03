@@ -33,7 +33,8 @@ module Decidim
           participatory_space_id: assembly.id,
           participatory_space_type: manifest_name,
           extended_data: {
-            component_url:
+            component_url:,
+            space_page_host:
           }
         }
         upsert_index(assembly.id, manifest_name,
@@ -56,6 +57,10 @@ module Decidim
         return unless resource.organization.space_page?
 
         "https://#{resource.organization.host}#{resource_url}"
+      end
+
+      def space_page_host
+        resource.organization.host
       end
 
       def with_dates(decidim_geo_hash)

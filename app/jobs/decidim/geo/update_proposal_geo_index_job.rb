@@ -39,7 +39,8 @@ module Decidim
                            start_date:,
                            end_date:,
                            extended_data: {
-                             component_url:
+                             component_url:,
+                             space_page_host:
                            }
                          )
                        )
@@ -54,6 +55,10 @@ module Decidim
         return unless resource.organization.space_page?
 
         "https://#{resource.organization.host}#{resource_url}"
+      end
+
+      def space_page_host
+        resource.organization.host
       end
 
       def start_date
