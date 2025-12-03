@@ -176,7 +176,7 @@ class FilterModal {
     );
   }
   repaintOptions() {
-    const { isProcessOnly, isAssemblyOnly, isChildrenSource } = filterStore.getState();
+    const { isProcessOnly, isAssemblyOnly, isSource } = filterStore.getState();
 
     L.DomUtil.empty(this.fieldset);
     const i18n = this.i18n();
@@ -193,7 +193,7 @@ class FilterModal {
     if (!isProcessOnly() && !isAssemblyOnly()) {
       this.typeFields(points);
     }
-    if (isChildrenSource()) {
+    if (isSource()) {
       this.childrenFields();
     }
   }

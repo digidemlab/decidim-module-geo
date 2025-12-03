@@ -33,7 +33,7 @@ module Decidim
           end
 
           # Show children points and filter in generator organization
-          @options[:filters].push({ childrenFilter: { children: "all" } }) if space_page? && current_organization&.space_page_settings_attributes["show_children_points"]
+          @options[:filters].push({ sourceFilter: { source: "all" } }) if space_page? && current_organization&.space_page_settings_attributes&.[]("show_children_points")
         end
 
         def show

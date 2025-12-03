@@ -1,7 +1,6 @@
 import L from "../leaflet";
 
 const customArrowMarker = (location) => {
-  console.log("location: ", location)
 
   const arrowNEIcon = L.divIcon({
     className: "unicode-arrow-marker",
@@ -17,11 +16,14 @@ const customArrowMarker = (location) => {
       font-size: 16px;
       line-height: 1;
       user-select: none;
+      position: relative;
+      z-index: 0;
     ">
       ↗
     </div>`,
     iconSize: [5, 5],
-    iconAnchor: [16, 16]
+    iconAnchor: [16, 16],
+    zIndex: 0
   });
   let arrowMarker = L.marker(location, { icon: arrowNEIcon, opacity: 8 });
   return arrowMarker;

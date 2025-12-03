@@ -1,6 +1,7 @@
 import { item as drawerListItem, nodeMarker } from "../ui";
 import geoStore from "../stores/geoStore";
 import configStore from "../stores/configStore";
+let maxZIndex = 0;
 
 export default class GeoDatasourceNode {
   constructor({ node, map }) {
@@ -11,6 +12,11 @@ export default class GeoDatasourceNode {
   }
   get isFetched() {
     return true;
+  }
+  bringToFront() {
+    if (!this.marker) return;
+
+    this.marker.setZIndexOffset(maxZIndex += 100);
   }
   isGeoLocated() {
     if (!this.marker) return false;
@@ -41,12 +47,7 @@ export default class GeoDatasourceNode {
               markerStyle.background = "var(--primary)";
             }
           }
-
-          if (this.marker.bringToFront) {
-            this.marker.bringToFront();
-          } else {
-            this.marker.setZIndexOffset(1000);
-          }
+          this.bringToFront();
 
         } else if (
           !selectedPoint &&
@@ -81,11 +82,7 @@ export default class GeoDatasourceNode {
               markerStyle.background = "var(--primary)";
             }
           }
-          if (this.marker.bringToFront) {
-            this.marker.bringToFront();
-          } else {
-            this.marker.setZIndexOffset(1000);
-          }
+          this.bringToFront();
         } else if (!selectedPoint && `${this.data.componentId}` === `${selected_component}`) {
           if (this.marker.setStyle) { 
             this.marker.setStyle(this.selectedState); 
@@ -176,11 +173,7 @@ export default class GeoDatasourceNode {
     if (this.data?.lonlat?.latitude && this.data?.lonlat?.longitude) {
       this.marker = nodeMarker(this.data);
       this.marker.on("click", this.select.bind(this));
-      if (this.marker.bringToFront) {
-        this.marker.bringToFront();
-      } else if (this.marker._icon?.parentNode) {
-        this.marker.setZIndexOffset(1000);
-      }
+      this.bringToFront();
     }
     try {
       this.repaint();

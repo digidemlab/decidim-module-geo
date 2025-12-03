@@ -77,14 +77,14 @@ const store = createStore(
       const { resourceType } = resourceFilter.resourceTypeFilter;
       return resourceType === "assemblies";
     },
-    isChildrenSource() {
+    isSource() {
       const { defaultFilters } = get();
-      const childrenFilterMatch = defaultFilters.find(
-        ({ childrenFilter = undefined}) => childrenFilter
+      const sourceFilterMatch = defaultFilters.find(
+        ({ sourceFilter = undefined}) => sourceFilter
       );
-      if (!childrenFilterMatch) return false;
-      const children = childrenFilterMatch.childrenFilter.children;
-      return !!children
+      if (!sourceFilterMatch) return false;
+      const source = sourceFilterMatch.sourceFilter.source;
+      return !!source
     },
     toFilterOptions: (name, filters) => {
       const { defaultFilters } = dropdownFilterStore.getState();
@@ -124,12 +124,12 @@ const store = createStore(
           if (resourceType) return `${resourceType}`;
           return defaultFilters.GeoType;
         case "GeoSource":
-          const childrenFilterMatch = filters.find(
-            ({ childrenFilter = undefined}) => childrenFilter
+          const sourceFilterMatch = filters.find(
+            ({ sourceFilter = undefined}) => sourceFilter
           );
-          if (!childrenFilterMatch) return defaultFilters.GeoSource;
-          const children = childrenFilterMatch.childrenFilter.children;
-          if (children) return `${children}`;
+          if (!sourceFilterMatch) return defaultFilters.GeoSource;
+          const sourceType = sourceFilterMatch.sourceFilter.source;
+          if (sourceType) return `${sourceType}`;
       }
     }
   }))

@@ -55,35 +55,35 @@ const store = createStore(
           const [filterName] = Object.keys(f);
           return filterName !== "scopeFilter";
         });
-      const withoutGeoChildrenFilter = (filters) =>
+      const withoutGeoSourceFilter = (filters) =>
         filters.filter((f) => {
           const [filterName] = Object.keys(f);
-          return filterName !== "childrenFilter";
+          return filterName !== "sourceFilter";
         });
       
       switch (filters.GeoSource) {
         
         case "all":
           newFilters = [
-            ...withoutGeoChildrenFilter(newFilters),
+            ...withoutGeoSourceFilter(newFilters),
             {
-              childrenFilter: { children: "all" }
+              sourceFilter: { source: "all" }
             }
           ];
           break;
         case "children_only":
           newFilters = [
-            ...withoutGeoChildrenFilter(newFilters),
+            ...withoutGeoSourceFilter(newFilters),
             {
-              childrenFilter: { children: "children_only" }
+              sourceFilter: { source: "children_only" }
             }
           ];
           break;
         case "generator_only":
           newFilters = [
-            ...withoutGeoChildrenFilter(newFilters),
+            ...withoutGeoSourceFilter(newFilters),
             {
-              childrenFilter: { children: "generator_only" }
+              sourceFilter: { source: "generator_only" }
             }
           ];
           break;

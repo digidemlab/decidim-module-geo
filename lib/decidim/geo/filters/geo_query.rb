@@ -31,9 +31,11 @@ module Decidim
         private
 
         def show_children_points
+          types = Decidim.participatory_space_registry.manifests.map { |manifest| manifest.name.to_s }
+
           if show_children_points? && show_children_points_params.first == "all"
             return Decidim::Geo::Index.where("decidim_organization_id = :org OR resource_type NOT IN (:types)", org: organization.id,
-                                                                                                                types: %w(assemblies processes))
+                                                                                                                types:)
           end
 
           return Decidim::Geo::Index.where.not(decidim_organization_id: organization.id) if show_children_points? && show_children_points_params == ["children_only"]
@@ -197,8 +199,8 @@ module Decidim
         end
 
         def show_children_points_params
-          @show_children_points_param ||= graphql_params.select { |f| f[:children_filter].present? }.map do |graphql_param|
-            graphql_param[:children_filter][:children]
+          @show_children_points_param ||= graphql_params.select { |f| f[:source_filter].present? }.map do |graphql_param|
+            graphql_param[:source_filter][:source]
           end
         end
 
