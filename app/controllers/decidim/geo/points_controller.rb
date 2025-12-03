@@ -76,9 +76,7 @@ module Decidim
       end
 
       def filters_params
-        @filters_params ||= (permitted_params[:filters] || [])
-                            .map { |f| JSON.parse(f).with_indifferent_access }
-                            .reject { |h| h == { "resourceTypeFilter" => { "resourceType" => "all" } } }
+        @filters_params ||= (permitted_params[:filters] || []).map { |f| JSON.parse(f).with_indifferent_access }
       end
 
       def fields_params
