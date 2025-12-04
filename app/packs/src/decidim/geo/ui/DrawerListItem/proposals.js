@@ -3,7 +3,7 @@ import createClasses from "../createClasses";
 import _ from "lodash";
 import L from "../../leaflet";
 import getHashtagFromNode from "../drawerHelper";
-import { Component } from "react";
+import getArrowIcon from "../geoIcons";
 
 const proposals = (node) => {
   const { i18n, images, locale, defaultLocale, filters } = configStore.getState();
@@ -50,6 +50,7 @@ const proposals = (node) => {
 
   if (node?.extendedData?.componentUrl && !hasAssemblyOrProcess) {
     const infoChild = L.DomUtil.create("div", createClasses("decidimGeo__drawer__listCardChild"), infoTitle);
+    infoChild.innerHTML += getArrowIcon();
   } else {
     const infoChild = L.DomUtil.create("div", createClasses("decidimGeo__drawer__listCardTitle"), infoTitle);
   }

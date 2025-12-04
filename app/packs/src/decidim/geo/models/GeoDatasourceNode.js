@@ -18,6 +18,32 @@ export default class GeoDatasourceNode {
 
     this.marker.setZIndexOffset(maxZIndex += 100);
   }
+  staledState() {
+    if (this.marker.options.icon.options.className === "circle-marker") {
+      const outerCircle = this.marker.getElement()?.querySelector("svg circle[stroke]")?.style;
+      if (outerCircle) {
+        outerCircle.stroke = "#404040";
+      }
+    } else if (this.marker.options.icon.options.className === "arrow-marker") {
+      const outerCircle = this.marker.getElement()?.querySelector("#SVGRepo_bgCarrier rect[fill]");
+      if (outerCircle) {
+        outerCircle.setAttribute("fill", "#404040");
+      }
+    }
+  }
+  selectedState() {
+    if (this.marker.options.icon.options.className === "circle-marker") {
+      const outerCircle = this.marker.getElement()?.querySelector("svg circle[stroke]")?.style;
+      if (outerCircle) {
+        outerCircle.stroke = "var(--primary)";
+      }
+    } else if (this.marker.options.icon.options.className === "arrow-marker") {
+      const outerCircle = this.marker.getElement()?.querySelector("#SVGRepo_bgCarrier rect");
+      if (outerCircle) {
+        outerCircle.setAttribute("fill", "var(--primary)");
+      }
+    }
+  }
   isGeoLocated() {
     if (!this.marker) return false;
 
@@ -39,14 +65,7 @@ export default class GeoDatasourceNode {
     if (this.isGeoLocated()) {
       if (pinPoint) {
         if (selectedPoint && selectedPoint === this) {
-          if (this.marker.setStyle) { 
-            this.marker.setStyle(this.selectedState); 
-          } else {
-            const markerStyle = this.marker.getElement()?.querySelector(".arrow-inner")?.style
-            if (markerStyle) {
-              markerStyle.background = "var(--primary)";
-            }
-          }
+          this.selectedState();
           this.bringToFront();
 
         } else if (
@@ -54,53 +73,18 @@ export default class GeoDatasourceNode {
           `${this.data.componentId}` == `${selected_component}` &&
           `${pinPoint}` === `${this.data.resourceId}`
         ) {
-          if (this.marker.setStyle) { 
-            this.marker.setStyle(this.selectedState); 
-          } else {
-            const markerStyle = this.marker.getElement()?.querySelector(".arrow-inner")?.style
-            if (markerStyle) {
-              markerStyle.background = "var(--primary)";
-            }
-          }
+          this.selectedState();
         } else {
-          if (this.marker.setStyle) { 
-            this.marker.setStyle(this.staledState); 
-          } else {
-            const markerStyle = this.marker.getElement()?.querySelector(".arrow-inner")?.style
-            if (markerStyle) {
-              markerStyle.background = "#404040";
-            }
-          }
+          this.staledState();
         }
       } else {
         if (selectedPoint === this) {
-          if (this.marker.setStyle) { 
-            this.marker.setStyle(this.selectedState); 
-          } else {
-            const markerStyle = this.marker.getElement()?.querySelector(".arrow-inner")?.style
-            if (markerStyle) {
-              markerStyle.background = "var(--primary)";
-            }
-          }
+          this.selectedState();
           this.bringToFront();
         } else if (!selectedPoint && `${this.data.componentId}` === `${selected_component}`) {
-          if (this.marker.setStyle) { 
-            this.marker.setStyle(this.selectedState); 
-          } else {
-            const markerStyle = this.marker.getElement()?.querySelector(".arrow-inner")?.style
-            if (markerStyle) {
-              markerStyle.background = "var(--primary)";
-            }
-          }
+          this.selectedState();
         } else {
-          if (this.marker.setStyle) { 
-            this.marker.setStyle(this.staledState); 
-          } else {
-            const markerStyle = this.marker.getElement()?.querySelector(".arrow-inner")?.style
-            if (markerStyle) {
-              markerStyle.background = "#404040";
-            }
-          }
+          this.staledState();
         }
       }
     }
@@ -137,14 +121,6 @@ export default class GeoDatasourceNode {
   }
   get geoScopeId() {
     return this.scopeId;
-  }
-
-  get selectedState() {
-    return { color: "var(--primary)" };
-  }
-
-  get staledState() {
-    return { color: "#404040" };
   }
 
   async panToMarker() {

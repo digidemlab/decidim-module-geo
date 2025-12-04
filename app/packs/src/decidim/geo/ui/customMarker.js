@@ -1,28 +1,16 @@
 import L from "../leaflet";
 const customMarker = (location) => {
+
+  const svg = `
+      <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="4" stroke="#404040" stroke-width="6" />
+        <circle cx="12" cy="12" r="3" fill="white" />
+      </svg>
+      `;
+      
   const circleIcon = L.divIcon({
-    className: "unicode-circle-marker",
-    html: `
-      <div class="arrow-inner" style="
-        width: 16px;
-        height: 16px;
-        background: #404040;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        user-select: none;
-        position: relative;
-        z-index: 0;
-      ">
-        <div style="
-          width: 6px;
-          height: 6px;
-          background: white;
-          border-radius: 50%;
-        "></div>
-      </div>
-    `,
+    className: "circle-marker",
+    html: svg,
     iconSize: [16, 16],
     iconAnchor: [8, 8]
   });
