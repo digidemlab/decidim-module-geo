@@ -227,15 +227,15 @@ class FilterModal {
     const i18n = this.i18n();
     const i18nPrefix = "decidim_geo.filters";
 
-    const fieldLabel = i18n[`${i18nPrefix}.children.label`];
+    const fieldLabel = i18n[`${i18nPrefix}.source.label`];
 
     this.field(
       fieldLabel,
       "GeoSource",
       [
-        [i18n[`${i18nPrefix}.children.all`], "all"],
-        [i18n[`${i18nPrefix}.children.children_only`], "children_only"],
-        [i18n[`${i18nPrefix}.children.generator_only`], "generator_only"]
+        [i18n[`${i18nPrefix}.source.all`], "all"],
+        [i18n[`${i18nPrefix}.source.children_only`], "children_only"],
+        [i18n[`${i18nPrefix}.source.generator_only`], "generator_only"]
       ],
       []
     );

@@ -151,6 +151,11 @@ en:
           only_meetings: "Meetings"
           only_debates: "Debates"
           only_accountabilities: "Accountabilities"
+        source:
+          label: "Source"
+          all: "All"
+          children_only: "Show related platforms only"
+          generator_only: "Show this platform only"
     components:
       pagination:
         page_title: "%{component_name}"

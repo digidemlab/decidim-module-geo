@@ -139,6 +139,11 @@ de:
           only_meetings: "Veranstaltungen"
           only_debates: "Debatten"
           only_accountabilities: "Verantwortlichkeiten"
+        source:
+          label: "Source"
+          all: "All"
+          children_only: "Show related platforms only"
+          generator_only: "Show this platform only"
     components:
       geo:
         name: Geo

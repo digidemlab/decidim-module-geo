@@ -140,6 +140,11 @@ fr:
           only_meetings: "Réunions"
           only_debates: "Débats"
           only_accountabilities: "Projets"
+        source:
+          label: "Source"
+          all: "All"
+          children_only: "Show related platforms only"
+          generator_only: "Show this platform only"
     components:
       geo:
         name: Géo
