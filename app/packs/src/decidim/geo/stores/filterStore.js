@@ -110,8 +110,13 @@ const store = createStore(
             ({ resourceTypeFilter = undefined }) => resourceTypeFilter
           );
           if (!typeFilterMatch) return defaultFilters.GeoType;
+          const id = document.querySelector('.decidimGeo__container').id;
+          if (["GeoAccountability", "GeoProposals", "GeoMeetings", "GeoDebatesItem"].includes(id)) {
+            const hasAllComponents = ["accountability", "debates", "meetings", "proposals"].every(t => filters.some(f => f.resourceTypeFilter?.resourceType === t));
+            if (hasAllComponents) { return "all" };
+          }
           const resourceType = typeFilterMatch.resourceTypeFilter.resourceType;
-          if (resourceType) return `${resourceType}`;
+          if (resourceType) { return `${resourceType}` };
           return defaultFilters.GeoType;
       }
     }
