@@ -154,8 +154,8 @@ en:
         source:
           label: "Source"
           all: "All"
-          children_only: "Show related platforms only"
-          generator_only: "Show this platform only"
+          children_only: "External points"
+          generator_only: "Internal points"
     components:
       pagination:
         page_title: "%{component_name}"

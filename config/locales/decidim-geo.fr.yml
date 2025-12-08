@@ -142,9 +142,9 @@ fr:
           only_accountabilities: "Projets"
         source:
           label: "Source"
-          all: "Tous"
-          children_only: "Afficher uniquement les plateformes liées"
-          generator_only: "Afficher uniquement cette plateforme"
+          all: "Tout"
+          children_only: "Points externes"
+          generator_only: "Points internes"
     components:
       geo:
         name: Géo

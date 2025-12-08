@@ -1,7 +1,7 @@
 function getArrowIcon() {
   return `
-    <svg width="25px" height="25px" viewBox="-6 -6 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M14 2H5.50003L4.00003 3.5L6.83581 6.33579L0.585815 12.5858L3.41424 15.4142L9.66424 9.16421L12.5 12L14 10.5L14 2Z" fill="var(--primary)"></path>
+    <svg width="25px" height="25px" viewBox="-3 -3 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M16.0037 9.41421L7.39712 18.0208L5.98291 16.6066L14.5895 8H7.00373V6H18.0037V17H16.0037V9.41421Z" fill="var(--primary)"></path>
     </svg>
   `;
 }
