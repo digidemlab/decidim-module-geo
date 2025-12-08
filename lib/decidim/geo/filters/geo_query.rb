@@ -38,7 +38,10 @@ module Decidim
                                                                                                                 types:)
           end
 
-          return Decidim::Geo::Index.where.not(decidim_organization_id: organization.id) if show_children_points? && show_children_points_params == ["children_only"]
+          if show_children_points? && show_children_points_params == ["children_only"]
+            return Decidim::Geo::Index.where.not("decidim_organization_id = :org OR resource_type IN (:types)", org: organization.id,
+                                                                                                                types:)
+          end
 
           Decidim::Geo::Index.where(decidim_organization_id: organization.id)
         end

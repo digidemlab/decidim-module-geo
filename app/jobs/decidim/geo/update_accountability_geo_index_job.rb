@@ -39,7 +39,7 @@ module Decidim
                            participatory_space_id: accountability_result.participatory_space.id,
                            participatory_space_type: accountability_result.participatory_space.manifest.name.to_s,
                            extended_data: {
-                             component_url:, 
+                             component_url:,
                              space_page_host:
                            }
                          )
