@@ -3,9 +3,10 @@ import configStore from "../../stores/configStore";
 import createClasses from "../createClasses";
 import L from "../../leaflet";
 import getHashtagFromNode from "../drawerHelper";
+import getArrowIcon from "../geoIcons";
 
 const fallback = (container, node) => {
-  const { i18n, images, locale, defaultLocale } = configStore.getState();
+  const { i18n, images, locale, defaultLocale, filters } = configStore.getState();
   if (!_.isEmpty(node.imageUrl)) {
     const image = L.DomUtil.create(
       "img",
@@ -30,13 +31,19 @@ const fallback = (container, node) => {
   );
   notGeoEncodedIcon.src = images?.not_geolocated;
 
-  const infoTitle = L.DomUtil.create(
-    "div",
-    "decidimGeo__drawer__listCardTitle",
-    container
-  );
-  infoTitle.textContent = getHashtagFromNode(node, locale, defaultLocale);
-  console.log("infoTitle: " + infoTitle.textContent)
+  const infoTitle = L.DomUtil.create("div", "decidimGeo__drawer__listCardTitle", container);
+  const infoTitleTxt = L.DomUtil.create("span", createClasses("decidimGeo__drawer__listTitleTxt"), infoTitle);
+  infoTitleTxt.textContent = getHashtagFromNode(node, locale, defaultLocale);
+
+  const hasAssemblyOrProcess = filters?.some(f => f.assembly_filter || f.process_filter);
+
+  if (node?.extendedData?.componentUrl && !hasAssemblyOrProcess) {
+    const infoChild = L.DomUtil.create("div", createClasses("decidimGeo__drawer__listCardChild"), infoTitle);
+    infoChild.innerHTML += getArrowIcon();
+  } else {
+    const infoChild = L.DomUtil.create("div", createClasses("decidimGeo__drawer__listCardTitle"), infoTitle);
+  }
+
   if (node.descriptionHtml) {
     const text = node.descriptionHtml[locale] || node.descriptionHtml[defaultLocale];
 

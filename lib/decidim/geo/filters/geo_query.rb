@@ -17,7 +17,7 @@ module Decidim
         end
 
         def results
-          query = Decidim::Geo::Index.where(decidim_organization_id: organization.id)
+          query = show_children_points
           query = query.geolocated if geolocated? || config.force_geoencoded?
           query = indexed!(query)
           query = virtual!(query)
@@ -29,6 +29,26 @@ module Decidim
         end
 
         private
+
+        def show_children_points
+          types = Decidim.participatory_space_registry.manifests.map { |manifest| manifest.name.to_s }
+
+          if show_children_points? && show_children_points_params.first == "all"
+            return Decidim::Geo::Index.where("decidim_organization_id = :org OR resource_type NOT IN (:types)", org: organization.id,
+                                                                                                                types:)
+          end
+
+          if show_children_points? && show_children_points_params == ["children_only"]
+            return Decidim::Geo::Index.where.not("decidim_organization_id = :org OR resource_type IN (:types)", org: organization.id,
+                                                                                                                types:)
+          end
+
+          Decidim::Geo::Index.where(decidim_organization_id: organization.id)
+        end
+
+        def show_children_points?
+          organization.space_page_settings_attributes["show_children_points"]
+        end
 
         def active_time_filter
           @active_time_filter ||= time_filter_params && time_filter_params[:time_filter][:time]
@@ -178,6 +198,12 @@ module Decidim
         def scope_ids_params
           @scope_ids_params ||= graphql_params.select { |f| f[:scope_filter].present? }.map do |graphql_param|
             graphql_param[:scope_filter][:scope_id]
+          end
+        end
+
+        def show_children_points_params
+          @show_children_points_param ||= graphql_params.select { |f| f[:source_filter].present? }.map do |graphql_param|
+            graphql_param[:source_filter][:source]
           end
         end
 

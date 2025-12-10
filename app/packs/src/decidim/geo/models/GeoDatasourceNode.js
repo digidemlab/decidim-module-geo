@@ -1,6 +1,7 @@
 import { item as drawerListItem, nodeMarker } from "../ui";
 import geoStore from "../stores/geoStore";
 import configStore from "../stores/configStore";
+let maxZIndex = 0;
 
 export default class GeoDatasourceNode {
   constructor({ node, map }) {
@@ -12,10 +13,49 @@ export default class GeoDatasourceNode {
   get isFetched() {
     return true;
   }
+  bringToFront() {
+    if (!this.marker) return;
+
+    this.marker.setZIndexOffset(maxZIndex += 100);
+  }
+  staledState() {
+    if (this.marker.options.icon.options.className === "circle-marker") {
+      const outerCircle = this.marker.getElement()?.querySelector("svg circle[stroke]")?.style;
+      if (outerCircle) {
+        outerCircle.stroke = "#404040";
+      }
+    } else if (this.marker.options.icon.options.className === "arrow-marker") {
+      const outerCircle = this.marker.getElement()?.querySelector("#SVGRepo_bgCarrier rect[fill]");
+      if (outerCircle) {
+        outerCircle.setAttribute("fill", "#404040");
+      }
+    }
+  }
+  selectedState() {
+    if (this.marker.options.icon.options.className === "circle-marker") {
+      const outerCircle = this.marker.getElement()?.querySelector("svg circle[stroke]")?.style;
+      if (outerCircle) {
+        outerCircle.stroke = "var(--primary)";
+      }
+    } else if (this.marker.options.icon.options.className === "arrow-marker") {
+      const outerCircle = this.marker.getElement()?.querySelector("#SVGRepo_bgCarrier rect");
+      if (outerCircle) {
+        outerCircle.setAttribute("fill", "var(--primary)");
+      }
+    }
+  }
   isGeoLocated() {
     if (!this.marker) return false;
-    const latlng = this.marker.getLatLng();
-    return latlng.lat && latlng.lng;
+
+    let latlng = []
+  
+    if (this.marker.getLatLng) {
+      latlng = this.marker.getLatLng();
+    } else if (this.marker.getLatLngs) {
+      const points = this.marker.getLatLngs();
+      latlng = Array.isArray(points) && points.length > 0 && points[0].length > 0 ? points[0][0] : null;
+    }
+    return latlng?.lat && latlng?.lng;
   }
 
   repaint() {
@@ -25,28 +65,26 @@ export default class GeoDatasourceNode {
     if (this.isGeoLocated()) {
       if (pinPoint) {
         if (selectedPoint && selectedPoint === this) {
-          this.marker.setStyle(this.selectedState);
-          this.marker.bringToFront();
+          this.selectedState();
+          this.bringToFront();
+
         } else if (
           !selectedPoint &&
           `${this.data.componentId}` == `${selected_component}` &&
           `${pinPoint}` === `${this.data.resourceId}`
         ) {
-          this.marker.setStyle(this.selectedState);
+          this.selectedState();
         } else {
-          this.marker.setStyle(this.staledState);
+          this.staledState();
         }
       } else {
         if (selectedPoint === this) {
-          this.marker.setStyle(this.selectedState);
-          this.marker.bringToFront();
-        } else if (
-          !selectedPoint &&
-          `${this.data.componentId}` === `${selected_component}`
-        ) {
-          this.marker.setStyle(this.selectedState);
+          this.selectedState();
+          this.bringToFront();
+        } else if (!selectedPoint && `${this.data.componentId}` === `${selected_component}`) {
+          this.selectedState();
         } else {
-          this.marker.setStyle(this.staledState);
+          this.staledState();
         }
       }
     }
@@ -85,14 +123,6 @@ export default class GeoDatasourceNode {
     return this.scopeId;
   }
 
-  get selectedState() {
-    return { color: "var(--primary)" };
-  }
-
-  get staledState() {
-    return { color: "#404040" };
-  }
-
   async panToMarker() {
     const { map_config: mapConfig } = configStore.getState();
     const { focus_zoom_level: focusZoomLevel = 21 } = mapConfig;
@@ -119,7 +149,7 @@ export default class GeoDatasourceNode {
     if (this.data?.lonlat?.latitude && this.data?.lonlat?.longitude) {
       this.marker = nodeMarker(this.data);
       this.marker.on("click", this.select.bind(this));
-      this.marker.bringToFront();
+      this.bringToFront();
     }
     try {
       this.repaint();

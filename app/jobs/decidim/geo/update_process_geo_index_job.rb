@@ -36,7 +36,11 @@ module Decidim
                            start_date:,
                            end_date:,
                            participatory_space_id: process.id,
-                           participatory_space_type: manifest_name
+                           participatory_space_type: manifest_name,
+                           extended_data: {
+                             component_url:,
+                             space_page_host:
+                           }
                          )
                        )
                      ))
@@ -44,6 +48,16 @@ module Decidim
       rescue StandardError => e
         Rails.logger.debug { "Can not index #{e}" }
         raise e
+      end
+
+      def component_url
+        return unless resource.organization.space_page?
+
+        "https://#{resource.organization.host}#{resource_url}"
+      end
+
+      def space_page_host
+        resource.organization.host
       end
 
       def remove_process

@@ -58,7 +58,8 @@ const store = createStore(
         i18n: mapConfig.i18n,
         images: mapConfig.images || {},
         isIndex: mapConfig.is_index === "true" || mapConfig.is_index === true,
-        activeManifests: mapConfig.active_manifests
+        activeManifests: mapConfig.active_manifests,
+        filters: mapConfig.filters
       }));
 
       const { setDefaultFilters, setFilters, toFilterOptions } = filterStore.getState();
@@ -69,7 +70,8 @@ const store = createStore(
         GeoScopeFilter: toFilterOptions("GeoScopeFilter", mapConfig.filters),
         GeoShowFilter: toFilterOptions("GeoShowFilter", mapConfig.filters),
         GeoTimeFilter: toFilterOptions("GeoTimeFilter", mapConfig.filters),
-        GeoType: toFilterOptions("GeoType", mapConfig.filters)
+        GeoType: toFilterOptions("GeoType", mapConfig.filters),
+        GeoSource: toFilterOptions("GeoSource", mapConfig.filters)
       });
     }
   }))

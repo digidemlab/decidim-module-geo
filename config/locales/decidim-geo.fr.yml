@@ -140,6 +140,11 @@ fr:
           only_meetings: "Réunions"
           only_debates: "Débats"
           only_accountabilities: "Projets"
+        source:
+          label: "Source"
+          all: "Tout"
+          children_only: "Points externes"
+          generator_only: "Points internes"
     components:
       geo:
         name: Géo

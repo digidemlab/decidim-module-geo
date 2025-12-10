@@ -73,6 +73,25 @@
       display: none;
     }
   }
+  .decidimGeo__drawer__listCardChild {
+    padding-left: 2px;
+    max-height: 16px;
+    transform: translateY(-2px);
+    &--hidden {
+      display: none;
+    }
+    &::after {
+        content: '\2197';  
+        font-size: 16px;   
+        display: inline-block; 
+        margin-left: 8px;  
+        color: "var(--primary)";
+        width: 16px;
+        height: 16px;
+        text-align: center;
+
+    }
+  }
   .decidimGeo__drawer__listCardImg {
     display: inline-block;
     vertical-align: bottom;
@@ -169,7 +188,17 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
+
+  .decidimGeo__drawer__listTitleTxt {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+}
 
   .decidimGeo__drawer__listCardDate {
     display: inline-flex;

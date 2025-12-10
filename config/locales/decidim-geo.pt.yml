@@ -139,6 +139,11 @@ pt:
           only_meetings: "Reunião"
           only_debates: "Debate"
           only_accountabilities: "Resultados"
+        source:
+          label: "Source"
+          all: "All"
+          children_only: "Show related platforms only"
+          generator_only: "Show this platform only"
     components:
       geo:
         name: Localização geográfica

@@ -5,6 +5,7 @@ import pointStore from "./pointStore";
 import geoStore from "./geoStore";
 import dropdownFilterStore from "../stores/dropdownFilterStore";
 import pointCounterStore from "../stores/pointCounterStore";
+
 const sortingIteratee = (filter) => JSON.stringify(filter);
 const store = createStore(
   subscribeWithSelector((set, get) => ({
@@ -76,6 +77,15 @@ const store = createStore(
       const { resourceType } = resourceFilter.resourceTypeFilter;
       return resourceType === "assemblies";
     },
+    isSource() {
+      const { defaultFilters } = get();
+      const sourceFilterMatch = defaultFilters.find(
+        ({ sourceFilter = undefined}) => sourceFilter
+      );
+      if (!sourceFilterMatch) return false;
+      const source = sourceFilterMatch.sourceFilter.source;
+      return !!source
+    },
     toFilterOptions: (name, filters) => {
       const { defaultFilters } = dropdownFilterStore.getState();
       switch (name) {
@@ -118,6 +128,13 @@ const store = createStore(
           const resourceType = typeFilterMatch.resourceTypeFilter.resourceType;
           if (resourceType) { return `${resourceType}` };
           return defaultFilters.GeoType;
+        case "GeoSource":
+          const sourceFilterMatch = filters.find(
+            ({ sourceFilter = undefined}) => sourceFilter
+          );
+          if (!sourceFilterMatch) return defaultFilters.GeoSource;
+          const sourceType = sourceFilterMatch.sourceFilter.source;
+          if (sourceType) return `${sourceType}`;
       }
     }
   }))
@@ -163,6 +180,7 @@ store.subscribe(
     setFilter("GeoShowFilter", toFilterOptions("GeoShowFilter", activeFilters));
     setFilter("GeoTimeFilter", toFilterOptions("GeoTimeFilter", activeFilters));
     setFilter("GeoType", toFilterOptions("GeoType", activeFilters));
+    setFilter("GeoSource", toFilterOptions("GeoSource", activeFilters));
 
     // Update active counters.
     const { updateCurrentCountForFilters } = pointCounterStore.getState();

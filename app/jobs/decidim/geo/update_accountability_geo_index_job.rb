@@ -37,7 +37,11 @@ module Decidim
                            resource_status: nil,
                            component_id: accountability_result.decidim_component_id,
                            participatory_space_id: accountability_result.participatory_space.id,
-                           participatory_space_type: accountability_result.participatory_space.manifest.name.to_s
+                           participatory_space_type: accountability_result.participatory_space.manifest.name.to_s,
+                           extended_data: {
+                             component_url:,
+                             space_page_host:
+                           }
                          )
                        )
                      ))
@@ -45,6 +49,16 @@ module Decidim
       rescue StandardError => e
         Rails.logger.debug { "Can't index #{e}" }
         false
+      end
+
+      def component_url
+        return unless resource.organization.space_page?
+
+        "https://#{resource.organization.host}#{resource_url}"
+      end
+
+      def space_page_host
+        resource.organization.host
       end
 
       def remove_accountability_result

@@ -39,7 +39,9 @@ module Decidim
                            participatory_space_type: meeting.participatory_space.manifest.name.to_s,
                            extended_data: {
                              start_time: meeting.start_time,
-                             end_time: meeting.end_time
+                             end_time: meeting.end_time,
+                             component_url:,
+                             space_page_host:
                            }
                          )
                        )
@@ -48,6 +50,16 @@ module Decidim
       rescue StandardError => e
         Rails.logger.debug { "Can index #{e}" }
         false
+      end
+
+      def component_url
+        return unless resource.organization.space_page?
+
+        "https://#{resource.organization.host}#{resource_url}"
+      end
+
+      def space_page_host
+        resource.organization.host
       end
 
       def with_coords(decidim_geo_hash)

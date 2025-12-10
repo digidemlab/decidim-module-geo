@@ -16,23 +16,24 @@ module Decidim
             @options[:filters].push({ resourceTypeFilter: { resourceType: "meetings" } })
             @options[:filters].push({ resourceTypeFilter: { resourceType: "accountability" } })
           end
-          # Scope on the current process
-          if current_participatory_space_manifest == "participatory_processes"
-            @options[:filters].push({
-                                      process_filter: { id: current_participatory_space.id }
-                                    })
-          end
-          # Scope on the current assembly and all its children
-          return unless current_participatory_space_manifest == "assemblies"
 
-          @options[:filters].concat(
-            [{ assembly_filter: { id: current_participatory_space.id } }],
-            Decidim::Assembly.published.where(
-              "parents_path ~ ?", "#{current_participatory_space.parents_path}.*"
-            ).where.not(id: current_participatory_space.id)
-            .ids
-            .map { |id| { assembly_filter: { id: } } }
-          )
+          if current_participatory_space_manifest == "participatory_processes"
+            # Scope on the current process
+            @options[:filters].push({ process_filter: { id: current_participatory_space.id } })
+          elsif current_participatory_space_manifest == "assemblies"
+            # Scope on the current assembly and all its children
+            @options[:filters].concat(
+              [{ assembly_filter: { id: current_participatory_space.id } }],
+              Decidim::Assembly.published.where(
+                "parents_path ~ ?", "#{current_participatory_space.parents_path}.*"
+              ).where.not(id: current_participatory_space.id)
+              .ids
+              .map { |id| { assembly_filter: { id: } } }
+            )
+          end
+
+          # Show children points and filter in generator organization
+          @options[:filters].push({ sourceFilter: { source: "all" } }) if space_page? && current_organization&.space_page_settings_attributes&.[]("show_children_points")
         end
 
         def show
@@ -44,6 +45,10 @@ module Decidim
         end
 
         protected
+
+        def space_page?
+          Decidim.const_defined?("SpacePage")
+        end
 
         def current_participatory_space_manifest
           current_participatory_space.manifest.name.to_s if current_participatory_space?
@@ -168,6 +173,10 @@ module Decidim
             "decidim_geo.filters.type.meetings": t("decidim.geo.filters.type.only_meetings"),
             "decidim_geo.filters.type.debates": t("decidim.geo.filters.type.only_debates"),
             "decidim_geo.filters.type.accountability": t("decidim.geo.filters.type.only_accountabilities"),
+            "decidim_geo.filters.source.label": t("decidim.geo.filters.source.label"),
+            "decidim_geo.filters.source.all": t("decidim.geo.filters.source.all"),
+            "decidim_geo.filters.source.children_only": t("decidim.geo.filters.source.children_only"),
+            "decidim_geo.filters.source.generator_only": t("decidim.geo.filters.source.generator_only"),
             "decidim_geo.filters.empty.message": t("decidim.geo.filters.empty.message"),
             "decidim_geo.filters.empty.update_button": t("decidim.geo.filters.empty.update_button"),
             "decidim_geo.actions.view": t("decidim.geo.actions.view")

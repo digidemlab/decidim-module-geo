@@ -4,9 +4,10 @@ import _ from "lodash";
 import { format, isSameDay } from "date-fns";
 import L from "../../leaflet";
 import getHashtagFromNode from "../drawerHelper";
+import getArrowIcon from "../geoIcons";
 
 const meetings = (node) => {
-  const { i18n, images, locale, defaultLocale } = configStore.getState();
+  const { i18n, images, locale, defaultLocale, filters } = configStore.getState();
   const listCard = L.DomUtil.create("li", "decidimGeo__drawer__listCard");
   const info = L.DomUtil.create(
     "div",
@@ -29,7 +30,18 @@ const meetings = (node) => {
   notGeoEncodedIcon.src = images?.not_geolocated;
 
   const infoTitle = L.DomUtil.create("div", "decidimGeo__drawer__listCardTitle", info);
-  infoTitle.textContent = getHashtagFromNode(node, locale, defaultLocale);
+  const infoTitleTxt = L.DomUtil.create("span", createClasses("decidimGeo__drawer__listTitleTxt"), infoTitle);
+  infoTitleTxt.textContent = getHashtagFromNode(node, locale, defaultLocale);
+
+  const hasAssemblyOrProcess = filters?.some(f => f.assembly_filter || f.process_filter);
+
+  if (node?.extendedData?.componentUrl && !hasAssemblyOrProcess) {
+    const infoChild = L.DomUtil.create("div", createClasses("decidimGeo__drawer__listCardChild"), infoTitle);
+    infoChild.innerHTML += getArrowIcon();
+  } else {
+    const infoChild = L.DomUtil.create("div", createClasses("decidimGeo__drawer__listCardTitle"), infoTitle);
+  }
+  
   const infoDescription = L.DomUtil.create(
     "div",
     "decidimGeo__drawer__listCardDate",

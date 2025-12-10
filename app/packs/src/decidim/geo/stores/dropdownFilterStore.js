@@ -2,6 +2,7 @@ import { createStore } from "zustand/vanilla";
 import { subscribeWithSelector } from "zustand/middleware";
 import filterStore from "./filterStore";
 import pointCounterStore from "./pointCounterStore";
+
 const store = createStore(
   subscribeWithSelector((set, get) => ({
     isOpen: false,
@@ -9,13 +10,15 @@ const store = createStore(
       GeoScopeFilter: "all",
       GeoShowFilter: "all",
       GeoTimeFilter: "active",
-      GeoType: "all"
+      GeoType: "all",
+      GeoSource: "all"
     },
     selectedFilters: {
       GeoScopeFilter: "all",
       GeoShowFilter: "all",
       GeoTimeFilter: "active",
-      GeoType: "all"
+      GeoType: "all",
+      GeoSource: "all"
     },
     nextFilters: undefined,
 
@@ -27,9 +30,11 @@ const store = createStore(
     },
     fromOptionsToFilters(filters = undefined) {
       if (!filters) filters = get().selectedFilters;
+
       const { activeFilters } = filterStore.getState();
 
       let newFilters = [...activeFilters];
+
       const withoutGeoShowFilter = (filters) =>
         filters.filter((f) => {
           const [filterName] = Object.keys(f);
@@ -50,7 +55,40 @@ const store = createStore(
           const [filterName] = Object.keys(f);
           return filterName !== "scopeFilter";
         });
-
+      const withoutGeoSourceFilter = (filters) =>
+        filters.filter((f) => {
+          const [filterName] = Object.keys(f);
+          return filterName !== "sourceFilter";
+        });
+      
+      switch (filters.GeoSource) {
+        
+        case "all":
+          newFilters = [
+            ...withoutGeoSourceFilter(newFilters),
+            {
+              sourceFilter: { source: "all" }
+            }
+          ];
+          break;
+        case "children_only":
+          newFilters = [
+            ...withoutGeoSourceFilter(newFilters),
+            {
+              sourceFilter: { source: "children_only" }
+            }
+          ];
+          break;
+        case "generator_only":
+          newFilters = [
+            ...withoutGeoSourceFilter(newFilters),
+            {
+              sourceFilter: { source: "generator_only" }
+            }
+          ];
+          break;
+        ;
+      }
       switch (filters.GeoShowFilter) {
         case "all":
           newFilters = withoutGeoShowFilter(newFilters);

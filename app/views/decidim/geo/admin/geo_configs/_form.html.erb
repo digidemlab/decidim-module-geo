@@ -75,10 +75,10 @@
       <div class="row column">
         <%= form.select :default_geoencoded_filter,
           options_for_select(Decidim::Geo::GeoConfig::default_geoencoded_filters.map do |key, value|
-            [ 
-            t("decidim.geo.admin.geo_configs.default_filter.geoencoded_filter.fields.#{key}"), 
+            [
+            t("decidim.geo.admin.geo_configs.default_filter.geoencoded_filter.fields.#{key}"),
               key,
-            ] 
+            ]
           end,
           form.object.default_geoencoded_filter), label: t("label",
           scope: "decidim.geo.admin.geo_configs.default_filter.geoencoded_filter" ) %>
