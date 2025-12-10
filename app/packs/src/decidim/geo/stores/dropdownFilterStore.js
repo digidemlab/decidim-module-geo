@@ -105,8 +105,10 @@ const store = createStore(
         switch (id) {
           case "GeoAccountability":
           case "GeoProposals":
+          case "GeoProposalsItem":
           case "GeoDebatesItem":
           case "GeoMeetings":
+          case "GeoMeetingsItem":
             if (resourceType === "all") {
               newFilters = [
                 ...withoutTypeFilter(newFilters),

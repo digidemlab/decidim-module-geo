@@ -111,7 +111,7 @@ const store = createStore(
           );
           if (!typeFilterMatch) return defaultFilters.GeoType;
           const id = document.querySelector('.decidimGeo__container').id;
-          if (["GeoAccountability", "GeoProposals", "GeoMeetings", "GeoDebatesItem"].includes(id)) {
+          if (["GeoAccountability", "GeoProposals", "GeoProposalsItem", "GeoMeetings", "GeoMeetingsItem", "GeoDebatesItem"].includes(id)) {
             const hasAllComponents = ["accountability", "debates", "meetings", "proposals"].every(t => filters.some(f => f.resourceTypeFilter?.resourceType === t));
             if (hasAllComponents) { return "all" };
           }
