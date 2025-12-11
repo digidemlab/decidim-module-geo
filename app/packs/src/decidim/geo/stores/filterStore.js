@@ -126,7 +126,9 @@ const store = createStore(
             if (hasAllComponents) { return "all" };
           }
           const resourceType = typeFilterMatch.resourceTypeFilter.resourceType;
-          if (resourceType) { return `${resourceType}` };
+          if (resourceType) {
+            return `${resourceType}`;
+          }
           return defaultFilters.GeoType;
         case "GeoSource":
           const sourceFilterMatch = filters.find(

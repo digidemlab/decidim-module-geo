@@ -76,6 +76,7 @@ en:
             latitude: Latitude
             tile: Tile 
             maptiler_api_key: Map tiler API Key (Optional)
+            esri_tile_enabled: Esri Tiles ?
           actions:
             update:
               success: Configurations Updated

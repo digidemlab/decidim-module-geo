@@ -39,6 +39,8 @@ module Decidim
           content_security_policy.append_csp_directive("img-src", provider)
         end
         content_security_policy.append_csp_directive("connect-src", "*.komoot.io")
+        content_security_policy.append_csp_directive("connect-src", "https://vector.sitg.ge.ch https://*.arcgis.com")
+        content_security_policy.append_csp_directive("worker-src", "blob: 'self'")
       end
     end
   end

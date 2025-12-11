@@ -10,7 +10,7 @@ function getHashtagFromNode(node, locale, defaultLocale) {
     return decodedName.trim();
   } catch (error) {
     console.warn("Error decoding hashtag name:", encodedName, error);
-    return rawText; 
+    return rawText;
   }
 }
 export default getHashtagFromNode;

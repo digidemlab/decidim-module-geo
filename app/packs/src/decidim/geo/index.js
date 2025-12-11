@@ -81,7 +81,7 @@ async function displayMap() {
         if (isLoading > 0 || !isInitialized) {
           return;
         }
-        const { map, pointsLayer, isSmallScreen} = configStore.getState();
+        const { map, pointsLayer, isSmallScreen } = configStore.getState();
         const { selectedPoint, selectedScope } = geoStore.getState();
         const pointInMap = getFilteredPoints().filter(
           (node) => typeof node.isGeoLocated !== "undefined" && node.isGeoLocated()
@@ -91,10 +91,12 @@ async function displayMap() {
           pointInMap.forEach(({ marker }) => {
             marker.addTo(pointsLayer);
           });
-          const bounds = L.latLngBounds(pointInMap.map(({ marker }) => marker.getLatLng()));
+          const bounds = L.latLngBounds(
+            pointInMap.map(({ marker }) => marker.getLatLng())
+          );
           map.fitBounds(bounds, {
             animate: true,
-            padding: isSmallScreen ? [16, 16, 32, 16] : [32,32, 32, 310],
+            padding: isSmallScreen ? [16, 16, 32, 16] : [32, 32, 32, 310],
             maxZoom: map.getZoom()
           });
         } else {
@@ -182,16 +184,17 @@ async function main() {
 }
 
 window.addEventListener("load", function () {
-  main().then(() => {
-    console.log(
-      `DecidimGeo: ready. Using Leaflet ${L.version} (global: ${window.L.version})`
-    );
-    pointStore.setState(() => ({ isInitialized: true }));
-  }).catch(error => {
-    console.error("Decidim Geo: Can't initialize.")
-    console.error(error)
-  });
+  main()
+    .then(() => {
+      console.log(
+        `DecidimGeo: ready. Using Leaflet ${L.version} (global: ${window.L.version})`
+      );
+      pointStore.setState(() => ({ isInitialized: true }));
+    })
+    .catch((error) => {
+      console.error("Decidim Geo: Can't initialize.");
+      console.error(error);
+    });
 });
-
 
 export default L;
