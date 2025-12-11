@@ -138,7 +138,7 @@ const store = createStore(
 
       const resourceType = filters.GeoType;
       if (resourceType) {
-        const id = document.querySelector('.decidimGeo__container').id;
+        const id = document.querySelector(".decidimGeo__container").id;
 
         switch (id) {
           case "GeoAccountability":
@@ -163,7 +163,7 @@ const store = createStore(
                 }
               ];
             }
-          break;
+            break;
           default:
             newFilters = [
               ...withoutTypeFilter(newFilters),

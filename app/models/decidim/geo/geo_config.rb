@@ -19,6 +19,7 @@ module Decidim
           geo_config.tile = tile_layer_default
           geo_config.maptiler_api_key = ""
           geo_config.maptiler_style_id = ""
+          geo_config.esri_tile_enabled = false
           geo_config.default_geoencoded_filter = 1
           geo_config
         end

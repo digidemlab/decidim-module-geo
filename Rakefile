@@ -4,7 +4,7 @@ require "decidim/dev/common_rake"
 
 def install_module(path)
   Dir.chdir(path) do
-    system("bundle exec rake decidim_geo:install:migrations")
+    system("bundle exec rails decidim:update")
   end
 end
 

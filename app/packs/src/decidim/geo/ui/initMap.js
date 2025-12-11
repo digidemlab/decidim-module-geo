@@ -1,11 +1,20 @@
 import configStore from "../stores/configStore";
 import { MaptilerLayer } from "@maptiler/leaflet-maptilersdk";
 import L from "../leaflet";
+import loadEsri from "./loadEsri";
 const initMap = async () => {
   await import("leaflet.fullscreen");
   const {
     mapID,
-    map_config: { lat, lng, zoom, tile_layer, maptiler_api_key, maptiler_style_id },
+    map_config: {
+      lat,
+      lng,
+      zoom,
+      tile_layer,
+      maptiler_api_key,
+      maptiler_style_id,
+      esri_tile_enabled
+    },
     i18n
   } = configStore.getState();
   if (!document.getElementById(mapID)) {
@@ -17,12 +26,16 @@ const initMap = async () => {
     zoom,
     scrollWheelZoom: false,
     fullscreenControl: false,
+    attributionControl: false,
     renderer: L.svg()
   });
 
   map.zoomControl.setPosition("bottomright");
-
-  if (maptiler_api_key.length > 0) {
+  if (esri_tile_enabled) {
+    await loadEsri();
+    const layer = L.esri.Vector.vectorTileLayer(tile_layer, {});
+    layer.addTo(map);
+  } else if (maptiler_api_key.length > 0) {
     new MaptilerLayer({
       style: maptiler_style_id,
       apiKey: maptiler_api_key

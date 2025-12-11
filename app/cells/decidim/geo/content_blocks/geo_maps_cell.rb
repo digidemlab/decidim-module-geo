@@ -228,7 +228,8 @@ module Decidim
             maptiler_style_id: config.maptiler_style_id,
             zoom: config.zoom,
             focus_zoom_level: config.focus_zoom_level,
-            force_geo_filter: config.default_geoencoded_filter
+            force_geo_filter: config.default_geoencoded_filter,
+            esri_tile_enabled: config.esri_tile_enabled
           }.to_h
         end
 
