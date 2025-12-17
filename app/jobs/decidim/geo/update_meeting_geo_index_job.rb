@@ -74,7 +74,7 @@ module Decidim
       end
 
       def remove_from_index?
-        !meeting.visible?
+        !meeting.visible? || !meeting.published?
       end
 
       def manifest_name
