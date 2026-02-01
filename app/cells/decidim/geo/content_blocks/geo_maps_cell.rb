@@ -16,7 +16,13 @@ module Decidim
             @options[:filters].push({ resourceTypeFilter: { resourceType: "meetings" } })
             @options[:filters].push({ resourceTypeFilter: { resourceType: "accountability" } })
           end
+          options_for_spaces!
 
+          # Show children points and filter in generator organization
+          @options[:filters].push({ sourceFilter: { source: "all" } }) if space_page? && current_organization&.space_page_settings_attributes&.[]("show_children_points")
+        end
+
+        def options_for_spaces!
           if current_participatory_space_manifest == "participatory_processes"
             # Scope on the current process
             @options[:filters].push({ process_filter: { id: current_participatory_space.id } })
@@ -31,9 +37,6 @@ module Decidim
               .map { |id| { assembly_filter: { id: } } }
             )
           end
-
-          # Show children points and filter in generator organization
-          @options[:filters].push({ sourceFilter: { source: "all" } }) if space_page? && current_organization&.space_page_settings_attributes&.[]("show_children_points")
         end
 
         def show

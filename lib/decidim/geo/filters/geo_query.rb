@@ -47,11 +47,15 @@ module Decidim
         end
 
         def show_children_points?
-          organization.space_page_settings_attributes["show_children_points"]
+          space_page? && organization.space_page_settings_attributes["show_children_points"]
         end
 
         def active_time_filter
           @active_time_filter ||= time_filter_params && time_filter_params[:time_filter][:time]
+        end
+
+        def space_page?
+          Decidim.const_defined?("SpacePage")
         end
 
         def computed_time_filters(query)
