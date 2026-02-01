@@ -59,7 +59,7 @@ module Decidim
       end
 
       def remove_from_index?
-        false
+        !Decidim.const_defined?("SpacePage")
       end
 
       def manifest_name

@@ -51,7 +51,7 @@ module Decidim
       end
 
       def component_url
-        return unless resource.organization.space_page?
+        return unless Gem.loaded_specs["decidim-space_page"].present? && resource.organization.space_page?
 
         "https://#{resource.organization.host}#{resource_url}"
       end

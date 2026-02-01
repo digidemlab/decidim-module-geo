@@ -25,8 +25,11 @@ Deface::Override.new(virtual_path: "decidim/meetings/shared/_index",
                                    []
                                end
                            ) %>
-
-                         <% end %>#{"       "}
+                        <% else %>
+                          <div class="meeting-list__map">
+                            <%= cell "decidim/meetings/meetings_map", search.result %>
+                          </div>
+                         <% end %>
                         <% else %>
                           <div class="meeting-list__map">
                             <%= cell "decidim/meetings/meetings_map", search.result %>
