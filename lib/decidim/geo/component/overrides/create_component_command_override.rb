@@ -18,6 +18,15 @@ module Decidim
           avoid_index_relation.no_index = form.decidim_geo_avoid_index
 
           resource.decidim_geo_avoid_index = avoid_index_relation
+
+          hide_map_component = resource.decidim_geo_hide_map || Decidim::Geo::HideMap.new
+          hide_map_component.decidim_organization_id = resource.organization.id
+          hide_map_component.decidim_component_id = resource.id
+          hide_map_component.decidim_component_type = resource.manifest_name
+          hide_map_component.hide_map = form.decidim_geo_hide_map
+
+          resource.decidim_geo_hide_map = hide_map_component
+
           resource.save
           resource.reload
         end

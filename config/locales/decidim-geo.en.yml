@@ -9,6 +9,7 @@ en:
       component:
         decidim_geo_avoid_index: Hide geolocated points outside this process.
         decidim_geo_avoid_index_within_group: Hide geolocated points outside process group %{space_name}
+        hide_map: Hide Map
     errors:
       models:
         geo_config:
@@ -22,6 +23,7 @@ en:
       components:
         form:
           geo_avoid_index: If checked, points will be hidden of other maps on the platform such as the homepage
+          hide_map: If checked, the map will not be displayed
     accountability:
       admin:
         results:
