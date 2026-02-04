@@ -9,14 +9,8 @@ module Decidim
 
       included do
         after_commit :update_decidim_geo_index
-        before_save :set_decidim_geo_trigger_changes
-        def set_decidim_geo_trigger_changes
-          @decidim_geo_trigger_changes ||= !changes.empty?
-        end
 
         def update_decidim_geo_index
-          return unless @decidim_geo_trigger_changes
-
           component_id = id
           registry = Decidim::Geo::ManifestRegistry.instance
           model_klass = registry.model_for(manifest_name)

@@ -55,7 +55,7 @@ module Decidim
         end
 
         def space_page?
-          Decidim.const_defined?("SpacePage")
+          Gem.loaded_specs["decidim-space_page"].present?
         end
 
         def computed_time_filters(query)
