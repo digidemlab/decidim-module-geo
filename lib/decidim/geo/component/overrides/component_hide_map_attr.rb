@@ -9,7 +9,7 @@ module Decidim
       included do
         has_one :decidim_geo_hide_map, as: :decidim_component, class_name: "Decidim::Geo::HideMap"
         def decidim_geo_hide_map?
-          decidim_geo_hide_map
+          decidim_geo_hide_map&.hide_map
         end
       end
     end
