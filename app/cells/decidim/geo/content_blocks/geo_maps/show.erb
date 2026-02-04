@@ -1,14 +1,16 @@
-<%= content_tag :div, "",
-                id: "Geo#{id}", 
-                class: [
-                  "decidimGeo__container", 
-                  options[:container_classnames] || "", 
-                  "decidimGeo__container--" + params[:controller].split("/").last.underscore,
-                  options[:id].present? ? "decidimGeo__container--#{options[:id].underscore}" : ""
-                ] do %>
-  <div class="decidimGeo__mobile_btn__mobile_btn">
-    <span><%= t("decidim.geo.mobile.open_fullscreen") %></span>
-  </div>
-  <%= insert_map %>
+<% unless current_component&.decidim_geo_hide_map&.hide_map %>
+  <%= content_tag :div, "",
+                  id: "Geo#{id}", 
+                  class: [
+                    "decidimGeo__container", 
+                    options[:container_classnames] || "", 
+                    "decidimGeo__container--" + params[:controller].split("/").last.underscore,
+                    options[:id].present? ? "decidimGeo__container--#{options[:id].underscore}" : ""
+                  ] do %>
+    <div class="decidimGeo__mobile_btn__mobile_btn">
+      <span><%= t("decidim.geo.mobile.open_fullscreen") %></span>
+    </div>
+    <%= insert_map %>
+  <% end %>
 <% end %>
 

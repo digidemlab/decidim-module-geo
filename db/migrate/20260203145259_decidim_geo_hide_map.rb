@@ -7,7 +7,7 @@ class DecidimGeoHideMap < ActiveRecord::Migration[7.0]
       t.integer :decidim_component_id
       t.string :decidim_component_type
       t.belongs_to :decidim_organization, foreign_key: true
-      
+
       t.timestamps
     end
   end
