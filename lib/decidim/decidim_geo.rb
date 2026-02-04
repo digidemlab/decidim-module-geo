@@ -26,6 +26,7 @@ require "decidim/geo/organization_geo_extensions"
 require "decidim/geo/dup_generator_settings"
 
 require "decidim/geo/component/overrides/component_no_index_attr"
+require "decidim/geo/component/overrides/component_hide_map_attr"
 require "decidim/geo/component/overrides/component_form_override"
 require "decidim/geo/component/overrides/create_component_command_override"
 require "decidim/geo/component/overrides/update_component_command_override"

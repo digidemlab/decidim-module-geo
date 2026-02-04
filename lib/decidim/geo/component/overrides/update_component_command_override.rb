@@ -23,6 +23,14 @@ module Decidim
             component_id: @component.id,
             resource_type: @component.manifest_name
           ).update(avoid_index: avoid_index_relation.no_index)
+
+          hide_map_component = @component.decidim_geo_hide_map || Decidim::Geo::HideMap.new
+          hide_map_component.decidim_organization_id = @component.organization.id
+          hide_map_component.decidim_component_id = @component.id
+          hide_map_component.hide_map = form.decidim_geo_hide_map
+
+          @component.decidim_geo_hide_map = hide_map_component
+          @component.save!
         end
       end
     end

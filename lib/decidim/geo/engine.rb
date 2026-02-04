@@ -50,6 +50,10 @@ module Decidim
         Decidim::Component.include(Decidim::Geo::ComponentNoIndexAttr)
         Decidim::Component.include(Decidim::Geo::UpdateGeoComponent)
 
+        # Override Component to add a "hide_map" field
+        Decidim::Admin::ComponentForm.include(Decidim::Geo::ComponentFormOverride)
+        Decidim::Component.include(Decidim::Geo::ComponentHideMapAttr)
+
         Decidim::Admin::CreateComponent.include(Decidim::Geo::CreateComponentCommandOverride)
         Decidim::Admin::UpdateComponent.include(Decidim::Geo::UpdateComponentCommandOverride)
 
