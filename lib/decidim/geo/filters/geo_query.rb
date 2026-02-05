@@ -25,7 +25,8 @@ module Decidim
           query = scoped_participatory_space!(query, :participatory_processes, process_params)
           query = scoped_participatory_space!(query, :assemblies, assembly_params)
           query = scoped_resource_type!(query)
-          scoped_time!(query)
+          query = scoped_time!(query)
+          query.order(query.arel_table[:start_date].asc)
         end
 
         private
