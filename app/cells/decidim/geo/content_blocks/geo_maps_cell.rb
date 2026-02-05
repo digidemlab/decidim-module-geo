@@ -42,6 +42,8 @@ module Decidim
         def show
           return unless current_organization.geo_enabled?
 
+          return if current_component&.decidim_geo_hide_map&.hide_map
+
           return "<!-- DecidimGeo: Map is empty -->".html_safe if hide_empty? && empty_map?
 
           render
@@ -50,7 +52,7 @@ module Decidim
         protected
 
         def space_page?
-          Decidim.const_defined?("SpacePage")
+          Gem.loaded_specs["decidim-space_page"].present?
         end
 
         def current_participatory_space_manifest

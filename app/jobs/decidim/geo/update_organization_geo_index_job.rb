@@ -59,7 +59,7 @@ module Decidim
       end
 
       def remove_from_index?
-        !Decidim.const_defined?("SpacePage")
+        Gem.loaded_specs["decidim-space_page"].blank?
       end
 
       def manifest_name
