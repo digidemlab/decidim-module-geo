@@ -21,7 +21,7 @@ module Decidim
         etag = "#{query.cache_key_with_version}/params-#{Digest::MD5.hexdigest(permitted_params.to_json)}"
         return unless stale?(last_modified: last_modified.utc, etag:)
 
-        last_id = query.maximum(:id)
+        last_id = query.last.id
         geo_scope_ids = query.select(:geo_scope_id).group(:geo_scope_id, :start_date).pluck(:geo_scope_id).compact
         render json: {
           meta: {
