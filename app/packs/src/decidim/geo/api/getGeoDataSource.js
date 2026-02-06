@@ -49,7 +49,6 @@ const getGeoDataSource = async (params = {}, fetchAll = true, callback) => {
   }
   if (!page) return { nodes: [], edges: [] };
   const { has_more: hasMoreThanOne, end_cursor: endCursor } = page?.meta || {};
-  console.log("DATA: ", page.data)
   callback(page.data, hasMoreThanOne, page?.meta || {});
   if (!hasMoreThanOne) return;
 
