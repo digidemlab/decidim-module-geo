@@ -25,7 +25,7 @@ class DecidimGeoHideMap < ActiveRecord::Migration[7.0]
         hide_map_component.hide_map = false
         component.decidim_geo_hide_map = hide_map_component
 
-        component.save!
+        component.save
       end
     end
   end
