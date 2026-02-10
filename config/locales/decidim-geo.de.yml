@@ -9,7 +9,7 @@ de:
       component:
         decidim_geo_avoid_index: Lokalisierte Punkte ausserhalb dieses Prozesses verbergen.
         decidim_geo_avoid_index_within_group: Lokalisierte Punkte außerhalb der Prozessgruppe %{space_name} ausblenden
-        hide_map: Hide Map
+        hide_map: Hide Map from %{component_name} pages
     errors:
       models:
         geo_config:
@@ -23,7 +23,7 @@ de:
       components:
         form:
           geo_avoid_index: Wenn aktiviert, werden die Punkte auf anderen Karten der Plattform (z.B. der Homepage) ausgeblendet
-          hide_map: If checked, the map will not be displayed
+          hide_map: If checked, the map will not be displayed in subpages (but stays available in homepage blocks)
     accountability:
       admin:
         results:
