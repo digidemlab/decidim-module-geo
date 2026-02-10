@@ -7,8 +7,8 @@ fr:
       participatory_process:
         decidim_geo_space_address: Adresse
       component:
-        decidim_geo_avoid_index: Hide geolocated points outside this process.
-        decidim_geo_avoid_index_within_group: Hide geolocated points outside process group %{space_name}
+        decidim_geo_avoid_index: Masquer les points géolocalisés en dehors de cette concertation
+        decidim_geo_avoid_index_within_group: Masquer les points géolocalisés en dehors du groupe de processus %{space_name}
         hide_map: Cacher la carte des pages %{component_name}
     errors:
       models:
@@ -22,8 +22,8 @@ fr:
     admin:
       components:
         form:
-          geo_avoid_index: Si coché, les points seront cachés des autres cartes sur la plateforme comme la page d'accueil
-          hide_map: Si cochée, la carte ne sera pas affichée dans les sous-pages (on peut toujours l'afficher dans les pages d'accueil)
+          geo_avoid_index: Si cochée, les points seront cachés des autres cartes sur la plateforme comme la page d'accueil
+          hide_map: Si cochée, la carte ne sera pas affichée dans les sous-page (on peut toujours l'afficher dans les pages d'accueil)
     accountability:
       admin:
         results:
