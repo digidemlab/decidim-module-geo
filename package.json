@@ -1,6 +1,6 @@
 {
   "name": "decidim-geo",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "private": true,
   "dependencies": {
     "@maptiler/leaflet-maptilersdk": "^4.0.3",
