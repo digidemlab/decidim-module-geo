@@ -7,7 +7,7 @@ fr:
       participatory_process:
         decidim_geo_space_address: Adresse
       component:
-        decidim_geo_avoid_index: Masquer les points géolocalisés en dehors de cette concertation
+        decidim_geo_avoid_index: Masquer les points géolocalisés en dehors de cette concertation.
         decidim_geo_avoid_index_within_group: Masquer les points géolocalisés en dehors du groupe de processus %{space_name}
         hide_map: Cacher la carte des pages %{component_name}
     errors:
@@ -15,9 +15,9 @@ fr:
         geo_config:
           attributes:
             zoom:
-              invalid_range: "must be between 5 and 19"
+              invalid_range: "doit être compris entre 5 et 19"
             focus_zoom_level:
-              invalid_range: "must be between 5 and 19"
+              invalid_range: "doit être compris entre 5 et 19"
   decidim:
     admin:
       components:
@@ -66,7 +66,7 @@ fr:
           default_geoencoded_filter: Filtre
           show:
             title: Configurations
-            save: Save
+            save: Sauvegarder
           edit:
             title: Configurations
             save: Sauvegarder
@@ -76,8 +76,8 @@ fr:
             longitude: Longitude
             latitude: Latitude
             tile: Tuile
-            maptiler_api_key: Map tiler API Key (Optional)
-            esri_tile_enabled: Esri Tiles ?
+            maptiler_api_key: Clé API Map Tiler (optionnel)
+            esri_tile_enabled: Utilise des tuiles ESRI ?
           actions:
             update:
               success: Configurations Mises à Jour
@@ -155,9 +155,9 @@ fr:
           only_accountabilities: "Projets"
         source:
           label: "Source"
-          all: "All"
-          children_only: "External points"
-          generator_only: "Internal points"
+          all: "Tout"
+          children_only: "Points externes"
+          generator_only: "Points internes"
     components:
       pagination:
         page_title: "%{component_name}"
