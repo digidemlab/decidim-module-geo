@@ -7,12 +7,23 @@ pt:
       participatory_process:
         decidim_geo_space_address: Endereço
       component:
-        decidim_geo_avoid_index: Ocultar pontos geolocalizados fora deste processo
+        decidim_geo_avoid_index: Hide geolocated points outside this process.
+        decidim_geo_avoid_index_within_group: Hide geolocated points outside process group %{space_name}
+        hide_map: Hide Map
+    errors:
+      models:
+        geo_config:
+          attributes:
+            zoom:
+              invalid_range: "must be between 5 and 19"
+            focus_zoom_level:
+              invalid_range: "must be between 5 and 19"
   decidim:
     admin:
       components:
         form:
           geo_avoid_index: Se marcada, os pontos ficarão ocultos de outros mapas na plataforma como a página inicial
+          hide_map: If checked, the map will not be displayed
     accountability:
       admin:
         results:
@@ -53,9 +64,9 @@ pt:
                 force_geoencoded: "Apenas pontos no mapa"
                 no_force_geoencoded: "Todos os pontos"
           default_geoencoded_filter: Filter
-          index:
-            title: Configurações
-            save: Salvar
+          show:
+            title: Configurations
+            save: Save
           edit:
             title: Configurações
             save: Salvar
@@ -65,6 +76,8 @@ pt:
             longitude: Longitude
             latitude: Latitude
             tile: Telha
+            maptiler_api_key: Map tiler API Key (Optional)
+            esri_tile_enabled: Esri Tiles ?
           actions:
             update:
               success: Configurações atualizadas
@@ -133,6 +146,7 @@ pt:
         type:
           label: "Filtrar por tipo"
           all: "Todos"
+          only_space_pages: "Organizations"
           only_processes: "Processos"
           only_assemblies: "Reuniões"
           only_proposals: "Sugestão"
@@ -142,9 +156,11 @@ pt:
         source:
           label: "Source"
           all: "All"
-          children_only: "Show related platforms only"
-          generator_only: "Show this platform only"
+          children_only: "External points"
+          generator_only: "Internal points"
     components:
+      pagination:
+        page_title: "%{component_name}"
       geo:
         name: Localização geográfica
         settings:

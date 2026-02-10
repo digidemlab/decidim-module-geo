@@ -7,12 +7,23 @@ de:
       participatory_process:
         decidim_geo_space_address: Adresse
       component:
-        decidim_geo_avoid_index: Lokalisierte Punkte ausserhalb dieses Prozesses verbergen
+        decidim_geo_avoid_index: Lokalisierte Punkte ausserhalb dieses Prozesses verbergen.
+        decidim_geo_avoid_index_within_group: Lokalisierte Punkte außerhalb der Prozessgruppe %{space_name} ausblenden
+        hide_map: Hide Map
+    errors:
+      models:
+        geo_config:
+          attributes:
+            zoom:
+              invalid_range: "muss zwischen 5 und 19 sein"
+            focus_zoom_level:
+              invalid_range: "muss zwischen 5 und 19 sein"
   decidim:
     admin:
       components:
         form:
           geo_avoid_index: Wenn aktiviert, werden die Punkte auf anderen Karten der Plattform (z.B. der Homepage) ausgeblendet
+          hide_map: If checked, the map will not be displayed
     accountability:
       admin:
         results:
@@ -44,27 +55,29 @@ de:
           only_assemblies: Ausschliesslich Gremien auf der Gremienübersichtsseite anzeigen	
           only_processes: Ausschliesslich Prozesse auf der Prozessübersichtsseite anzeigen	
           default_filter:
-            title: Available points
+            title: Verfügbare Punkte
             help_text: |
-              Configure the available points for Decidim Geo. This configuration applies to all the platform.
+              Konfigurieren Sie die verfügbaren Punkte für Decidim Geo. Diese Konfiguration gilt für die ganze Plattform.
             geoencoded_filter:
-              label: Filter points by location
+              label: Punkte nach Standort filtern
               fields:
-                force_geoencoded: "Only points in the map"
-                no_force_geoencoded: "All points"
+                force_geoencoded: "Nur Punkte auf der Karte"
+                no_force_geoencoded: "Alle Punkte"
           default_geoencoded_filter: Filter
-          index:
-            title: Einstellungen
+          show:
+            title: Konfigurationen
             save: Speichern
           edit:
             title: Konfigurationen
             save: Speichern
           fields:
             zoom: Zoomstufe
-            focus_zoom_level: Zoom on focus
+            focus_zoom_level: Zoomen bei Detailansicht
             longitude: Längengrad
             latitude: Breitengrad
             tile: Kachel
+            maptiler_api_key: Map tiler API Key (Optional)
+            esri_tile_enabled: Esri Tiles ?
           actions:
             update:
               success: Einstellungen aktualisiert
@@ -113,12 +126,12 @@ de:
         apply_button: "Anwenden"
         results:
           warn_empty: Keine Daten mit dieser Filterauswahl, Filter ändern zu aktualisieren
-          zero: no results
-          one: 1 result
-          other: "%count% results"
+          zero: Keine Ergebnisse
+          one: 1 Ergebnis
+          other: "%count% Ergebnisse"
         empty:
           message: "Keine Daten mit dieser Filterauswahl, Filter ändern zu aktualisieren"
-          update_button: "Update"
+          update_button: "Aktualisieren"
         geo:
           label: Zeigen
           all: Alle
@@ -133,6 +146,7 @@ de:
         type:
           label: "Filtern nach Typ"
           all: "Alle"
+          only_space_pages: "Organisationen"
           only_processes: "Prozesse"
           only_assemblies: "Gremien"
           only_proposals: "Vorschläge"
@@ -142,9 +156,11 @@ de:
         source:
           label: "Source"
           all: "All"
-          children_only: "Show related platforms only"
-          generator_only: "Show this platform only"
+          children_only: "External points"
+          generator_only: "Internal points"
     components:
+      pagination:
+        page_title: "%{component_name}"
       geo:
         name: Geo
         settings:
