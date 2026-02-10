@@ -25,8 +25,7 @@ module Decidim
           query = scoped_participatory_space!(query, :participatory_processes, process_params)
           query = scoped_participatory_space!(query, :assemblies, assembly_params)
           query = scoped_resource_type!(query)
-          query = scoped_time!(query)
-          query.order(query.arel_table[:start_date].asc)
+          scoped_time!(query)
         end
 
         private
@@ -44,7 +43,7 @@ module Decidim
                                                                                                                 types:)
           end
 
-          Decidim::Geo::Index.where(decidim_organization_id: organization.id)
+          Decidim::Geo::Index.where(decidim_organization_id: organization.id).order(:start_date, :id)
         end
 
         def show_children_points?

@@ -48,11 +48,11 @@ const getGeoDataSource = async (params = {}, fetchAll = true, callback) => {
     throw error;
   }
   if (!page) return { nodes: [], edges: [] };
-  const { has_more: hasMoreThanOne, end_cursor: endCursor } = page?.meta || {};
+  const { has_more: hasMoreThanOne } = page?.meta || {};
   callback(page.data, hasMoreThanOne, page?.meta || {});
   if (!hasMoreThanOne) return;
-
-  searchParams.set("after", endCursor);
+  let next = 50;
+  searchParams.set("after", next);
   while (true) {
     try {
       const response = await fetch("/api/decidim-geo/points?" + searchParams.toString());
@@ -62,10 +62,11 @@ const getGeoDataSource = async (params = {}, fetchAll = true, callback) => {
       console.error(error);
       return;
     }
-    const { end_cursor: endCursor, has_more: hasMore } = page.meta || {};
+    const { has_more: hasMore } = page.meta || {};
     callback(page.data, hasMore, page?.meta || {});
     if (!hasMore) break;
-    searchParams.set("after", endCursor);
+    next = next + 50
+    searchParams.set("after", next);
   }
 };
 export default getGeoDataSource;

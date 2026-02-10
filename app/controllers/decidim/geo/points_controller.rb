@@ -6,33 +6,29 @@ module Decidim
       before_action :set_default_format
 
       def count
-        render json: { count: query.select(:id).where(query.arel_table[:id].gt(after_params)).count }
+        render json: { count: query.count }
       end
 
       def index
-        results = query.select(
-          permitted_fields_params
-        ).where(
-          query.arel_table[:id].gt(after_params)
-        ).limit(
-          first_params
-        )
         last_modified = query.maximum(:updated_at) || 1.year.from_now
         etag = "#{query.cache_key_with_version}/params-#{Digest::MD5.hexdigest(permitted_params.to_json)}"
+
         return unless stale?(last_modified: last_modified.utc, etag:)
 
-        last_id = query.last.id
-        geo_scope_ids = query.select(:geo_scope_id).group(:geo_scope_id, :start_date).pluck(:geo_scope_id).compact
+        results = query.select(permitted_fields_params)
+                       .offset(after_params)
+                       .limit(first_params)
+
+        geo_scope_ids = query.select(:geo_scope_id).group(:geo_scope_id, :start_date, :id).pluck(:geo_scope_id).compact
         render json: {
           meta: {
             fields: permitted_fields_params,
             filters: filters_params,
             organization: current_organization.id,
-            end_cursor: results.last && results.last.id,
             default_locale: current_organization.default_locale,
             first: first_params,
             after: after_params,
-            has_more: results.last && results.last.id != last_id,
+            has_more: results.last.id != query.last.id,
             geo_scope_ids: geo_scope_ids || []
           },
           data: results
