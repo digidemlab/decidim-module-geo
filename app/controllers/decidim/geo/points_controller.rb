@@ -16,7 +16,7 @@ module Decidim
         return unless stale?(last_modified: last_modified.utc, etag:)
 
         results = query.select(permitted_fields_params)
-                       .offset(after_params)
+                       .offset(offset_params)
                        .limit(first_params)
 
         geo_scope_ids = query.select(:geo_scope_id).group(:geo_scope_id, :start_date, :id).pluck(:geo_scope_id).compact
@@ -27,7 +27,7 @@ module Decidim
             organization: current_organization.id,
             default_locale: current_organization.default_locale,
             first: first_params,
-            after: after_params,
+            offset: offset_params,
             has_more: results.last.id != query.last.id,
             geo_scope_ids: geo_scope_ids || []
           },
@@ -38,15 +38,15 @@ module Decidim
       private
 
       def permitted_params
-        @permitted_params ||= params.permit(:first, :after, :locale, :is_index, :format, fields: [], filters: [])
+        @permitted_params ||= params.permit(:first, :offset, :locale, :is_index, :format, fields: [], filters: [])
       end
 
       def first_params
         @first_params ||= (permitted_params[:first] || "50").to_i
       end
 
-      def after_params
-        @after_params ||= (permitted_params[:after] || "0").to_i
+      def offset_params
+        @offset_params ||= (permitted_params[:offset] || "0").to_i
       end
 
       def query

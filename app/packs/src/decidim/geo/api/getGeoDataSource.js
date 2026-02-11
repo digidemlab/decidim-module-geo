@@ -1,7 +1,7 @@
 import { _getGeoDataSource, _getGeoDataSourceIds } from "./queries";
 
 const getGeoDataSource = async (params = {}, fetchAll = true, callback) => {
-  const { filters = [], locale, isIndex = false, after = 0, first = 50 } = params;
+  const { filters = [], locale, isIndex = false, offset = 0, first = 50 } = params;
   const fields = fetchAll
     ? [
         "resourceUrl",
@@ -27,7 +27,7 @@ const getGeoDataSource = async (params = {}, fetchAll = true, callback) => {
 
   const searchParams = new URLSearchParams({
     locale,
-    after,
+    offset,
     first
   });
   if (isIndex) {
@@ -51,8 +51,8 @@ const getGeoDataSource = async (params = {}, fetchAll = true, callback) => {
   const { has_more: hasMoreThanOne } = page?.meta || {};
   callback(page.data, hasMoreThanOne, page?.meta || {});
   if (!hasMoreThanOne) return;
-  let next = 50;
-  searchParams.set("after", next);
+  let nextOffset = 50;
+  searchParams.set("offset", nextOffset);
   while (true) {
     try {
       const response = await fetch("/api/decidim-geo/points?" + searchParams.toString());
@@ -65,8 +65,8 @@ const getGeoDataSource = async (params = {}, fetchAll = true, callback) => {
     const { has_more: hasMore } = page.meta || {};
     callback(page.data, hasMore, page?.meta || {});
     if (!hasMore) break;
-    next = next + 50
-    searchParams.set("after", next);
+    nextOffset += 50
+    searchParams.set("offset", nextOffset);
   }
 };
 export default getGeoDataSource;
