@@ -43,7 +43,7 @@ module Decidim
                                                                                                                 types:)
           end
 
-          Decidim::Geo::Index.where(decidim_organization_id: organization.id)
+          Decidim::Geo::Index.where(decidim_organization_id: organization.id).order(:start_date, :id)
         end
 
         def show_children_points?

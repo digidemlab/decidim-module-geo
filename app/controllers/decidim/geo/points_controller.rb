@@ -6,35 +6,29 @@ module Decidim
       before_action :set_default_format
 
       def count
-        render json: { count: query.select(:id).where(query.arel_table[:id].gt(after_params)).count }
+        render json: { count: query.count }
       end
 
       def index
-        results = query.select(
-          permitted_fields_params
-        ).where(
-          query.arel_table[:id].gt(after_params)
-        ).limit(
-          first_params
-        ).reorder(
-          id: :asc
-        )
         last_modified = query.maximum(:updated_at) || 1.year.from_now
         etag = "#{query.cache_key_with_version}/params-#{Digest::MD5.hexdigest(permitted_params.to_json)}"
+
         return unless stale?(last_modified: last_modified.utc, etag:)
 
-        last_id = query.maximum(:id)
-        geo_scope_ids = query.select(:geo_scope_id).group(:geo_scope_id).pluck(:geo_scope_id).compact
+        results = query.select(permitted_fields_params)
+                       .offset(offset_params)
+                       .limit(first_params)
+
+        geo_scope_ids = query.select(:geo_scope_id).group(:geo_scope_id, :start_date, :id).pluck(:geo_scope_id).compact
         render json: {
           meta: {
             fields: permitted_fields_params,
             filters: filters_params,
             organization: current_organization.id,
-            end_cursor: results.last && results.last.id,
             default_locale: current_organization.default_locale,
             first: first_params,
-            after: after_params,
-            has_more: results.last && results.last.id != last_id,
+            offset: offset_params,
+            has_more: results.last.id != query.last.id,
             geo_scope_ids: geo_scope_ids || []
           },
           data: results
@@ -44,15 +38,15 @@ module Decidim
       private
 
       def permitted_params
-        @permitted_params ||= params.permit(:first, :after, :locale, :is_index, :format, fields: [], filters: [])
+        @permitted_params ||= params.permit(:first, :offset, :locale, :is_index, :format, fields: [], filters: [])
       end
 
       def first_params
         @first_params ||= (permitted_params[:first] || "50").to_i
       end
 
-      def after_params
-        @after_params ||= (permitted_params[:after] || "0").to_i
+      def offset_params
+        @offset_params ||= (permitted_params[:offset] || "0").to_i
       end
 
       def query

@@ -12,9 +12,9 @@ export const getFirstGeoDataSource = async (params = {}, fetchComplete = true) =
     console.error(error);
     throw error;
   }
-  if (!page) return { nodes: [], hasMore: false, endCursor: "" };
-  const { hasNextPage = false, endCursor = "" } = page?.pageInfo || {};
-  return { nodes: page.nodes, hasMore: hasNextPage, after: endCursor };
+  if (!page) return { nodes: [], hasMore: false };
+  const { hasNextPage = false } = page?.pageInfo || {};
+  return { nodes: page.nodes, hasMore: hasNextPage };
 };
 
 export default getFirstGeoDataSource;
