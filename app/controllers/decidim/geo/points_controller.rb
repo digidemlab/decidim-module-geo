@@ -28,7 +28,7 @@ module Decidim
             default_locale: current_organization.default_locale,
             first: first_params,
             offset: offset_params,
-            has_more: results.last.id != query.last.id,
+            has_more: results.count != 0,
             geo_scope_ids: geo_scope_ids || []
           },
           data: results
