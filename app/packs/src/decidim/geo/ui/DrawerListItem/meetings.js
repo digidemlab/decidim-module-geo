@@ -9,12 +9,19 @@ import getArrowIcon from "../geoIcons";
 const meetings = (node) => {
   const { i18n, images, locale, defaultLocale, filters } = configStore.getState();
   const listCard = L.DomUtil.create("li", "decidimGeo__drawer__listCard");
+  const notGeoEncodedIcon = L.DomUtil.create(
+    "img",
+    createClasses("decidimGeo__drawer__listCardIcon", [node.lonlat && "hidden"]),
+    listCard
+  );
+  notGeoEncodedIcon.src = images?.not_geolocated;
+
   const info = L.DomUtil.create(
     "div",
     "decidimGeo__drawer__listCardInfo decidimGeo__drawer__listCardInfo--large",
     listCard
   );
-
+  
   const infoType = L.DomUtil.create("div", "decidimGeo__drawer__listCardType", info);
   const infoTxt = L.DomUtil.create(
     "span",
@@ -22,12 +29,6 @@ const meetings = (node) => {
     infoType
   );
   infoTxt.textContent = i18n[node.resourceType];
-  const notGeoEncodedIcon = L.DomUtil.create(
-    "img",
-    createClasses("decidimGeo__drawer__listCardIcon", [node.lonlat && "hidden"]),
-    infoType
-  );
-  notGeoEncodedIcon.src = images?.not_geolocated;
 
   const infoTitle = L.DomUtil.create("div", "decidimGeo__drawer__listCardTitle", info);
   const infoTitleTxt = L.DomUtil.create("span", createClasses("decidimGeo__drawer__listTitleTxt"), infoTitle);

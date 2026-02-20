@@ -102,6 +102,16 @@ export default class Drawer {
         location.href = node_url;
       }
     };
+
+    const { images } = configStore.getState();
+
+    const notGeoEncodedIcon = L.DomUtil.create(
+      "img",
+      createClasses("decidimGeo__drawer__listCardIcon", [node.lonlat && "hidden"]),
+      listCard
+    );
+    notGeoEncodedIcon.src = images?.not_geolocated;
+    
     const info = L.DomUtil.create(
       "div",
       "decidimGeo__drawer__listCardInfo decidimGeo__drawer__listCardInfo--large",

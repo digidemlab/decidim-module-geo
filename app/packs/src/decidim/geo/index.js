@@ -60,7 +60,7 @@ async function displayMap() {
       aside([DrawerHeader, Drawer]);
 
       map.addControl(new FilterControl());
-      map.addControl(new PageNameControl());
+      //map.addControl(new PageNameControl());
       map.setMinZoom((configStore.getState().map_config.zoom || 15) - 2);
       // Save the first loaded position.
       await new Promise((resolve) => setTimeout(resolve, 64));

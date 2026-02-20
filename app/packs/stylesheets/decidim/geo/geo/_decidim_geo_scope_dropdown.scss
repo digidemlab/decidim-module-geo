@@ -22,15 +22,20 @@
   }
   .decidimGeo__drawerHeader,
   .decidimGeo__drawerHeader.leaflet-control {
-    @include decidimGeo__border;
-    border-radius: 0;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-    display: block;
-    width: 300px;
+    //@include decidimGeo__border;
+    //border-radius: 0;
+    //border-top-left-radius: 4px;
+    //border-top-right-radius: 4px;
+    //display: block;
+    display: flex;
+    align-items: center;
+    //justify-items: start;
+    //width: 300px;
     background: #fff;
-    position: absolute;
-    z-index: 9999;
+    //position: absolute;
+    //z-index: 9999;
+    padding: 0px 0px 0px 0px;
+    //border-bottom: 1px solid #e0e0e0;
   }
 
   .decidimGeo__drawerHeader__heading {
@@ -51,15 +56,16 @@
   }
 
   .decidimGeo__drawerHeader__drawerToggle {
-    padding: 6px;
+    padding: 8px;
+    padding-left: 36px;
     display: block;
     cursor: pointer;
     font-weight: 600;
     font-size: 14px;
     &--open {
       display: flex;
-      align-items: center;
-      justify-content: center;
+      align-items: left;
+      justify-content: start;
     }
     cursor: initial;
     &--link {
@@ -73,7 +79,7 @@
     &--aside-toggle {
       display: block;
       color: rgba(0, 0, 0, 0.24);
-      text-align: center;
+      text-align: left;
       display: inline-block;
     }
     &--hidden {

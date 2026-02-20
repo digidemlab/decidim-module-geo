@@ -14,6 +14,7 @@ export default class DrawerHeader {
     this.heading = null;
     this.titleBack = null;
     this.toggleDrawer = null;
+    this.searchField = null;
   }
 
   initMenuElements() {
@@ -73,11 +74,37 @@ export default class DrawerHeader {
   }
 
   onAdd() {
+
+    this.container = L.DomUtil.create("div", "leaflet-control decidimGeo__drawer", this.parent);
+
+    this.searchBox = L.DomUtil.create(
+      "div",
+      "decidimGeo__drawerSearch",
+      this.container
+    );
+
+    this.searchBox.innerHTML = `
+      <span class="decidimGeo__searchIcon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M21 21l-4.35-4.35m1.6-5.15a7 7 0 11-14 0 7 7 0 0114 0z"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"/>
+        </svg>
+      </span>
+      <input
+        type="search"
+        class="decidimGeo__searchInput"
+        placeholder="Search..."
+      />
+    `;
+
     this.menu = L.DomUtil.create(
       "div",
-      "leaflet-control decidimGeo__drawerHeader",
-      this.parent
+      "decidimGeo__drawerHeader",
+      this.container
     );
+
     L.DomEvent.disableClickPropagation(this.menu);
     L.DomEvent.disableScrollPropagation(this.menu);
 
@@ -117,6 +144,6 @@ export default class DrawerHeader {
 
     this.repaint(); // first repaint
     this.toggleDrawer.repaint();
-    return this.menu;
+    return this.container;
   }
 }

@@ -10,11 +10,20 @@ const fallback = (node) => {
   const hasImage = !_.isEmpty(node.imageUrl);
   const listCard = L.DomUtil.create("li", "decidimGeo__drawer__listCard");
 
+  const notGeoEncodedIcon = L.DomUtil.create(
+    "img",
+    createClasses("decidimGeo__drawer__listCardIcon", [node.lonlat && "hidden"]),
+    listCard
+  );
+  notGeoEncodedIcon.src = images?.not_geolocated;
+
   const info = L.DomUtil.create(
     "div",
     createClasses("decidimGeo__drawer__listCardInfo", [!hasImage && "large"]),
     listCard
   );
+
+  
 
   const infoType = L.DomUtil.create("div", "decidimGeo__drawer__listCardType", info);
   const infoTxt = L.DomUtil.create(
@@ -23,12 +32,7 @@ const fallback = (node) => {
     infoType
   );
   infoTxt.textContent = i18n[node.resourceType];
-  const notGeoEncodedIcon = L.DomUtil.create(
-    "img",
-    createClasses("decidimGeo__drawer__listCardIcon", [node.lonlat && "hidden"]),
-    infoType
-  );
-  notGeoEncodedIcon.src = images?.not_geolocated;
+  
 
   const infoTitle = L.DomUtil.create("div", "decidimGeo__drawer__listCardTitle", info);
   const infoTitleTxt = L.DomUtil.create("span", createClasses("decidimGeo__drawer__listTitleTxt"), infoTitle);
