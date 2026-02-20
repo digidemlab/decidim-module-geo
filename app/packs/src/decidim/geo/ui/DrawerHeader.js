@@ -17,6 +17,14 @@ export default class DrawerHeader {
     this.searchField = null;
   }
 
+  config() {
+    return configStore.getState();
+  }
+
+  i18n() {
+    return this.config().i18n;
+  }
+
   initMenuElements() {
     const { selectedPoint } = geoStore.getState();
     const { isOpen } = dropdownFilterStore.getState();
@@ -83,6 +91,8 @@ export default class DrawerHeader {
       this.container
     );
 
+    const i18n = this.i18n();
+
     this.searchBox.innerHTML = `
       <span class="decidimGeo__searchIcon">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -95,7 +105,7 @@ export default class DrawerHeader {
       <input
         type="search"
         class="decidimGeo__searchInput"
-        placeholder="Search..."
+        placeholder="${i18n[`decidim.geo.search`]}";
       />
     `;
 

@@ -1,4 +1,8 @@
 .decidimGeo__container .js-decidimgeo.decidimgeo__map {
+  .decidimGeo__drawer {
+    height: 70px;
+  }
+
   .decidimGeo__drawerSearch {
     display: flex;
     align-items: center;
@@ -19,7 +23,6 @@
     width: 100%;
     padding: 8px 10px 8px 18px;
     border: none;
-    outline: none;
     background: transparent;
     font-size: 14px;
     box-sizing: border-box;
@@ -28,12 +31,10 @@
   .decidimGeo__drawer__list {
     @include decidimGeo__drawerContainer;
     background: #ffffff;
-    //box-shadow: 0 0px 16px rgba(0, 0, 0, 0.2);
-    //margin-top: 27px;
     border-top: none;
     overflow-y: auto;
     max-height: 100%;
-    min-height: 573px;
+    width: 100%;
   }
 
   .decidimGeo__drawer__listItem {
@@ -59,6 +60,7 @@
     margin-bottom: 24px;
     padding-left: 16px;
     padding-right: 16px;
+    padding: 0px 16px 0px 16px;
   }
   .decidimGeo__drawer__listCardLoader {
     content: "";
@@ -69,17 +71,13 @@
 
   .decidimGeo__drawer__listCard {
     @include decidimGeo__border;
-    //display: block;
     display: flex;
     flex-direction: row;
     align-items: start;
     background: #ffffff;
     width: 100%;
     overflow: hidden;
-    //margin: 12px 0;
-    padding-bottom: 5px;
-    padding-top: 5px;
-    padding-left: 8px;
+    padding: 5px 4px 5px 4px;
     cursor: pointer;
     border-radius: 0px;
     box-shadow: 0px 0px 0px 0px #00000014;
@@ -96,9 +94,8 @@
     }
   }
   .decidimGeo__drawer__listCardIcon {
-    padding-right: 12px;
+    padding-right: 4px;
     max-height: 38px;
-    //transform: translateY(0px);
     padding-top: 12px;
     &--hidden {
       display: none;
@@ -130,6 +127,8 @@
     height: 69px;
     padding: 0;
     object-fit: cover;
+    flex: 0 0 90px;
+    margin-left: auto;
     &--large {
       width: 100%;
       height: 180px;
@@ -147,9 +146,11 @@
     padding-top: 8px;
     padding-bottom: 8px;
     padding-right: 8px;
-    width: calc(100% - 69px);
+    width: 90px;
+    min-width: 90px;
     border-top: #808080;
     border-bottom: #808080;
+    flex: 1;
     &--image {
       padding-top: calc(180px + 16px);
     }
@@ -188,6 +189,7 @@
   .decidimGeo__drawer__listCardStatus {
     flex: 0;
     padding: 1px 6px;
+    margin: 8px 8px;
     background: white;
     border: 1px solid #808080;
     border-radius: 18px;

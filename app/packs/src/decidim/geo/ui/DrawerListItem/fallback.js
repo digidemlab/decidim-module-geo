@@ -10,20 +10,23 @@ const fallback = (node) => {
   const hasImage = !_.isEmpty(node.imageUrl);
   const listCard = L.DomUtil.create("li", "decidimGeo__drawer__listCard");
 
-  const notGeoEncodedIcon = L.DomUtil.create(
+  const GeoEncodedIcon = L.DomUtil.create(
     "img",
-    createClasses("decidimGeo__drawer__listCardIcon", [node.lonlat && "hidden"]),
+    createClasses("decidimGeo__drawer__listCardIcon"),
     listCard
   );
-  notGeoEncodedIcon.src = images?.not_geolocated;
+
+  if (node.lonlat) {
+    GeoEncodedIcon.src = images?.geolocated;
+  } else {
+    GeoEncodedIcon.src = images?.not_geolocated;
+  };
 
   const info = L.DomUtil.create(
     "div",
     createClasses("decidimGeo__drawer__listCardInfo", [!hasImage && "large"]),
     listCard
   );
-
-  
 
   const infoType = L.DomUtil.create("div", "decidimGeo__drawer__listCardType", info);
   const infoTxt = L.DomUtil.create(

@@ -105,12 +105,17 @@ export default class Drawer {
 
     const { images } = configStore.getState();
 
-    const notGeoEncodedIcon = L.DomUtil.create(
+    const GeoEncodedIcon = L.DomUtil.create(
       "img",
-      createClasses("decidimGeo__drawer__listCardIcon", [node.lonlat && "hidden"]),
+      createClasses("decidimGeo__drawer__listCardIcon"),
       listCard
     );
-    notGeoEncodedIcon.src = images?.not_geolocated;
+
+    if (node.lonlat) {
+      GeoEncodedIcon.src = images?.geolocated;
+    } else {
+      GeoEncodedIcon.src = images?.not_geolocated;
+    }
     
     const info = L.DomUtil.create(
       "div",
@@ -125,7 +130,7 @@ export default class Drawer {
         fallbackDetails(info, node);
         break;
     }
-    const viewBtn = L.DomUtil.create("a", "decidimGeo__drawer__viewBtn", listCard);
+    const viewBtn = L.DomUtil.create("a", "decidimGeo__drawer__viewBtn", info);
     viewBtn.textContent = this.i18n()["decidim_geo.actions.view"];
 
     if (this.hasAssemblyOrProcess()) {

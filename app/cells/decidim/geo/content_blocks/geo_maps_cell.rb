@@ -97,7 +97,8 @@ module Decidim
             selected_component: current_component_id || nil,
             selected_point: selecting_point ? params.require(:id).to_i : nil,
             images: {
-              not_geolocated: ActionController::Base.helpers.asset_pack_path("media/images/not-geolocated.svg")
+              not_geolocated: ActionController::Base.helpers.asset_pack_path("media/images/not-geolocated.svg"),
+              geolocated: ActionController::Base.helpers.asset_pack_path("media/images/geolocated.svg")
             },
             filters: filters.push({ timeFilter: { time: "active" } }),
             map_config:,
@@ -148,6 +149,7 @@ module Decidim
             **geo_i18n,
             "decidim.geo.mobile.open_fullscreen": t("decidim.geo.mobile.open_fullscreen"),
             "decidim.geo.mobile.close_fullscreen": t("decidim.geo.mobile.close_fullscreen"),
+            "decidim.geo.search": t("decidim.geo.search"),
             "decidim_geo.scopes.all": t("decidim.geo.scopes.all"),
             "decidim_geo.scopes.dropdown": t("decidim.geo.scopes.dropdown"),
 

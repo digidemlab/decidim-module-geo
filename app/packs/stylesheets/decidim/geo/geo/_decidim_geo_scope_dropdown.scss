@@ -22,20 +22,10 @@
   }
   .decidimGeo__drawerHeader,
   .decidimGeo__drawerHeader.leaflet-control {
-    //@include decidimGeo__border;
-    //border-radius: 0;
-    //border-top-left-radius: 4px;
-    //border-top-right-radius: 4px;
-    //display: block;
     display: flex;
     align-items: center;
-    //justify-items: start;
-    //width: 300px;
     background: #fff;
-    //position: absolute;
-    //z-index: 9999;
     padding: 0px 0px 0px 0px;
-    //border-bottom: 1px solid #e0e0e0;
   }
 
   .decidimGeo__drawerHeader__heading {
@@ -57,7 +47,7 @@
 
   .decidimGeo__drawerHeader__drawerToggle {
     padding: 8px;
-    padding-left: 36px;
+    padding-left: 34px;
     display: block;
     cursor: pointer;
     font-weight: 600;
@@ -118,7 +108,7 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    padding-left: 16px;
+    padding-left: 8px;
     span {
       padding: 8px 32px 8px 0px;
     }
