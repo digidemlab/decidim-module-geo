@@ -162,6 +162,7 @@
     @media (max-width: 768px) {
       .leaflet-top.leaflet-left {
         width: 75%;
+        height: 0px;
         .decidimGeo__drawerSearch {
           z-index: 10000 !important;
           pointer-events: auto;
@@ -171,6 +172,9 @@
           width: 100%;
           height: 40px;
         }
+          .decidimGeo__searchIcon {
+            left: 34px;
+          }
       }
     }
 
@@ -307,6 +311,7 @@
       .decidimGeo__aside--open .decidimGeo__drawer__list {
         min-height: calc($edgeSliderHeight - 43px) !important;
         max-height: calc($edgeSliderHeight - 43px);
+        background-color: #ffffff;
       }
       .decidimGeo__drawer__listCard:first-child {
         margin-top: 0;
