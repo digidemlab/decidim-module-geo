@@ -35,15 +35,15 @@ module Decidim
 
           if show_children_points? && show_children_points_params.first == "all"
             return Decidim::Geo::Index.where("decidim_organization_id = :org OR resource_type NOT IN (:types)", org: organization.id,
-                                                                                                                types:)
+                                                                                                                types:).order(:start_date, :id)
           end
 
           if show_children_points? && show_children_points_params == ["children_only"]
             return Decidim::Geo::Index.where.not("decidim_organization_id = :org OR resource_type IN (:types)", org: organization.id,
-                                                                                                                types:)
+                                                                                                                types:).order(:start_date, :id)
           end
 
-          Decidim::Geo::Index.where(decidim_organization_id: organization.id)
+          Decidim::Geo::Index.where(decidim_organization_id: organization.id).order(:start_date, :id)
         end
 
         def show_children_points?

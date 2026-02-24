@@ -1,12 +1,12 @@
 import { _getGeoDataSource, _getGeoDataSourceIds } from "./queries";
 
 const countGeoDataSource = async (params = {}, callback = undefined) => {
-  const { filters = [], locale, isIndex = false, after = 0, first = 50 } = params;
+  const { filters = [], locale, isIndex = false, offset = 0, first = 50 } = params;
   const fields = [];
 
   const searchParams = new URLSearchParams({
     locale,
-    after,
+    offset,
     first
   });
   if (isIndex) {

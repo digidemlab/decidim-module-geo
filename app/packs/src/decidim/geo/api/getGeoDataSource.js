@@ -1,7 +1,7 @@
 import { _getGeoDataSource, _getGeoDataSourceIds } from "./queries";
 
 const getGeoDataSource = async (params = {}, fetchAll = true, callback) => {
-  const { filters = [], locale, isIndex = false, after = 0, first = 50 } = params;
+  const { filters = [], locale, isIndex = false, offset = 0, first = 50 } = params;
   const fields = fetchAll
     ? [
         "resourceUrl",
@@ -27,7 +27,7 @@ const getGeoDataSource = async (params = {}, fetchAll = true, callback) => {
 
   const searchParams = new URLSearchParams({
     locale,
-    after,
+    offset,
     first
   });
   if (isIndex) {
@@ -48,11 +48,11 @@ const getGeoDataSource = async (params = {}, fetchAll = true, callback) => {
     throw error;
   }
   if (!page) return { nodes: [], edges: [] };
-  const { has_more: hasMoreThanOne, end_cursor: endCursor } = page?.meta || {};
+  const { has_more: hasMoreThanOne } = page?.meta || {};
   callback(page.data, hasMoreThanOne, page?.meta || {});
   if (!hasMoreThanOne) return;
-
-  searchParams.set("after", endCursor);
+  let nextOffset = 50;
+  searchParams.set("offset", nextOffset);
   while (true) {
     try {
       const response = await fetch("/api/decidim-geo/points?" + searchParams.toString());
@@ -62,10 +62,11 @@ const getGeoDataSource = async (params = {}, fetchAll = true, callback) => {
       console.error(error);
       return;
     }
-    const { end_cursor: endCursor, has_more: hasMore } = page.meta || {};
+    const { has_more: hasMore } = page.meta || {};
     callback(page.data, hasMore, page?.meta || {});
     if (!hasMore) break;
-    searchParams.set("after", endCursor);
+    nextOffset += 50
+    searchParams.set("offset", nextOffset);
   }
 };
 export default getGeoDataSource;
