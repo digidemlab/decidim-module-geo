@@ -25,7 +25,8 @@ module Decidim
           query = scoped_participatory_space!(query, :participatory_processes, process_params)
           query = scoped_participatory_space!(query, :assemblies, assembly_params)
           query = scoped_resource_type!(query)
-          scoped_time!(query)
+          query = scoped_time!(query)
+          search_title(query)
         end
 
         private
@@ -123,6 +124,16 @@ module Decidim
           time_filter_chain
         end
 
+        def search_title(query)
+          return query if search_title_params.empty?
+
+          query.where("title ->> ? ILIKE ?", locale, "%#{search_title_params[:search_filter][:title]}%")
+        end
+
+        def search_title_params
+          graphql_params.find { |f| f[:search_filter].present? }
+        end
+
         def config
           @config ||= Decidim::Geo::GeoConfig.geo_config_default(organization)
         end
@@ -132,6 +143,8 @@ module Decidim
         end
 
         def normalize_graphql_params(graphql_params)
+          return unless graphql_params
+
           graphql_params.map do |hash|
             next hash unless hash.is_a?(Hash)
 
