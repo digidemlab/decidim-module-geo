@@ -1,8 +1,6 @@
 .decidimGeo__container .js-decidimgeo.decidimgeo__map {
   .decidimGeo__drawer {
-    height: 75px;
-    border-bottom: 1px solid #f0f0f0;
-    box-shadow: 0px 0px 10px 0px #00000014;
+    height: 37px;
   }
 
   .decidimGeo__drawerSearch {
@@ -34,6 +32,25 @@
     font-size: 14px;
     box-sizing: border-box;
     outline: 1px solid transparent !important;
+  }
+
+  .decidimGeo__searchResults.is-open {
+    background: #ffffff;
+    color: #3d393c;
+    font-size: 14px;
+    font-weight: 400;
+    top: 100%;
+    box-shadow: 0px 0px 10px 0px #00000014;
+    z-index: 600;
+  }
+
+  .decidimGeo__searchItem {
+    padding: 6px 0px 6px 34px;
+    border-bottom: 1px solid #f0f0f0
+  }
+
+  .decidimGeo__searchItem:hover {
+    background-color: #f0f0f0;
   }
 
   .decidimGeo__drawer__list {
@@ -102,9 +119,9 @@
     }
   }
   .decidimGeo__drawer__listCardIcon {
-    padding-right: 4px;
-    max-height: 38px;
-    padding-top: 12px;
+    height: 16px;
+    margin-top: 10px;
+    margin-left: 5px;
     &--hidden {
       display: none;
     }
@@ -151,9 +168,7 @@
     display: inline-block;
     vertical-align: bottom;
     max-height: 69px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    padding-right: 8px;
+    padding: 8px 8px 8px 8px;
     width: 90px;
     min-width: 90px;
     border-top: #808080;

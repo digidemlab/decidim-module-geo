@@ -9,6 +9,10 @@ module Decidim
         render json: { count: query.count }
       end
 
+      def search_title
+        render json: { data: query.select("title") }
+      end
+
       def index
         last_modified = query.maximum(:updated_at) || 1.year.from_now
         etag = "#{query.cache_key_with_version}/params-#{Digest::MD5.hexdigest(permitted_params.to_json)}"

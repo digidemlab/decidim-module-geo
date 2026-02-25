@@ -125,7 +125,7 @@ module Decidim
         end
 
         def search_title(query)
-          return query if search_title_params.empty?
+          return query if search_title_params.nil?
 
           query.where("title ->> ? ILIKE ?", locale, "%#{search_title_params[:search_filter][:title]}%")
         end

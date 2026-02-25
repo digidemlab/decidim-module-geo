@@ -175,6 +175,19 @@
           .decidimGeo__searchIcon {
             left: 34px;
           }
+        .decidimGeo__drawerSearch.has-results {
+          border-radius: 20px 20px 0px 0px;
+        }
+        .decidimGeo__searchResults.is-open {
+          border-radius: 0px 0px 20px 20px;
+          margin-left: 22px;
+          width: 100%;
+          border-bottom: none;
+          border-top: 1px solid #f0f0f0;
+        }
+        .decidimGeo__searchItem:hover {
+          background-color: #f0f0f0;
+        }
       }
     }
 

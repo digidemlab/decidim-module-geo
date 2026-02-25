@@ -111,11 +111,9 @@ export default class Drawer {
       listCard
     );
 
-    if (node.lonlat) {
-      GeoEncodedIcon.src = images?.geolocated;
-    } else {
-      GeoEncodedIcon.src = images?.not_geolocated;
-    }
+    GeoEncodedIcon.src = images?.geolocated;
+
+    if (!node.lonlat) { GeoEncodedIcon.style.opacity = "0.32" }
     
     const info = L.DomUtil.create(
       "div",
@@ -173,6 +171,9 @@ export default class Drawer {
   onAdd() {
     if (!this.parent) throw new Error("no this.parent ");
     const { loading } = pointStore.getState();
+
+    
+
     this.cardList = L.DomUtil.create(
       "ul",
       createClasses("decidimGeo__drawer__list", [

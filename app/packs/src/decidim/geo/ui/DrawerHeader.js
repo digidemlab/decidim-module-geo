@@ -1,11 +1,14 @@
 import createClasses from "./createClasses";
 import geoStore from "../stores/geoStore";
 import pointStore from "../stores/pointStore";
+import pointCounterStore from "../stores/pointCounterStore";
 import configStore from "../stores/configStore";
+import getGeoDataSource from "../api/getGeoDataSource";
 import dropdownFilterStore from "../stores/dropdownFilterStore";
 import _ from "lodash";
 import AsideToggle from "./AsideToggle";
 import L from "../leaflet";
+
 export default class DrawerHeader {
   //View
   constructor(parent) {
@@ -15,6 +18,7 @@ export default class DrawerHeader {
     this.titleBack = null;
     this.toggleDrawer = null;
     this.searchField = null;
+    this.pointCounterStore = pointCounterStore.getState();
   }
 
   config() {
@@ -82,14 +86,10 @@ export default class DrawerHeader {
   }
 
   onAdd() {
+    const { pointsForFilters } = pointStore.getState();
 
     this.container = L.DomUtil.create("div", "leaflet-control decidimGeo__drawer", this.parent);
-
-    this.searchBox = L.DomUtil.create(
-      "div",
-      "decidimGeo__drawerSearch",
-      this.container
-    );
+    this.searchBox = L.DomUtil.create("div", "decidimGeo__drawerSearch", this.container);
 
     const i18n = this.i18n();
 
@@ -109,10 +109,94 @@ export default class DrawerHeader {
       />
     `;
 
+    this.resultsBox = L.DomUtil.create("ul", "decidimGeo__searchResults", this.container);
+
+    const input = this.searchBox.querySelector(".decidimGeo__searchInput");
+
+    L.DomEvent.on(input, "keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const value = e.target.value.trim();
+        this.onSearchEnter(value);
+      }
+    });
+
+    L.DomEvent.on(input, "input", (e) => {
+      const value = e.target.value.trim();
+      this.onSearchInput(value);
+    });
+
+    this.onSearchEnter = function (value) {
+      const filters = [{ searchFilter: {title: value}}]
+      pointsForFilters(filters)
+      this.pointCounterStore.updateCurrentCountForFilters(filters);
+      this.resultsBox.classList.remove("is-open");
+      const searchItems = document.querySelectorAll('.decidimGeo__searchItem');
+      if (searchItems) { searchItems.forEach(item => item.remove()); };
+      const searchInput = document.querySelector('.decidimGeo__searchInput');
+      if (searchInput) { searchInput.value = ""; }
+      const drawer = document.querySelector('.decidimGeo__drawerSearch');
+      if (drawer) { drawer.classList.remove("has-results") }
+    }
+
+    this.onSearchInput = async function (term) {
+      console.log("digitando:", term);
+
+      if (!term || term.length < 2) {
+        this.resultsBox.innerHTML = "";
+        this.resultsBox.classList.remove("is-open");
+        return;
+      }
+
+      const filter = JSON.stringify({ searchFilter: { title: term } });
+      const response = await this.getResults(filter);
+      const data = response.data;
+      this.renderResults(data);
+    };
+
+    this.getResults = async function (filter) {
+      const params = new URLSearchParams({
+        "filters[]": filter
+      });
+      try {
+        const response = await fetch("/api/decidim-geo/points/search?" + params);
+        if (response.ok) return await response.json();
+        else throw new Error(await response.text());
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    };
+
+    this.renderResults = function (data) {
+      this.resultsBox.innerHTML = "";
+      const drawer = document.querySelector('.decidimGeo__drawerSearch');
+
+      if (!data.length) {
+        this.resultsBox.innerHTML = `<div class="decidimGeo__searchItem">
+          no results
+        </div>`;
+        drawer.classList.add("has-results")
+        this.resultsBox.classList.add("is-open");
+        return;
+      }
+
+      data.forEach((point) => {
+        const item = L.DomUtil.create("li", "decidimGeo__searchItem", this.resultsBox);
+        console.log("point: ", point.title.en)
+        item.textContent = point.title.en;
+        item.addEventListener('click', () => {
+          this.onSearchEnter(point.title.en);
+        })
+      });
+      drawer.classList.add("has-results")
+      this.resultsBox.classList.add("is-open");
+    };
+
     this.menu = L.DomUtil.create(
       "div",
       "decidimGeo__drawerHeader",
-      this.container
+      this.parent
     );
 
     L.DomEvent.disableClickPropagation(this.menu);
