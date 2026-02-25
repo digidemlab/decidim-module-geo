@@ -15,12 +15,10 @@ const meetings = (node) => {
     listCard
   );
 
-  if (node.lonlat) {
-    GeoEncodedIcon.src = images?.geolocated;
-  } else {
-    GeoEncodedIcon.src = images?.not_geolocated;
-  };
+  GeoEncodedIcon.src = images?.geolocated;
 
+  if (!node.lonlat) { GeoEncodedIcon.style.opacity = "0.32" }
+  
   const info = L.DomUtil.create(
     "div",
     "decidimGeo__drawer__listCardInfo decidimGeo__drawer__listCardInfo--large",

@@ -16,6 +16,7 @@ module Decidim
             resources :geo_scopes, only: [:index, :show]
             resources :points, only: [:index]
             get "points/count", to: "points#count", as: :count_point
+            get "points/search", to: "points#search_title", as: :search_title
           end
         end
       end
