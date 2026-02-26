@@ -48,7 +48,8 @@ en:
       show:
         decidim_geo_space_address: Address
     geo:
-      search: Search...
+      search: "Search..."
+      no_results: no results 
       admin:
         geo_configs: 
           map_config_title: Map Configurations

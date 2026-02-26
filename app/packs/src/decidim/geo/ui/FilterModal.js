@@ -68,6 +68,8 @@ class FilterModal {
       dropdownFilterStore.getState();
     resetDropdownFilter();
     this.applyValues(defaultFilters);
+    const searchInput = document.querySelector('.decidimGeo__searchInput');
+    if (searchInput) { searchInput.value = "" }
   }
 
   isEmpty() {

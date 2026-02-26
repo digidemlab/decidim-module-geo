@@ -3,7 +3,7 @@ import geoStore from "../stores/geoStore";
 import pointStore from "../stores/pointStore";
 import pointCounterStore from "../stores/pointCounterStore";
 import configStore from "../stores/configStore";
-import getGeoDataSource from "../api/getGeoDataSource";
+import filterStore from "../stores/filterStore";
 import dropdownFilterStore from "../stores/dropdownFilterStore";
 import _ from "lodash";
 import AsideToggle from "./AsideToggle";
@@ -87,6 +87,7 @@ export default class DrawerHeader {
 
   onAdd() {
     const { pointsForFilters } = pointStore.getState();
+    const { locale } = configStore.getState();
 
     this.container = L.DomUtil.create("div", "leaflet-control decidimGeo__drawer", this.parent);
     this.searchBox = L.DomUtil.create("div", "decidimGeo__drawerSearch", this.container);
@@ -121,43 +122,52 @@ export default class DrawerHeader {
       }
     });
 
-    L.DomEvent.on(input, "input", (e) => {
-      const value = e.target.value.trim();
-      this.onSearchInput(value);
-    });
-
     this.onSearchEnter = function (value) {
-      const filters = [{ searchFilter: {title: value}}]
+      const { activeFilters } = filterStore.getState();
+      const filters = [...activeFilters, { searchFilter: {title: value}}]
       pointsForFilters(filters)
       this.pointCounterStore.updateCurrentCountForFilters(filters);
       this.resultsBox.classList.remove("is-open");
       const searchItems = document.querySelectorAll('.decidimGeo__searchItem');
       if (searchItems) { searchItems.forEach(item => item.remove()); };
-      const searchInput = document.querySelector('.decidimGeo__searchInput');
-      if (searchInput) { searchInput.value = ""; }
       const drawer = document.querySelector('.decidimGeo__drawerSearch');
       if (drawer) { drawer.classList.remove("has-results") }
     }
 
-    this.onSearchInput = async function (term) {
-      console.log("digitando:", term);
+    L.DomEvent.on(input, "input", (e) => {
+      const value = e.target.value.trim();
+      throttledOnSearchInput(value);
+    });
 
+    const throttledOnSearchInput = _.throttle(
+      (value) => {
+        this.onSearchInput(value.trim());
+      },
+      300,
+      { leading: false, trailing: true }
+    );
+
+    this.onSearchInput = async function (term) {
       if (!term || term.length < 2) {
         this.resultsBox.innerHTML = "";
         this.resultsBox.classList.remove("is-open");
+        const drawer = document.querySelector('.decidimGeo__drawerSearch');
+        if (drawer) { drawer.classList.remove("has-results") }
         return;
       }
 
+      const { activeFilters } = filterStore.getState();
+
       const filter = JSON.stringify({ searchFilter: { title: term } });
-      const response = await this.getResults(filter);
+
+      const response = await this.getResults(filter, activeFilters);
       const data = response.data;
       this.renderResults(data);
     };
 
-    this.getResults = async function (filter) {
-      const params = new URLSearchParams({
-        "filters[]": filter
-      });
+    this.getResults = async function (filter, activeFilters) {
+      const params = new URLSearchParams({ "filters[]": filter });
+      activeFilters.forEach((f) => { params.append("filters[]", JSON.stringify(f)) });
       try {
         const response = await fetch("/api/decidim-geo/points/search?" + params);
         if (response.ok) return await response.json();
@@ -174,7 +184,7 @@ export default class DrawerHeader {
 
       if (!data.length) {
         this.resultsBox.innerHTML = `<div class="decidimGeo__searchItem">
-          no results
+          ${i18n["decidim.geo.no_results"]}
         </div>`;
         drawer.classList.add("has-results")
         this.resultsBox.classList.add("is-open");
@@ -183,10 +193,9 @@ export default class DrawerHeader {
 
       data.forEach((point) => {
         const item = L.DomUtil.create("li", "decidimGeo__searchItem", this.resultsBox);
-        console.log("point: ", point.title.en)
-        item.textContent = point.title.en;
+        item.textContent = point.title[locale];
         item.addEventListener('click', () => {
-          this.onSearchEnter(point.title.en);
+          this.onSearchEnter(point.title[locale]);
         })
       });
       drawer.classList.add("has-results")

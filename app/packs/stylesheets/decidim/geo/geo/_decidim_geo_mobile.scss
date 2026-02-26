@@ -160,6 +160,9 @@
     /* Setup search field */
     /* == */
     @media (max-width: 768px) {
+      .decidimGeo__drawer {
+        display: none;
+      }
       .leaflet-top.leaflet-left {
         width: 75%;
         height: 0px;
