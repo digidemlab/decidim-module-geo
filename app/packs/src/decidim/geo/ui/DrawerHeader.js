@@ -143,7 +143,7 @@ export default class DrawerHeader {
       (value) => {
         this.onSearchInput(value.trim());
       },
-      300,
+      640,
       { leading: false, trailing: true }
     );
 
