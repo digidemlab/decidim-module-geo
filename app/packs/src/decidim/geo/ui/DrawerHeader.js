@@ -141,6 +141,15 @@ export default class DrawerHeader {
       throttledOnSearchInput(value);
     });
 
+    const closeSearch = () => {
+      this.resultsBox.classList.remove("is-open");
+      document.querySelectorAll('.decidimGeo__searchItem')
+        .forEach(item => item.remove());
+    };
+
+    input?.addEventListener('blur', closeSearch);
+    input?.addEventListener('change', closeSearch);
+
     const throttledOnSearchInput = _.throttle(
       (value) => {
         this.onSearchInput(value.trim());
