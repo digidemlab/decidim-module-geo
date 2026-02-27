@@ -48,7 +48,7 @@ fr:
       show:
         decidim_geo_space_address: Adresse
     geo:
-      search: "Research..."
+      search: "Recherche..."
       no_results: aucun résultat 
       admin:
         geo_configs:

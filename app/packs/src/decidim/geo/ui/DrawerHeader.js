@@ -132,6 +132,8 @@ export default class DrawerHeader {
       if (searchItems) { searchItems.forEach(item => item.remove()); };
       const drawer = document.querySelector('.decidimGeo__drawerSearch');
       if (drawer) { drawer.classList.remove("has-results") }
+      const { isAsideOpen } = configStore.getState();
+      if (isAsideOpen === false) configStore.setState(({ isAsideOpen }) => ({ isAsideOpen: true }));
     }
 
     L.DomEvent.on(input, "input", (e) => {
