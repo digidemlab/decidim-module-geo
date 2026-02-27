@@ -48,6 +48,8 @@ fr:
       show:
         decidim_geo_space_address: Adresse
     geo:
+      search: "Research..."
+      no_results: aucun résultat 
       admin:
         geo_configs:
           map_config_title: Configurations de la carte

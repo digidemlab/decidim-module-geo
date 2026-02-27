@@ -118,6 +118,10 @@
       animation: 1.5s shine linear infinite;
     }
   }
+  .decidimGeo__drawer__listCard:has(.decidimGeo__drawer__listCardInfo--image)
+    .decidimGeo__drawer__listCardIcon {
+    margin-top: 197px;
+  }
   .decidimGeo__drawer__listCardIcon {
     height: 16px;
     margin-top: 10px;
@@ -160,7 +164,7 @@
       position: absolute;
       top: 0;
       left: 0;
-      right: 0;
+      right: 12px;
     }
   }
 
