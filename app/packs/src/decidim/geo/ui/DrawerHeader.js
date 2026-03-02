@@ -143,6 +143,8 @@ export default class DrawerHeader {
 
     const closeSearch = () => {
       this.resultsBox.classList.remove("is-open");
+      const drawer = document.querySelector('.decidimGeo__drawerSearch');
+      if (drawer) { drawer.classList.remove("has-results") }
       document.querySelectorAll('.decidimGeo__searchItem')
         .forEach(item => item.remove());
     };
