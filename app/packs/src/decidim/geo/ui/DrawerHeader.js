@@ -179,7 +179,7 @@ export default class DrawerHeader {
     };
 
     this.getResults = async function (filter, activeFilters) {
-      const params = new URLSearchParams({ "filters[]": filter });
+      const params = new URLSearchParams({ "filters[]": filter, "locale": locale, "is_index": true  });
       activeFilters.forEach((f) => { params.append("filters[]", JSON.stringify(f)) });
       try {
         const response = await fetch("/api/decidim-geo/points/search?" + params);
