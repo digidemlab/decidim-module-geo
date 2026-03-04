@@ -124,10 +124,12 @@ export default class DrawerHeader {
     });
 
     this.onSearchEnter = function (value) {
-      const { activeFilters } = filterStore.getState();
+      let { activeFilters, setFilters } = filterStore.getState();
+      activeFilters = activeFilters.filter(f => !f.searchFilter);
       const filters = [...activeFilters, { searchFilter: {title: value}}]
       pointsForFilters(filters)
       this.pointCounterStore.updateCurrentCountForFilters(filters);
+      setFilters(filters)
       this.resultsBox.classList.remove("is-open");
       const searchItems = document.querySelectorAll('.decidimGeo__searchItem');
       if (searchItems) { searchItems.forEach(item => item.remove()); };
