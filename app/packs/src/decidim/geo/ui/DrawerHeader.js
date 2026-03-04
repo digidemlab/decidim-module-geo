@@ -119,6 +119,7 @@ export default class DrawerHeader {
         e.preventDefault();
         const value = e.target.value.trim();
         this.onSearchEnter(value);
+        input.blur();
       }
     });
 
