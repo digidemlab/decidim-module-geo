@@ -99,7 +99,7 @@ module Decidim
             images: {
               not_geolocated: ActionController::Base.helpers.asset_pack_path("media/images/not-geolocated.svg")
             },
-            filters: filters.push({ timeFilter: { time: "active" } }),
+            filters: filters.push({ timeFilter: { time: "active" } }, { resourceTypeFilter: { resourceType: "all" } }),
             map_config:,
             active_manifests: active_manifests.keys,
             is_index: index?

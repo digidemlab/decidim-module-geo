@@ -7,15 +7,19 @@ module Decidim
     # no matter the time filter.
     class SpacePageTimeFilter < Api::GenericFilter
       def filter_past(query)
-        query
+        default_filter(query)
       end
 
       def filter_active(query)
-        query
+        default_filter(query)
       end
 
       def filter_future(query)
-        query
+        default_filter(query)
+      end
+
+      def default_filter(query)
+        query.where(resource_type: manifest_name)
       end
     end
   end
