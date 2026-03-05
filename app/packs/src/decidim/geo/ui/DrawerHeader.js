@@ -211,7 +211,6 @@ export default class DrawerHeader {
         const item = L.DomUtil.create("li", "decidimGeo__searchItem", this.resultsBox);
         item.textContent = point.title[locale];
         item.addEventListener('click', (e) => {
-          console.log("e: ", e.target.textContent)
           const searchInput = document.querySelector('.decidimGeo__searchInput');
           if (searchInput) { searchInput.value = e.target.textContent; }
           

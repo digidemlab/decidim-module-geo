@@ -60,6 +60,11 @@ const store = createStore(
           const [filterName] = Object.keys(f);
           return filterName !== "sourceFilter";
         });
+      const withoutSearchFilter = (filters) =>
+        filters.filter((f) => {
+          const [filterName] = Object.keys(f);
+          return filterName !== "searchFilter";
+        });
       
       switch (filters.GeoSource) {
         
@@ -136,6 +141,15 @@ const store = createStore(
           }
         ];
 
+      const searchFilter = filters.GeoSearch;
+      if (searchFilter == "empty") 
+        newFilters = [
+          ...withoutSearchFilter(newFilters),
+          {
+            searchFilter: { title: "" }
+          }
+        ];
+
       const resourceType = filters.GeoType;
       if (resourceType) {
         const id = document.querySelector(".decidimGeo__container").id;
@@ -188,10 +202,7 @@ const store = createStore(
       set(({ nextFilters }) => (nextFilters ? { selectedFilters: nextFilters } : {}));
     },
     resetFilters() {
-      set(({ defaultFilters }) => ({
-        selectedFilters: defaultFilters,
-        nextFilters: defaultFilters
-      }));
+      set(({ defaultFilters }) => ({ selectedFilters: defaultFilters, nextFilters: defaultFilters }));
     },
     setDefaultFilters(newFilters) {
       set(() => ({ defaultFilters: newFilters, selectedFilters: newFilters }));
