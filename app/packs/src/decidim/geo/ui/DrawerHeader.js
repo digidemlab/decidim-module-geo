@@ -114,6 +114,8 @@ export default class DrawerHeader {
 
     const input = this.searchBox.querySelector(".decidimGeo__searchInput");
 
+    L.DomEvent.disableClickPropagation(input);
+
     L.DomEvent.on(input, "keydown", (e) => {
       if (e.key === "Enter") {
         e.preventDefault();
