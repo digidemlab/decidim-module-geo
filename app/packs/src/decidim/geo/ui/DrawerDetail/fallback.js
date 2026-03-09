@@ -24,12 +24,6 @@ const fallback = (container, node) => {
     infoType
   );
   infoTxt.textContent = i18n[node.resourceType];
-  const notGeoEncodedIcon = L.DomUtil.create(
-    "img",
-    createClasses("decidimGeo__drawer__listCardIcon", [node.lonlat && "hidden"]),
-    infoType
-  );
-  notGeoEncodedIcon.src = images?.not_geolocated;
 
   const infoTitle = L.DomUtil.create("div", "decidimGeo__drawer__listCardTitle", container);
   const infoTitleTxt = L.DomUtil.create("span", createClasses("decidimGeo__drawer__listTitleTxt"), infoTitle);

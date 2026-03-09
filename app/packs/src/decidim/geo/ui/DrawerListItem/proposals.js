@@ -11,6 +11,17 @@ const proposals = (node) => {
     "li",
     "decidimGeo__drawer__listCard decidimGeo__drawer__listCard--proposals"
   );
+
+  const GeoEncodedIcon = L.DomUtil.create(
+    "img",
+    createClasses("decidimGeo__drawer__listCardIcon"),
+    listCard
+  );
+
+  GeoEncodedIcon.src = images?.geolocated;
+
+  if (!node.lonlat) { GeoEncodedIcon.style.opacity = "0.32" }
+
   const info = L.DomUtil.create(
     "div",
     "decidimGeo__drawer__listCardInfo decidimGeo__drawer__listCardInfo--large",
@@ -25,12 +36,6 @@ const proposals = (node) => {
     infoType
   );
   infoTxt.textContent = i18n[node.resourceType];
-  const notGeoEncodedIcon = L.DomUtil.create(
-    "img",
-    createClasses("decidimGeo__drawer__listCardIcon", [node.lonlat && "hidden"]),
-    infoType
-  );
-  notGeoEncodedIcon.src = images?.not_geolocated;
 
   const infoTitle = L.DomUtil.create("div", "decidimGeo__drawer__listCardTitle", info);
   const infoTitleTxt = L.DomUtil.create("span", createClasses("decidimGeo__drawer__listTitleTxt"), infoTitle);
@@ -41,7 +46,7 @@ const proposals = (node) => {
     const infoStatus = L.DomUtil.create(
       "div",
       createClasses("decidimGeo__drawer__listCardStatus", [status.toLowerCase()]),
-      metadatas
+      listCard
     );
     infoStatus.textContent = status;
   }

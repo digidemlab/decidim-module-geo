@@ -102,6 +102,19 @@ export default class Drawer {
         location.href = node_url;
       }
     };
+
+    const { images } = configStore.getState();
+
+    const GeoEncodedIcon = L.DomUtil.create(
+      "img",
+      createClasses("decidimGeo__drawer__listCardIcon"),
+      listCard
+    );
+
+    GeoEncodedIcon.src = images?.geolocated;
+
+    if (!node.lonlat) { GeoEncodedIcon.style.opacity = "0.32" }
+    
     const info = L.DomUtil.create(
       "div",
       "decidimGeo__drawer__listCardInfo decidimGeo__drawer__listCardInfo--large",
@@ -115,7 +128,7 @@ export default class Drawer {
         fallbackDetails(info, node);
         break;
     }
-    const viewBtn = L.DomUtil.create("a", "decidimGeo__drawer__viewBtn", listCard);
+    const viewBtn = L.DomUtil.create("a", "decidimGeo__drawer__viewBtn", info);
     viewBtn.textContent = this.i18n()["decidim_geo.actions.view"];
 
     if (this.hasAssemblyOrProcess()) {
@@ -158,6 +171,9 @@ export default class Drawer {
   onAdd() {
     if (!this.parent) throw new Error("no this.parent ");
     const { loading } = pointStore.getState();
+
+    
+
     this.cardList = L.DomUtil.create(
       "ul",
       createClasses("decidimGeo__drawer__list", [

@@ -64,10 +64,12 @@ class FilterModal {
   }
 
   resetBtnHandler() {
-    const { resetFilters: resetDropdownFilter, defaultFilters } =
-      dropdownFilterStore.getState();
+    const { resetFilters: resetDropdownFilter, defaultFilters, toggleOpen } = dropdownFilterStore.getState();
     resetDropdownFilter();
     this.applyValues(defaultFilters);
+    toggleOpen();
+    const searchInput = document.querySelector('.decidimGeo__searchInput');
+    if (searchInput) { searchInput.value = "" }
   }
 
   isEmpty() {
@@ -129,7 +131,8 @@ class FilterModal {
       GeoScopeFilter: "all",
       GeoShowFilter: "all",
       GeoTimeFilter: "active",
-      GeoType: "all"
+      GeoType: "all",
+      GeoSearch: "empty"
     };
     if (!filters) {
       filters = defaultDropdownValues;
