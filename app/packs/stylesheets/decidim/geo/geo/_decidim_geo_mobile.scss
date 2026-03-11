@@ -185,7 +185,11 @@
           border-radius: 20px 20px 0px 0px;
         }
         .decidimGeo__searchResults.is-open {
+          -webkit-overflow-scrolling: touch;
+          touch-action: pan-y;
+          pointer-events: auto;
           border-radius: 0px 0px 20px 20px;
+          top: 56px;
           margin-left: 22px;
           width: 100%;
           border-bottom: none;
