@@ -110,11 +110,31 @@ export default class DrawerHeader {
       />
     `;
 
-    this.resultsBox = L.DomUtil.create("ul", "decidimGeo__searchResults", this.container);
+    this.resultsBox = L.DomUtil.create("ul", "decidimGeo__searchResults", this.searchBox);
+
+    L.DomEvent.disableClickPropagation(this.resultsBox);
+    L.DomEvent.disableScrollPropagation(this.resultsBox);
+    
+    let startY = 0;
+    let isScrolling = false;
+
+    this.resultsBox.addEventListener("touchstart", (e) => {
+      startY = e.touches[0].clientY;
+      isScrolling = false;
+    });
+
+    this.resultsBox.addEventListener("touchmove", (e) => {
+      const moveY = e.touches[0].clientY;
+
+      if (Math.abs(moveY - startY) > 10) {
+        isScrolling = true;
+      }
+    });
 
     const input = this.searchBox.querySelector(".decidimGeo__searchInput");
 
     L.DomEvent.disableClickPropagation(input);
+    L.DomEvent.disableScrollPropagation(input);
 
     L.DomEvent.on(input, "keydown", (e) => {
       if (e.key === "Enter") {
@@ -211,6 +231,8 @@ export default class DrawerHeader {
 
       data.forEach((point) => {
         const item = L.DomUtil.create("li", "decidimGeo__searchItem", this.resultsBox);
+        L.DomEvent.disableClickPropagation(item);
+        L.DomEvent.disableScrollPropagation(item);
         item.textContent = point.title[locale];
         item.addEventListener('pointerdown', (e) => {
           const searchInput = document.querySelector('.decidimGeo__searchInput');
