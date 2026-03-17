@@ -46,11 +46,16 @@ module Decidim
                        end_date: nil,
                        component_id: serializer.component_id,
                        participatory_space_id: serializer.participatory_space_id,
-                       participatory_space_type: serializer.participatory_space_type
+                       participatory_space_type: serializer.participatory_space_type,
+                       extended_data: { default_locale: }
                      ))
       rescue StandardError => e
         Rails.logger.debug { "Can't index #{e}" }
         false
+      end
+
+      def default_locale
+        resource.default_locale.to_s
       end
 
       def remove_organization

@@ -18,6 +18,11 @@ en:
               invalid_range: "must be between 5 and 19"
             focus_zoom_level:
               invalid_range: "must be between 5 and 19"
+  activerecord:
+    models:
+      decidim/organization:
+        one: "Organization"
+        other: "Organizations"
   decidim:
     admin:
       components:

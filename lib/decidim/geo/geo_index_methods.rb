@@ -12,7 +12,6 @@ module Decidim
         index = Decidim::Geo::Index.find_or_initialize_by(resource_id:, resource_type:) do |record|
           record.assign_attributes(decidim_geo_hash)
         end
-        index.assign_attributes(decidim_geo_hash)
 
         index.lonlat = if lat && lon && !lat.nan? && !lon.nan?
                          factory = Decidim::Geo.point_factory
@@ -21,7 +20,7 @@ module Decidim
 
         index.resource_id = resource_id
         index.resource_type = resource_type
-        index.save
+        index.save!
       end
 
       def with_organization(decidim_geo_hash)
@@ -51,6 +50,10 @@ module Decidim
                                            false
                                          end
         decidim_geo_hash
+      end
+
+      def default_locale
+        resource.organization.default_locale.to_s
       end
 
       private

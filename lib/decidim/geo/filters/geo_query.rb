@@ -127,11 +127,18 @@ module Decidim
         def search_title(query)
           return query if search_title_params.nil?
 
-          query.where("title ->> ? ILIKE ?", locale, "%#{search_title_params[:search_filter][:title]}%")
+          search_term = search_title_params[:search_filter][:title]
+          query.where("(title ->> ? ILIKE ?) OR (title ->> ? ILIKE ?)",
+                      locale, "%#{search_term}%",
+                      default_locale, "%#{search_term}%")
         end
 
         def search_title_params
           graphql_params.find { |f| f[:search_filter].present? }
+        end
+
+        def default_locale
+          organization.default_locale
         end
 
         def config

@@ -6,6 +6,10 @@ namespace :decidim_geo do
   desc "Destroy and rebuild the index"
   task rebuild_index: :environment do
     Decidim::Geo::Index.destroy_all
+
+    # For each organization update decidim index
+    Decidim::Organization.all.each(&:update_decidim_geo_index)
+
     # For each component, update decidim index
     Decidim::Component.all.each do |model|
       model.decidim_geo_avoid_index ||= Decidim::Geo::NoIndex.new(decidim_organization_id: model.organization.id)
