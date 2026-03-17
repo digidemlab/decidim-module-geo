@@ -41,7 +41,8 @@ module Decidim
                              start_time: meeting.start_time,
                              end_time: meeting.end_time,
                              component_url:,
-                             space_page_host:
+                             space_page_host:,
+                             default_locale:
                            }
                          )
                        )

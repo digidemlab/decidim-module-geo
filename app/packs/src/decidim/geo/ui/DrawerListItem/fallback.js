@@ -6,9 +6,11 @@ import getHashtagFromNode from "../drawerHelper";
 import getArrowIcon from "../geoIcons";
 
 const fallback = (node) => {
-  const { i18n, images, locale, defaultLocale, filters } = configStore.getState();
+  let { i18n, images, locale, defaultLocale, filters } = configStore.getState();
   const hasImage = !_.isEmpty(node.imageUrl);
   const listCard = L.DomUtil.create("li", "decidimGeo__drawer__listCard");
+
+  defaultLocale = node?.extendedData?.defaultLocale || defaultLocale
 
   const GeoEncodedIcon = L.DomUtil.create(
     "img",
@@ -32,11 +34,12 @@ const fallback = (node) => {
     createClasses("decidimGeo__drawer__listCardTxt"),
     infoType
   );
+
   infoTxt.textContent = i18n[node.resourceType];
-  
 
   const infoTitle = L.DomUtil.create("div", "decidimGeo__drawer__listCardTitle", info);
   const infoTitleTxt = L.DomUtil.create("span", createClasses("decidimGeo__drawer__listTitleTxt"), infoTitle);
+
   infoTitleTxt.textContent = getHashtagFromNode(node, locale, defaultLocale);
 
   const hasAssemblyOrProcess = filters?.some(f => f.assembly_filter || f.process_filter);
@@ -49,7 +52,7 @@ const fallback = (node) => {
   }
 
   if (node.shortDescription) {
-    const text = node.shortDescription[locale] || node.shortDescription[defaultLocale];
+    const text = node.shortDescription[locale] || node.shortDescription[defaultLocale] || Object.values(node.shortDescription)[0];
 
     if (text && !text.includes("Translation missing")) {
       const infoDescription = L.DomUtil.create(

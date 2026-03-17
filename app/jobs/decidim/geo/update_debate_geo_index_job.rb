@@ -40,7 +40,8 @@ module Decidim
                              start_time: debate.start_time,
                              end_time: debate.end_time,
                              component_url:,
-                             space_page_host:
+                             space_page_host:,
+                             default_locale:
                            }
                          )
                        )

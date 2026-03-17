@@ -34,7 +34,8 @@ module Decidim
           participatory_space_type: manifest_name,
           extended_data: {
             component_url:,
-            space_page_host:
+            space_page_host:,
+            default_locale:
           }
         }
         upsert_index(assembly.id, manifest_name,

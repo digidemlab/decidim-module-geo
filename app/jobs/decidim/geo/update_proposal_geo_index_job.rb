@@ -40,7 +40,8 @@ module Decidim
                            end_date:,
                            extended_data: {
                              component_url:,
-                             space_page_host:
+                             space_page_host:,
+                             default_locale:
                            }
                          )
                        )

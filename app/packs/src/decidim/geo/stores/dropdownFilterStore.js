@@ -143,12 +143,7 @@ const store = createStore(
 
       const searchFilter = filters.GeoSearch;
       if (searchFilter == "empty") 
-        newFilters = [
-          ...withoutSearchFilter(newFilters),
-          {
-            searchFilter: { title: "" }
-          }
-        ];
+        newFilters = withoutSearchFilter(newFilters);
 
       const resourceType = filters.GeoType;
       if (resourceType) {

@@ -40,7 +40,8 @@ module Decidim
                            participatory_space_type: accountability_result.participatory_space.manifest.name.to_s,
                            extended_data: {
                              component_url:,
-                             space_page_host:
+                             space_page_host:,
+                             default_locale:
                            }
                          )
                        )

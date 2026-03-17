@@ -5,7 +5,7 @@ import pointCounterStore from "../stores/pointCounterStore";
 import configStore from "../stores/configStore";
 import filterStore from "../stores/filterStore";
 import dropdownFilterStore from "../stores/dropdownFilterStore";
-import _ from "lodash";
+import _, { filter } from "lodash";
 import AsideToggle from "./AsideToggle";
 import L from "../leaflet";
 
@@ -87,7 +87,7 @@ export default class DrawerHeader {
 
   onAdd() {
     const { pointsForFilters } = pointStore.getState();
-    const { locale } = configStore.getState();
+    const { locale, defaultLocale } = configStore.getState();
 
     this.container = L.DomUtil.create("div", "leaflet-control decidimGeo__drawer", this.parent);
     this.searchBox = L.DomUtil.create("div", "decidimGeo__drawerSearch", this.container);
@@ -148,15 +148,20 @@ export default class DrawerHeader {
     this.onSearchEnter = function (value) {
       let { activeFilters, setFilters } = filterStore.getState();
       activeFilters = activeFilters.filter(f => !f.searchFilter);
-      const filters = [...activeFilters, { searchFilter: {title: value}}]
+      let filters = value ? [...activeFilters, { searchFilter: {title: value}}] : activeFilters;
+      
       pointsForFilters(filters)
       this.pointCounterStore.updateCurrentCountForFilters(filters);
       setFilters(filters)
+
       this.resultsBox.classList.remove("is-open");
+      
       const searchItems = document.querySelectorAll('.decidimGeo__searchItem');
       if (searchItems) { searchItems.forEach(item => item.remove()); };
+      
       const drawer = document.querySelector('.decidimGeo__drawerSearch');
       if (drawer) { drawer.classList.remove("has-results") }
+      
       const { isAsideOpen } = configStore.getState();
       if (isAsideOpen === false) configStore.setState(({ isAsideOpen }) => ({ isAsideOpen: true }));
     }
@@ -231,9 +236,12 @@ export default class DrawerHeader {
 
       data.forEach((point) => {
         const item = L.DomUtil.create("li", "decidimGeo__searchItem", this.resultsBox);
+
         L.DomEvent.disableClickPropagation(item);
         L.DomEvent.disableScrollPropagation(item);
-        item.textContent = point.title[locale];
+        
+        item.textContent = point.title[locale] || point.title[defaultLocale];
+
         item.addEventListener('pointerdown', (e) => {
           const searchInput = document.querySelector('.decidimGeo__searchInput');
           if (searchInput) { searchInput.value = e.target.textContent; }
