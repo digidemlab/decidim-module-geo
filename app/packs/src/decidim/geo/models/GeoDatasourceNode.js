@@ -23,13 +23,13 @@ export default class GeoDatasourceNode {
       const outerCircle = this.marker.getElement()?.querySelector("svg circle[stroke]")?.style;
       if (outerCircle) {
         outerCircle.stroke = "#000000";
-        outerCircle.opacity = "0.72";
+        outerCircle.opacity = "0.64";
       }
     } else if (this.marker.options.icon.options.className === "arrow-marker") {
       const outerCircle = this.marker.getElement()?.querySelector("#SVGRepo_bgCarrier rect[fill]");
       if (outerCircle) {
         outerCircle.setAttribute("fill", "#000000");
-        outerCircle.setAttribute("opacity", "0.72");
+        outerCircle.setAttribute("opacity", "0.64");
       }
     }
   }
