@@ -22,12 +22,14 @@ export default class GeoDatasourceNode {
     if (this.marker.options.icon.options.className === "circle-marker") {
       const outerCircle = this.marker.getElement()?.querySelector("svg circle[stroke]")?.style;
       if (outerCircle) {
-        outerCircle.stroke = "#404040";
+        outerCircle.stroke = "#000000";
+        outerCircle.opacity = "0.72";
       }
     } else if (this.marker.options.icon.options.className === "arrow-marker") {
       const outerCircle = this.marker.getElement()?.querySelector("#SVGRepo_bgCarrier rect[fill]");
       if (outerCircle) {
-        outerCircle.setAttribute("fill", "#404040");
+        outerCircle.setAttribute("fill", "#000000");
+        outerCircle.setAttribute("opacity", "0.72");
       }
     }
   }
@@ -36,11 +38,13 @@ export default class GeoDatasourceNode {
       const outerCircle = this.marker.getElement()?.querySelector("svg circle[stroke]")?.style;
       if (outerCircle) {
         outerCircle.stroke = "var(--primary)";
+        outerCircle.opacity = "1";
       }
     } else if (this.marker.options.icon.options.className === "arrow-marker") {
       const outerCircle = this.marker.getElement()?.querySelector("#SVGRepo_bgCarrier rect");
       if (outerCircle) {
         outerCircle.setAttribute("fill", "var(--primary)");
+        outerCircle.setAttribute("opacity", "1");
       }
     }
   }
