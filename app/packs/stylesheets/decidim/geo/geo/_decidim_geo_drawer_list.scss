@@ -19,14 +19,18 @@
 
   .decidimGeo__searchIcon {
     position: absolute;
-    left: 9px;
+    inset-inline-start: 9px;
     pointer-events: none;
     opacity: 0.6;
+  }
+  [dir="rtl"] .decidimGeo__searchIcon {
+    transform: scaleX(-1);
   }
 
   .decidimGeo__searchInput {
     width: 100%;
-    padding: 8px 10px 8px 34px;
+    padding-block: 8px 8px;
+    padding-inline: 34px 10px;
     border: none;
     background: transparent;
     font-size: 14px;
@@ -106,7 +110,8 @@
     background: #ffffff;
     width: 100%;
     overflow: hidden;
-    padding: 0px 0px 0px 4px;
+    padding: 0px 0px 0px;
+    padding-inline-start: 4px;
     cursor: pointer;
     border-radius: 0px;
     box-shadow: 0px 0px 0px 0px #00000014;
@@ -129,7 +134,7 @@
   .decidimGeo__drawer__listCardIcon {
     height: 16px;
     margin-top: 10px;
-    margin-left: 5px;
+    margin-inline-start: 5px;
     &--hidden {
       display: none;
     }
@@ -176,7 +181,8 @@
     display: inline-block;
     vertical-align: bottom;
     max-height: 69px;
-    padding: 8px 8px 8px 8px;
+    padding-block: 8px 8px; 
+    padding-inline: 8px 8px;
     width: 90px;
     min-width: 90px;
     border-top: #808080;
@@ -306,7 +312,8 @@
   }
   a.decidimGeo__drawer__viewBtn {
     @include decidimGeo__clickableText;
-    padding: 8px 16px;
+    padding-block: 8px; 
+    padding-inline: 0px;
     letter-spacing: 0.2px;
     color: #3d393c;
     text-transform: uppercase;

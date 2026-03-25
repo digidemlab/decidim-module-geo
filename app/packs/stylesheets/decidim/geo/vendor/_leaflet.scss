@@ -161,13 +161,13 @@
     top: 0;
   }
   .leaflet-right {
-    right: 0;
+    inset-inline-end: 0;
   }
   .leaflet-bottom {
     bottom: 0;
   }
   .leaflet-left {
-    left: 0;
+    inset-inline-start: 0;
   }
   .leaflet-control {
     float: left;

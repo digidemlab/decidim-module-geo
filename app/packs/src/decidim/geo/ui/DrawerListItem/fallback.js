@@ -7,10 +7,9 @@ import getArrowIcon from "../geoIcons";
 
 const fallback = (node) => {
   let { i18n, images, locale, defaultLocale, filters } = configStore.getState();
+  defaultLocale = node?.extendedData?.defaultLocale || defaultLocale
   const hasImage = !_.isEmpty(node.imageUrl);
   const listCard = L.DomUtil.create("li", "decidimGeo__drawer__listCard");
-
-  defaultLocale = node?.extendedData?.defaultLocale || defaultLocale
 
   const GeoEncodedIcon = L.DomUtil.create(
     "img",

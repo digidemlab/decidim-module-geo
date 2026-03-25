@@ -7,7 +7,8 @@ import getHashtagFromNode from "../drawerHelper";
 import getArrowIcon from "../geoIcons";
 
 const meetings = (node) => {
-  const { i18n, images, locale, defaultLocale, filters } = configStore.getState();
+  let { i18n, images, locale, defaultLocale, filters } = configStore.getState();
+  defaultLocale = node?.extendedData?.defaultLocale || defaultLocale
   const listCard = L.DomUtil.create("li", "decidimGeo__drawer__listCard");
   const GeoEncodedIcon = L.DomUtil.create(
     "img",

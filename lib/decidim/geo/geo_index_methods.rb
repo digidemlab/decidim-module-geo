@@ -9,6 +9,8 @@ module Decidim
         lat = decidim_geo_hash.delete(:latitude)
         lon = decidim_geo_hash.delete(:longitude)
 
+        decidim_geo_hash = with_machine_translations(decidim_geo_hash)
+
         index = Decidim::Geo::Index.find_or_initialize_by(resource_id:, resource_type:) do |record|
           record.assign_attributes(decidim_geo_hash)
         end
@@ -49,6 +51,22 @@ module Decidim
                                          else
                                            false
                                          end
+        decidim_geo_hash
+      end
+
+      def with_machine_translations(decidim_geo_hash)
+        [:title, :short_description, :description_html].each do |attr|
+          next unless decidim_geo_hash[attr].include?("machine_translations")
+
+          key_with_mt = decidim_geo_hash[attr]
+          mt = key_with_mt.delete("machine_translations")
+          mt.each_key do |language|
+            key_with_mt.update(mt.slice(language)) if !key_with_mt.has_key?(language) || key_with_mt[language]&.gsub(/<[^>]*>/, '')&.empty?
+          end
+
+          decidim_geo_hash[attr] = key_with_mt
+        end
+
         decidim_geo_hash
       end
 

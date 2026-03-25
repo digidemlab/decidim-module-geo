@@ -8,6 +8,15 @@
     height: 100%;
   }
 
+  .leaflet-left {
+    inset-inline-start: 0 !important;
+  }
+
+  .leaflet-right {
+    inset-inline-end: 0 !important;
+    margin-inline-end: 16px !important;
+  }
+
   .leaflet-top.leaflet-left {
     top: 0;
     bottom: 0;

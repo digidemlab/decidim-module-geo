@@ -172,14 +172,14 @@
         .decidimGeo__drawerSearch {
           z-index: 10000 !important;
           pointer-events: auto;
-          margin-top: 18px;
-          margin-left: 22px;
+          margin-block-start: 18px;
+          margin-inline-start: 22px;
           border-radius: 20px;
-          width: 100%;
+          width: 97%;
           height: 40px;
         }
           .decidimGeo__searchIcon {
-            left: 34px;
+            inset-inline-start: 34px;
           }
         .decidimGeo__drawerSearch.has-results {
           border-radius: 20px 20px 0px 0px;
@@ -190,7 +190,7 @@
           pointer-events: auto;
           border-radius: 0px 0px 20px 20px;
           top: 56px;
-          margin-left: 22px;
+          margin-inline-start: 22px;
           width: 100%;
           border-bottom: none;
           border-top: 1px solid #f0f0f0;
@@ -265,7 +265,7 @@
       }
       .decidimGeo__drawerHeader__drawerToggle {
         padding: 8px;
-        padding-left: 33px;
+        padding-inline-start: 33px;
       }
       .decidimGeo__filterModal__label {
         max-width: 100%;
