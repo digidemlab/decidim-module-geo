@@ -6,7 +6,9 @@ import L from "../../leaflet";
 import getHashtagFromNode from "../drawerHelper";
 
 const meetings = (container, node) => {
-  const { i18n, images, locale, defaultLocale } = configStore.getState();
+  let { i18n, images, locale, defaultLocale } = configStore.getState();
+  defaultLocale = node?.extendedData?.defaultLocale || defaultLocale
+
   if (!_.isEmpty(node.imageUrl)) {
     const image = L.DomUtil.create(
       "img",
