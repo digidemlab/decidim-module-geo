@@ -146,15 +146,21 @@ class FilterModal {
   scopeFields(scopes) {
     const i18n = this.i18n();
     const i18nPrefix = "decidim_geo.scopes";
+
+    const scopesInfo = scopes.map((scope) => ({
+      name: scope.data.name.translation || scope.data.name.defaultTranslation,
+      id: String(scope.id)
+    }));
+
+    // Ensure unique scopes in the filter list
+    const uniqueScopes = Array.from(
+      new Map(scopesInfo.map(item => [item.name, item.id]).values())
+    );
+
     return this.field(
       i18n[`${i18nPrefix}.dropdown`],
       "GeoScopeFilter",
-      [[i18n[`${i18nPrefix}.all`], "all"]].concat(
-        scopes.map((scope) => [
-          scope.data.name.translation || scope.data.name.defaultTranslation,
-          `${scope.id}`
-        ])
-      ),
+      [[i18n[`${i18nPrefix}.all`], "all"]].concat(uniqueScopes),
       []
     );
   }
