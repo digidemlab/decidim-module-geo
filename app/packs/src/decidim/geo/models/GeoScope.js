@@ -126,7 +126,21 @@ export default class GeoScope {
         onClick: this.scopeClickHandler.bind(this)
       });
       this.layer.bringToBack();
-      scopeLayer.addLayer(this.layer);
+
+      let layers = scopeLayer.getLayers()
+
+      // Add the layer to scopeLayer only if no layer exists for that scope, preventing overlapping.
+      if (layers.length > 0) {
+        let scopeId = this.id.toString();
+        let ids = []
+        scopeLayer.eachLayer((layer) => {
+          layer.eachLayer((layer) => { ids.push(layer.feature.geometry.properties.id) })
+        });
+        
+        if (!ids.includes(scopeId)) { scopeLayer.addLayer(this.layer) }
+      } else {
+        scopeLayer.addLayer(this.layer);
+      }
 
       // Add the layer only when we are sure there is some point
       // in the layer.
@@ -135,7 +149,7 @@ export default class GeoScope {
         ([isLoading]) => {
           const { map, mapReady } = configStore.getState();
           if (isLoading) return;
-          // Points are loaded, we can check if the the layer is empty,
+          // Points are loaded, we can check if the layer is empty,
           // and thus remove it.
           if (this.isEmpty() && this.layer) {
             if (map.hasLayer(this.layer) && mapReady) {
