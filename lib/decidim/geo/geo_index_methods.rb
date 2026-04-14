@@ -61,7 +61,7 @@ module Decidim
           key_with_mt = decidim_geo_hash[attr]
           mt = key_with_mt.delete("machine_translations")
           mt.each_key do |language|
-            key_with_mt.update(mt.slice(language)) if !key_with_mt.has_key?(language) || key_with_mt[language]&.gsub(/<[^>]*>/, '')&.empty?
+            key_with_mt.update(mt.slice(language)) if !key_with_mt.has_key?(language) || key_with_mt[language]&.gsub(/<[^>]*>/, "")&.empty?
           end
 
           decidim_geo_hash[attr] = key_with_mt
