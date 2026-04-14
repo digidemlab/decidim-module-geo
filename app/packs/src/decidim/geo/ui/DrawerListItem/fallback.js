@@ -11,6 +11,8 @@ const fallback = (node) => {
   const hasImage = !_.isEmpty(node.imageUrl);
   const listCard = L.DomUtil.create("li", "decidimGeo__drawer__listCard");
 
+  defaultLocale = node?.extendedData?.defaultLocale || defaultLocale;
+
   const GeoEncodedIcon = L.DomUtil.create(
     "img",
     createClasses("decidimGeo__drawer__listCardIcon"),
@@ -19,8 +21,10 @@ const fallback = (node) => {
 
   GeoEncodedIcon.src = images?.geolocated;
 
-  if (!node.lonlat) { GeoEncodedIcon.style.opacity = "0.32" }
-  
+  if (!node.lonlat) {
+    GeoEncodedIcon.style.opacity = "0.32";
+  }
+
   const info = L.DomUtil.create(
     "div",
     createClasses("decidimGeo__drawer__listCardInfo", [!hasImage && "large"]),
@@ -37,21 +41,38 @@ const fallback = (node) => {
   infoTxt.textContent = i18n[node.resourceType];
 
   const infoTitle = L.DomUtil.create("div", "decidimGeo__drawer__listCardTitle", info);
-  const infoTitleTxt = L.DomUtil.create("span", createClasses("decidimGeo__drawer__listTitleTxt"), infoTitle);
+  const infoTitleTxt = L.DomUtil.create(
+    "span",
+    createClasses("decidimGeo__drawer__listTitleTxt"),
+    infoTitle
+  );
 
   infoTitleTxt.textContent = getHashtagFromNode(node, locale, defaultLocale);
 
-  const hasAssemblyOrProcess = filters?.some(f => f.assembly_filter || f.process_filter);
+  const hasAssemblyOrProcess = filters?.some(
+    (f) => f.assembly_filter || f.process_filter
+  );
 
   if (node?.extendedData?.componentUrl && !hasAssemblyOrProcess) {
-    const infoChild = L.DomUtil.create("div", createClasses("decidimGeo__drawer__listCardChild"), infoTitle);
+    const infoChild = L.DomUtil.create(
+      "div",
+      createClasses("decidimGeo__drawer__listCardChild"),
+      infoTitle
+    );
     infoChild.innerHTML += getArrowIcon();
   } else {
-    const infoChild = L.DomUtil.create("div", createClasses("decidimGeo__drawer__listCardTitle"), infoTitle);
+    const infoChild = L.DomUtil.create(
+      "div",
+      createClasses("decidimGeo__drawer__listCardTitle"),
+      infoTitle
+    );
   }
 
   if (node.shortDescription) {
-    const text = node.shortDescription[locale] || node.shortDescription[defaultLocale] || Object.values(node.shortDescription)[0];
+    const text =
+      node.shortDescription[locale] ||
+      node.shortDescription[defaultLocale] ||
+      Object.values(node.shortDescription)[0];
 
     if (text && !text.includes("Translation missing")) {
       const infoDescription = L.DomUtil.create(

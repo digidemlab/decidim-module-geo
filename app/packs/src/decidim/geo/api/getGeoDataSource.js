@@ -65,7 +65,7 @@ const getGeoDataSource = async (params = {}, fetchAll = true, callback) => {
     const { has_more: hasMore } = page.meta || {};
     callback(page.data, hasMore, page?.meta || {});
     if (!hasMore) break;
-    nextOffset += 50
+    nextOffset += 50;
     searchParams.set("offset", nextOffset);
   }
 };

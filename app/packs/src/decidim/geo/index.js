@@ -12,6 +12,7 @@ import registerMobile from "./ui/mobile/registerMobile";
 import FilterControl from "./ui/FilterControl";
 import PageNameControl from "./ui/PageNameControl";
 import L from "./leaflet";
+import _ from "lodash";
 
 window.debug = window.debug || {};
 window.debug.stores = () => ({
@@ -156,6 +157,19 @@ async function displayMap() {
     if (active) active.className += " decidimGeo__drawerHeader__listItem--active";
 
     map.on("moveend", moveHandler);
+
+    window.addEventListener(
+      "resize",
+      _.throttle(
+        function () {
+          setTimeout(function () {
+            map.invalidateSize();
+          }, 300);
+        },
+        128,
+        { leading: false, trailing: true }
+      )
+    );
   } catch (e) {
     console.error(e);
     const { map, mapID } = configStore.getState();

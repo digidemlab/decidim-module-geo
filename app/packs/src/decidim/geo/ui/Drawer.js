@@ -71,7 +71,7 @@ export default class Drawer {
   }
 
   hasAssemblyOrProcess() {
-    return this.filters().some(f => f.assembly_filter || f.process_filter);
+    return this.filters().some((f) => f.assembly_filter || f.process_filter);
   }
 
   emptyActionHandler() {
@@ -90,7 +90,7 @@ export default class Drawer {
     );
     listCard.onclick = (evt) => {
       evt.stopPropagation();
-      let node_url = ""
+      let node_url = "";
       if (this.hasAssemblyOrProcess()) {
         node_url = node.resourceUrl;
       } else {
@@ -113,8 +113,10 @@ export default class Drawer {
 
     GeoEncodedIcon.src = images?.geolocated;
 
-    if (!node.lonlat) { GeoEncodedIcon.style.opacity = "0.32" }
-    
+    if (!node.lonlat) {
+      GeoEncodedIcon.style.opacity = "0.32";
+    }
+
     const info = L.DomUtil.create(
       "div",
       "decidimGeo__drawer__listCardInfo decidimGeo__drawer__listCardInfo--large",
@@ -171,8 +173,6 @@ export default class Drawer {
   onAdd() {
     if (!this.parent) throw new Error("no this.parent ");
     const { loading } = pointStore.getState();
-
-    
 
     this.cardList = L.DomUtil.create(
       "ul",

@@ -80,11 +80,11 @@ const store = createStore(
     isSource() {
       const { defaultFilters } = get();
       const sourceFilterMatch = defaultFilters.find(
-        ({ sourceFilter = undefined}) => sourceFilter
+        ({ sourceFilter = undefined }) => sourceFilter
       );
       if (!sourceFilterMatch) return false;
       const source = sourceFilterMatch.sourceFilter.source;
-      return !!source
+      return !!source;
     },
     toFilterOptions: (name, filters) => {
       const { defaultFilters } = dropdownFilterStore.getState();
@@ -120,10 +120,26 @@ const store = createStore(
             ({ resourceTypeFilter = undefined }) => resourceTypeFilter
           );
           if (!typeFilterMatch) return defaultFilters.GeoType;
-          const id = document.querySelector('.decidimGeo__container').id;
-          if (["GeoAccountability", "GeoProposals", "GeoProposalsItem", "GeoMeetings", "GeoMeetingsItem", "GeoDebatesItem"].includes(id)) {
-            const hasAllComponents = ["accountability", "debates", "meetings", "proposals"].every(t => filters.some(f => f.resourceTypeFilter?.resourceType === t));
-            if (hasAllComponents) { return "all" };
+          const id = document.querySelector(".decidimGeo__container").id;
+          if (
+            [
+              "GeoAccountability",
+              "GeoProposals",
+              "GeoProposalsItem",
+              "GeoMeetings",
+              "GeoMeetingsItem",
+              "GeoDebatesItem"
+            ].includes(id)
+          ) {
+            const hasAllComponents = [
+              "accountability",
+              "debates",
+              "meetings",
+              "proposals"
+            ].every((t) => filters.some((f) => f.resourceTypeFilter?.resourceType === t));
+            if (hasAllComponents) {
+              return "all";
+            }
           }
           const resourceType = typeFilterMatch.resourceTypeFilter.resourceType;
           if (resourceType) {
@@ -132,7 +148,7 @@ const store = createStore(
           return defaultFilters.GeoType;
         case "GeoSource":
           const sourceFilterMatch = filters.find(
-            ({ sourceFilter = undefined}) => sourceFilter
+            ({ sourceFilter = undefined }) => sourceFilter
           );
           if (!sourceFilterMatch) return defaultFilters.GeoSource;
           const sourceType = sourceFilterMatch.sourceFilter.source;

@@ -64,12 +64,18 @@ class FilterModal {
   }
 
   resetBtnHandler() {
-    const { resetFilters: resetDropdownFilter, defaultFilters, toggleOpen } = dropdownFilterStore.getState();
+    const {
+      resetFilters: resetDropdownFilter,
+      defaultFilters,
+      toggleOpen
+    } = dropdownFilterStore.getState();
     resetDropdownFilter();
     this.applyValues({ ...defaultFilters, GeoSearch: "empty" });
     toggleOpen();
-    const searchInput = document.querySelector('.decidimGeo__searchInput');
-    if (searchInput) { searchInput.value = "" }
+    const searchInput = document.querySelector(".decidimGeo__searchInput");
+    if (searchInput) {
+      searchInput.value = "";
+    }
   }
 
   isEmpty() {

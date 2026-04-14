@@ -89,7 +89,11 @@ export default class DrawerHeader {
     const { pointsForFilters } = pointStore.getState();
     const { locale, defaultLocale } = configStore.getState();
 
-    this.container = L.DomUtil.create("div", "leaflet-control decidimGeo__drawer", this.parent);
+    this.container = L.DomUtil.create(
+      "div",
+      "leaflet-control decidimGeo__drawer",
+      this.parent
+    );
     this.searchBox = L.DomUtil.create("div", "decidimGeo__drawerSearch", this.container);
 
     const i18n = this.i18n();
@@ -114,7 +118,7 @@ export default class DrawerHeader {
 
     L.DomEvent.disableClickPropagation(this.resultsBox);
     L.DomEvent.disableScrollPropagation(this.resultsBox);
-    
+
     let startY = 0;
     let isScrolling = false;
 
@@ -147,24 +151,31 @@ export default class DrawerHeader {
 
     this.onSearchEnter = function (value) {
       let { activeFilters, setFilters } = filterStore.getState();
-      activeFilters = activeFilters.filter(f => !f.searchFilter);
-      let filters = value ? [...activeFilters, { searchFilter: {title: value}}] : activeFilters;
-      
-      pointsForFilters(filters)
+      activeFilters = activeFilters.filter((f) => !f.searchFilter);
+      let filters = value
+        ? [...activeFilters, { searchFilter: { title: value } }]
+        : activeFilters;
+
+      pointsForFilters(filters);
       this.pointCounterStore.updateCurrentCountForFilters(filters);
-      setFilters(filters)
+      setFilters(filters);
 
       this.resultsBox.classList.remove("is-open");
-      
-      const searchItems = document.querySelectorAll('.decidimGeo__searchItem');
-      if (searchItems) { searchItems.forEach(item => item.remove()); };
-      
-      const drawer = document.querySelector('.decidimGeo__drawerSearch');
-      if (drawer) { drawer.classList.remove("has-results") }
-      
+
+      const searchItems = document.querySelectorAll(".decidimGeo__searchItem");
+      if (searchItems) {
+        searchItems.forEach((item) => item.remove());
+      }
+
+      const drawer = document.querySelector(".decidimGeo__drawerSearch");
+      if (drawer) {
+        drawer.classList.remove("has-results");
+      }
+
       const { isAsideOpen } = configStore.getState();
-      if (isAsideOpen === false) configStore.setState(({ isAsideOpen }) => ({ isAsideOpen: true }));
-    }
+      if (isAsideOpen === false)
+        configStore.setState(({ isAsideOpen }) => ({ isAsideOpen: true }));
+    };
 
     L.DomEvent.on(input, "input", (e) => {
       const value = e.target.value.trim();
@@ -173,14 +184,17 @@ export default class DrawerHeader {
 
     const closeSearch = () => {
       this.resultsBox.classList.remove("is-open");
-      const drawer = document.querySelector('.decidimGeo__drawerSearch');
-      if (drawer) { drawer.classList.remove("has-results") }
-      document.querySelectorAll('.decidimGeo__searchItem')
-        .forEach(item => item.remove());
+      const drawer = document.querySelector(".decidimGeo__drawerSearch");
+      if (drawer) {
+        drawer.classList.remove("has-results");
+      }
+      document
+        .querySelectorAll(".decidimGeo__searchItem")
+        .forEach((item) => item.remove());
     };
 
-    input?.addEventListener('blur', closeSearch);
-    input?.addEventListener('change', closeSearch);
+    input?.addEventListener("blur", closeSearch);
+    input?.addEventListener("change", closeSearch);
 
     const throttledOnSearchInput = _.throttle(
       (value) => {
@@ -194,8 +208,10 @@ export default class DrawerHeader {
       if (!term || term.length < 2) {
         this.resultsBox.innerHTML = "";
         this.resultsBox.classList.remove("is-open");
-        const drawer = document.querySelector('.decidimGeo__drawerSearch');
-        if (drawer) { drawer.classList.remove("has-results") }
+        const drawer = document.querySelector(".decidimGeo__drawerSearch");
+        if (drawer) {
+          drawer.classList.remove("has-results");
+        }
         return;
       }
 
@@ -209,8 +225,14 @@ export default class DrawerHeader {
     };
 
     this.getResults = async function (filter, activeFilters) {
-      const params = new URLSearchParams({ "filters[]": filter, "locale": locale, "is_index": true  });
-      activeFilters.forEach((f) => { params.append("filters[]", JSON.stringify(f)) });
+      const params = new URLSearchParams({
+        "filters[]": filter,
+        locale: locale,
+        is_index: true
+      });
+      activeFilters.forEach((f) => {
+        params.append("filters[]", JSON.stringify(f));
+      });
       try {
         const response = await fetch("/api/decidim-geo/points/search?" + params);
         if (response.ok) return await response.json();
@@ -223,13 +245,13 @@ export default class DrawerHeader {
 
     this.renderResults = function (data) {
       this.resultsBox.innerHTML = "";
-      const drawer = document.querySelector('.decidimGeo__drawerSearch');
+      const drawer = document.querySelector(".decidimGeo__drawerSearch");
 
       if (!data.length) {
         this.resultsBox.innerHTML = `<div class="decidimGeo__searchItem">
           ${i18n["decidim.geo.no_results"]}
         </div>`;
-        drawer.classList.add("has-results")
+        drawer.classList.add("has-results");
         this.resultsBox.classList.add("is-open");
         return;
       }
@@ -239,25 +261,23 @@ export default class DrawerHeader {
 
         L.DomEvent.disableClickPropagation(item);
         L.DomEvent.disableScrollPropagation(item);
-        
+
         item.textContent = point.title[locale] || point.title[defaultLocale];
 
-        item.addEventListener('pointerdown', (e) => {
-          const searchInput = document.querySelector('.decidimGeo__searchInput');
-          if (searchInput) { searchInput.value = e.target.textContent; }
-          
+        item.addEventListener("pointerdown", (e) => {
+          const searchInput = document.querySelector(".decidimGeo__searchInput");
+          if (searchInput) {
+            searchInput.value = e.target.textContent;
+          }
+
           this.onSearchEnter(point.title[locale]);
-        })
+        });
       });
-      drawer.classList.add("has-results")
+      drawer.classList.add("has-results");
       this.resultsBox.classList.add("is-open");
     };
 
-    this.menu = L.DomUtil.create(
-      "div",
-      "decidimGeo__drawerHeader",
-      this.parent
-    );
+    this.menu = L.DomUtil.create("div", "decidimGeo__drawerHeader", this.parent);
 
     L.DomEvent.disableClickPropagation(this.menu);
     L.DomEvent.disableScrollPropagation(this.menu);
