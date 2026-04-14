@@ -16,17 +16,21 @@ export default class GeoDatasourceNode {
   bringToFront() {
     if (!this.marker) return;
 
-    this.marker.setZIndexOffset(maxZIndex += 100);
+    this.marker.setZIndexOffset((maxZIndex += 100));
   }
   staledState() {
     if (this.marker.options.icon.options.className === "circle-marker") {
-      const outerCircle = this.marker.getElement()?.querySelector("svg circle[stroke]")?.style;
+      const outerCircle = this.marker
+        .getElement()
+        ?.querySelector("svg circle[stroke]")?.style;
       if (outerCircle) {
         outerCircle.stroke = "#000000";
         outerCircle.opacity = "0.64";
       }
     } else if (this.marker.options.icon.options.className === "arrow-marker") {
-      const outerCircle = this.marker.getElement()?.querySelector("#SVGRepo_bgCarrier rect[fill]");
+      const outerCircle = this.marker
+        .getElement()
+        ?.querySelector("#SVGRepo_bgCarrier rect[fill]");
       if (outerCircle) {
         outerCircle.setAttribute("fill", "#000000");
         outerCircle.setAttribute("opacity", "0.64");
@@ -35,13 +39,17 @@ export default class GeoDatasourceNode {
   }
   selectedState() {
     if (this.marker.options.icon.options.className === "circle-marker") {
-      const outerCircle = this.marker.getElement()?.querySelector("svg circle[stroke]")?.style;
+      const outerCircle = this.marker
+        .getElement()
+        ?.querySelector("svg circle[stroke]")?.style;
       if (outerCircle) {
         outerCircle.stroke = "var(--primary)";
         outerCircle.opacity = "1";
       }
     } else if (this.marker.options.icon.options.className === "arrow-marker") {
-      const outerCircle = this.marker.getElement()?.querySelector("#SVGRepo_bgCarrier rect");
+      const outerCircle = this.marker
+        .getElement()
+        ?.querySelector("#SVGRepo_bgCarrier rect");
       if (outerCircle) {
         outerCircle.setAttribute("fill", "var(--primary)");
         outerCircle.setAttribute("opacity", "1");
@@ -51,13 +59,16 @@ export default class GeoDatasourceNode {
   isGeoLocated() {
     if (!this.marker) return false;
 
-    let latlng = []
-  
+    let latlng = [];
+
     if (this.marker.getLatLng) {
       latlng = this.marker.getLatLng();
     } else if (this.marker.getLatLngs) {
       const points = this.marker.getLatLngs();
-      latlng = Array.isArray(points) && points.length > 0 && points[0].length > 0 ? points[0][0] : null;
+      latlng =
+        Array.isArray(points) && points.length > 0 && points[0].length > 0
+          ? points[0][0]
+          : null;
     }
     return latlng?.lat && latlng?.lng;
   }
@@ -71,7 +82,6 @@ export default class GeoDatasourceNode {
         if (selectedPoint && selectedPoint === this) {
           this.selectedState();
           this.bringToFront();
-
         } else if (
           !selectedPoint &&
           `${this.data.componentId}` == `${selected_component}` &&
@@ -85,7 +95,10 @@ export default class GeoDatasourceNode {
         if (selectedPoint === this) {
           this.selectedState();
           this.bringToFront();
-        } else if (!selectedPoint && `${this.data.componentId}` === `${selected_component}`) {
+        } else if (
+          !selectedPoint &&
+          `${this.data.componentId}` === `${selected_component}`
+        ) {
           this.selectedState();
         } else {
           this.staledState();

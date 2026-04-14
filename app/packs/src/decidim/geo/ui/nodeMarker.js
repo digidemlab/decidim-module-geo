@@ -8,7 +8,7 @@ const nodeMarker = (node) => {
     if (node?.extendedData?.spacePageHost === window.location.hostname) {
       return customMarker(location);
     } else {
-      return customArrowMarker(location); 
+      return customArrowMarker(location);
     }
   } else {
     return customMarker(location);

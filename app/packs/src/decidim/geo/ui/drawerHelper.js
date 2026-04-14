@@ -1,5 +1,6 @@
 function getHashtagFromNode(node, locale, defaultLocale) {
-  const rawText = node.title?.[locale] || node.title?.[defaultLocale] || Object.values(node.title)[0];
+  const rawText =
+    node.title?.[locale] || node.title?.[defaultLocale] || Object.values(node.title)[0];
   if (!rawText) return "";
 
   const gidMatch = rawText.match(/gid:.*./);

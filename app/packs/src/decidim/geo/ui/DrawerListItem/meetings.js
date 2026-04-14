@@ -18,8 +18,10 @@ const meetings = (node) => {
 
   GeoEncodedIcon.src = images?.geolocated;
 
-  if (!node.lonlat) { GeoEncodedIcon.style.opacity = "0.32" }
-  
+  if (!node.lonlat) {
+    GeoEncodedIcon.style.opacity = "0.32";
+  }
+
   const info = L.DomUtil.create(
     "div",
     "decidimGeo__drawer__listCardInfo decidimGeo__drawer__listCardInfo--large",
@@ -35,18 +37,32 @@ const meetings = (node) => {
   infoTxt.textContent = i18n[node.resourceType];
 
   const infoTitle = L.DomUtil.create("div", "decidimGeo__drawer__listCardTitle", info);
-  const infoTitleTxt = L.DomUtil.create("span", createClasses("decidimGeo__drawer__listTitleTxt"), infoTitle);
+  const infoTitleTxt = L.DomUtil.create(
+    "span",
+    createClasses("decidimGeo__drawer__listTitleTxt"),
+    infoTitle
+  );
   infoTitleTxt.textContent = getHashtagFromNode(node, locale, defaultLocale);
 
-  const hasAssemblyOrProcess = filters?.some(f => f.assembly_filter || f.process_filter);
+  const hasAssemblyOrProcess = filters?.some(
+    (f) => f.assembly_filter || f.process_filter
+  );
 
   if (node?.extendedData?.componentUrl && !hasAssemblyOrProcess) {
-    const infoChild = L.DomUtil.create("div", createClasses("decidimGeo__drawer__listCardChild"), infoTitle);
+    const infoChild = L.DomUtil.create(
+      "div",
+      createClasses("decidimGeo__drawer__listCardChild"),
+      infoTitle
+    );
     infoChild.innerHTML += getArrowIcon();
   } else {
-    const infoChild = L.DomUtil.create("div", createClasses("decidimGeo__drawer__listCardTitle"), infoTitle);
+    const infoChild = L.DomUtil.create(
+      "div",
+      createClasses("decidimGeo__drawer__listCardTitle"),
+      infoTitle
+    );
   }
-  
+
   const infoDescription = L.DomUtil.create(
     "div",
     "decidimGeo__drawer__listCardDate",

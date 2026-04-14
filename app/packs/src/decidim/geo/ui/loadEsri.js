@@ -1,9 +1,8 @@
 import "../leaflet";
 const loadEsri = async () => {
   const esriModule = await import("esri-leaflet/dist/esri-leaflet.js");
-  const esriVectorModule = await import(
-    "esri-leaflet-vector/dist/esri-leaflet-vector.js"
-  );
+  const esriVectorModule =
+    await import("esri-leaflet-vector/dist/esri-leaflet-vector.js");
 
   if (!window.L.esri) {
     window.L.esri = esriModule?.esri || esriModule?.default || esriModule;

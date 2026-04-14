@@ -65,9 +65,8 @@ const store = createStore(
           const [filterName] = Object.keys(f);
           return filterName !== "searchFilter";
         });
-      
+
       switch (filters.GeoSource) {
-        
         case "all":
           newFilters = [
             ...withoutGeoSourceFilter(newFilters),
@@ -92,7 +91,6 @@ const store = createStore(
             }
           ];
           break;
-        ;
       }
       switch (filters.GeoShowFilter) {
         case "all":
@@ -142,8 +140,7 @@ const store = createStore(
         ];
 
       const searchFilter = filters.GeoSearch;
-      if (searchFilter == "empty") 
-        newFilters = withoutSearchFilter(newFilters);
+      if (searchFilter == "empty") newFilters = withoutSearchFilter(newFilters);
 
       const resourceType = filters.GeoType;
       if (resourceType) {
@@ -197,7 +194,10 @@ const store = createStore(
       set(({ nextFilters }) => (nextFilters ? { selectedFilters: nextFilters } : {}));
     },
     resetFilters() {
-      set(({ defaultFilters }) => ({ selectedFilters: defaultFilters, nextFilters: defaultFilters }));
+      set(({ defaultFilters }) => ({
+        selectedFilters: defaultFilters,
+        nextFilters: defaultFilters
+      }));
     },
     setDefaultFilters(newFilters) {
       set(() => ({ defaultFilters: newFilters, selectedFilters: newFilters }));
