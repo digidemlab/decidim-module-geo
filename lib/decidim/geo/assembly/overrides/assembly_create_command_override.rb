@@ -11,14 +11,16 @@ module Decidim
 
         def run_after_hooks
           decidim_original_run_after_hooks
+          assembly = @resource
+          return assembly if !form.decidim_geo_has_address? && !form.geocoded?
 
-          location = resource.decidim_geo_space_location || Decidim::Geo::SpaceLocation.new
+          location = assembly.decidim_geo_space_location || Decidim::Geo::SpaceLocation.new
           location.address = form.decidim_geo_space_address
           location.latitude = form.latitude
           location.longitude = form.longitude
-          resource.decidim_geo_space_location = location
-          location.save
-          resource
+          assembly.decidim_geo_space_location = location
+          assembly.save!
+          assembly.reload
         end
       end
     end

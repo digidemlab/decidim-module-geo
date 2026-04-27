@@ -2,7 +2,8 @@
 
 module Decidim
   module Geo
-    module ParticipatoryProcessFormOverride
+    module GeoSpaceAddressForm
+      # This module is designed to integrate address forms into components and spaces.
       extend ActiveSupport::Concern
       included do
         alias_method :decidim_original_map_model, :map_model
@@ -10,7 +11,8 @@ module Decidim
         attribute :longitude, ActiveModel::Type::Float
 
         attribute :decidim_geo_space_address, ActiveModel::Type::String
-        validates :decidim_geo_space_address, geocoding: true, if: ->(form) { form.decidim_geo_has_address? }
+        validates :decidim_geo_space_address, geocoding: true, if: ->(form) { form.decidim_geo_has_address? && !form.geocoded? }
+        validates :decidim_geo_space_address, presence: true, if: :coords_with_address?
 
         def map_model(model)
           decidim_original_map_model(model)
@@ -30,6 +32,14 @@ module Decidim
 
         def decidim_geo_has_address?
           decidim_geo_space_address.present?
+        end
+
+        def coords_with_address?
+          !decidim_geo_has_address? && geocoded?
+        end
+
+        def organization
+          context[:current_organization]
         end
       end
     end

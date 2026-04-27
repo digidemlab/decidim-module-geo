@@ -32,17 +32,17 @@ module Decidim
 
         # Add overrides to add locations where there haven't any
         Decidim::Assembly.include(Decidim::Geo::HasDecidimGeoLocation)
-        Decidim::Assemblies::Admin::AssemblyForm.include(Decidim::Geo::AssemblyFormOverride)
+        Decidim::Assemblies::Admin::AssemblyForm.include(Decidim::Geo::GeoSpaceAddressForm)
         Decidim::Assemblies::Admin::CreateAssembly.include(Decidim::Geo::AssemblyCreateCommandOverride)
         Decidim::Assemblies::Admin::UpdateAssembly.include(Decidim::Geo::AssemblyUpdateCommandOverride)
 
         Decidim::ParticipatoryProcess.include(Decidim::Geo::HasDecidimGeoLocation)
-        Decidim::ParticipatoryProcesses::Admin::ParticipatoryProcessForm.include(Decidim::Geo::ParticipatoryProcessFormOverride)
+        Decidim::ParticipatoryProcesses::Admin::ParticipatoryProcessForm.include(Decidim::Geo::GeoSpaceAddressForm)
         Decidim::ParticipatoryProcesses::Admin::CreateParticipatoryProcess.include(Decidim::Geo::ParticipatoryProcessCommandOverride)
         Decidim::ParticipatoryProcesses::Admin::UpdateParticipatoryProcess.include(Decidim::Geo::ParticipatoryProcessCommandOverride)
 
         Decidim::Accountability::Result.include(Decidim::Geo::HasDecidimGeoLocation)
-        Decidim::Accountability::Admin::ResultForm.include(Decidim::Geo::AccountabilityFormOverride)
+        Decidim::Accountability::Admin::ResultForm.include(Decidim::Geo::GeoSpaceAddressForm)
         Decidim::Accountability::Admin::UpdateResult.include(Decidim::Geo::AccountabilityUpdateCommandOverride)
         Decidim::Accountability::Admin::CreateResult.include(Decidim::Geo::AccountabilityCreateCommandOverride)
 

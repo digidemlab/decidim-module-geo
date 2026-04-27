@@ -8,7 +8,11 @@ module Decidim
         alias_method :decidim_original_run_after_hooks, :run_after_hooks
 
         def run_after_hooks
-          location = resource.decidim_geo_space_location || Decidim::Geo::SpaceLocation.new(
+          decidim_original_run_after_hooks
+          process = @resource
+          return process if !form.decidim_geo_has_address? && !form.geocoded?
+
+          location = process.decidim_geo_space_location || Decidim::Geo::SpaceLocation.new(
             decidim_geo_space_type: resource.class.name,
             decidim_geo_space_id: resource.id
           )
@@ -16,8 +20,7 @@ module Decidim
           location.latitude = form.latitude
           location.longitude = form.longitude
           location.save!
-          resource.update!(decidim_geo_space_location: location)
-          decidim_original_run_after_hooks
+          process.update!(decidim_geo_space_location: location)
         end
       end
     end
