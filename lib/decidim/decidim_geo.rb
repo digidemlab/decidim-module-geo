@@ -25,6 +25,8 @@ require "decidim/geo/content_security_policy"
 require "decidim/geo/organization_geo_extensions"
 require "decidim/geo/dup_generator_settings"
 
+require "decidim/geo/forms/geo_space_address_form"
+
 require "decidim/geo/component/overrides/component_no_index_attr"
 require "decidim/geo/component/overrides/component_hide_map_attr"
 require "decidim/geo/component/overrides/component_form_override"
@@ -33,16 +35,13 @@ require "decidim/geo/component/overrides/update_component_command_override"
 
 require "decidim/geo/participatory_space/overrides/has_decidim_geo_location"
 
-require "decidim/geo/accountability/overrides/accountability_form_override"
 require "decidim/geo/accountability/overrides/accountability_update_command_override"
 require "decidim/geo/accountability/overrides/accountability_create_command_override"
 
-require "decidim/geo/assembly/overrides/assembly_form_override"
 require "decidim/geo/assembly/overrides/assembly_create_command_override"
 require "decidim/geo/assembly/overrides/assembly_update_command_override"
 
 require "decidim/geo/process/overrides/participatory_process_command_override"
-require "decidim/geo/process/overrides/participatory_process_form_override"
 
 # Custom time filters
 require "decidim/geo/proposal/proposal_filter"
