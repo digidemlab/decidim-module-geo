@@ -34,17 +34,64 @@ module Decidim
         def show_children_points
           types = Decidim.participatory_space_registry.manifests.map { |manifest| manifest.name.to_s }
 
+          actives_first = <<~SQL
+            CASE
+              -- 1. Future
+              WHEN start_date >= (CURRENT_DATE + INTERVAL '15 days')
+              THEN 1
+
+              -- 2. Active/Future, between today and 15 days
+              WHEN start_date BETWEEN CURRENT_DATE AND (CURRENT_DATE + INTERVAL '15 days')
+              AND  end_date   > (CURRENT_DATE + INTERVAL '15 days')
+              THEN 2
+
+              -- 3. Active, start in past < 15 days finish today or in future
+              WHEN start_date <= CURRENT_DATE
+              AND  end_date   >= CURRENT_DATE
+              THEN 3
+
+              -- 4. Active/Past, start in past > 15 days
+              WHEN start_date < CURRENT_DATE
+              AND  end_date   BETWEEN (CURRENT_DATE - INTERVAL '15 days') AND CURRENT_DATE
+              THEN 4
+
+              -- 5. Past, starts and ends > 15 days
+              WHEN end_date   <= (CURRENT_DATE - INTERVAL '15 days')
+              THEN 5
+
+              ELSE 6
+            END ASC
+          SQL
+
           if show_children_points? && show_children_points_params.first == "all"
-            return Decidim::Geo::Index.where("decidim_organization_id = :org OR resource_type NOT IN (:types)", org: organization.id,
-                                                                                                                types:).order(start_date: :desc, id: :desc)
+            return Decidim::Geo::Index
+                   .where("decidim_organization_id = :org OR resource_type NOT IN (:types)", org: organization.id, types:)
+                   .order(
+                     Arel.sql(actives_first),
+                     start_date: :desc,
+                     end_date: :desc,
+                     id: :desc
+                    )
           end
 
           if show_children_points? && show_children_points_params == ["children_only"]
-            return Decidim::Geo::Index.where.not("decidim_organization_id = :org OR resource_type IN (:types)", org: organization.id,
-                                                                                                                types:).order(start_date: :desc, id: :desc)
+            return Decidim::Geo::Index
+                   .where.not("decidim_organization_id = :org OR resource_type IN (:types)", org: organization.id, types:)
+                   .order(
+                     Arel.sql(actives_first),
+                     start_date: :desc,
+                     end_date: :desc,
+                     id: :desc
+                    )
           end
 
-          Decidim::Geo::Index.where(decidim_organization_id: organization.id).order(start_date: :desc, id: :desc)
+          Decidim::Geo::Index.where(decidim_organization_id: organization.id)
+                             .order(
+                               Arel.sql(actives_first),
+                               start_date: :desc,
+                               end_date: :desc,
+                               id: :desc
+                             )
         end
 
         def show_children_points?
