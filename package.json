@@ -3,6 +3,7 @@
   "version": "0.3.10",
   "private": true,
   "dependencies": {
+    "@date-fns/tz": "^1.4.1",
     "@maptiler/leaflet-maptilersdk": "^4.0.3",
     "buffer": "^6.0.3",
     "date-fns": "^4.1.0",
