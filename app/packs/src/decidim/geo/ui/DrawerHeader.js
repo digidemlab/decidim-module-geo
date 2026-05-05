@@ -119,22 +119,6 @@ export default class DrawerHeader {
     L.DomEvent.disableClickPropagation(this.resultsBox);
     L.DomEvent.disableScrollPropagation(this.resultsBox);
 
-    let startY = 0;
-    let isScrolling = false;
-
-    this.resultsBox.addEventListener("touchstart", (e) => {
-      startY = e.touches[0].clientY;
-      isScrolling = false;
-    });
-
-    this.resultsBox.addEventListener("touchmove", (e) => {
-      const moveY = e.touches[0].clientY;
-
-      if (Math.abs(moveY - startY) > 10) {
-        isScrolling = true;
-      }
-    });
-
     const input = this.searchBox.querySelector(".decidimGeo__searchInput");
 
     L.DomEvent.disableClickPropagation(input);
@@ -264,10 +248,10 @@ export default class DrawerHeader {
 
         item.textContent = point.title[locale] || point.title[defaultLocale];
 
-        item.addEventListener("pointerdown", (e) => {
+        item.addEventListener("pointerup", (e) => {
           const searchInput = document.querySelector(".decidimGeo__searchInput");
           if (searchInput) {
-            searchInput.value = e.target.textContent;
+            searchInput.value = e.target.closest('li').textContent;
           }
 
           this.onSearchEnter(point.title[locale]);
