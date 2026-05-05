@@ -71,7 +71,7 @@ module Decidim
                      start_date: :desc,
                      end_date: :desc,
                      id: :desc
-                    )
+                   )
           end
 
           if show_children_points? && show_children_points_params == ["children_only"]
@@ -82,7 +82,7 @@ module Decidim
                      start_date: :desc,
                      end_date: :desc,
                      id: :desc
-                    )
+                   )
           end
 
           Decidim::Geo::Index.where(decidim_organization_id: organization.id)

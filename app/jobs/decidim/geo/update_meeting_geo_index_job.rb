@@ -32,14 +32,12 @@ module Decidim
                            title:,
                            short_description:,
                            description_html: description,
-                           start_date:,
-                           end_date:,
+                           start_date: meeting.start_time,
+                           end_date: meeting.end_time,
                            component_id: meeting.decidim_component_id,
                            participatory_space_id: meeting.participatory_space.id,
                            participatory_space_type: meeting.participatory_space.manifest.name.to_s,
                            extended_data: {
-                             start_time: meeting.start_time,
-                             end_time: meeting.end_time,
                              component_url:,
                              space_page_host:,
                              default_locale:

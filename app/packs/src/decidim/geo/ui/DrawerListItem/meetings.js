@@ -1,7 +1,8 @@
 import configStore from "../../stores/configStore";
 import createClasses from "../createClasses";
 import _ from "lodash";
-import { format, isSameDay } from "date-fns";
+import { isSameDay } from "date-fns";
+import { TZDate } from "@date-fns/tz";
 import L from "../../leaflet";
 import getHashtagFromNode from "../drawerHelper";
 import getArrowIcon from "../geoIcons";
@@ -73,10 +74,18 @@ const meetings = (node) => {
     "decidimGeo__drawer__listCardStartDate",
     infoDescription
   );
-  let displayedDate =
-    format(node.startDate, "dd/MM/yy") + " — " + format(node.endDate, "dd/MM/yy");
-  if (isSameDay(node.startDate, node.endDate)) {
-    displayedDate = format(node.startDate, "dd/MM/yy");
+
+  // Date
+  let match = node.startDate.match(/([+-]\d{2}:\d{2})$/);
+  let timezone = match ? match[1] : null;
+
+  let startDate = new TZDate(node.startDate, timezone)
+  let endDate = new TZDate(node.endDate, timezone)
+  
+  let displayedDate = startDate.toLocaleDateString() + " — " + endDate.toLocaleDateString();
+
+  if (isSameDay(startDate, endDate)) {
+    displayedDate = startDate.toLocaleDateString();
   }
   infoStart.textContent = displayedDate;
 
@@ -87,16 +96,19 @@ const meetings = (node) => {
   );
   infoStartSep.textContent = "·";
 
+  // Time
   const infoStartTime = L.DomUtil.create(
     "span",
     "decidimGeo__drawer__listCardStartTime",
     infoDescription
   );
-  if (node.extendedData)
-    infoStartTime.textContent =
-      format(node.extendedData.startTime, "kk:mm") +
-      "-" +
-      format(node.extendedData.endTime, "kk:mm");
+
+  let displayedTime = startDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+                      + " — " +
+                      endDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+  infoStartTime.textContent = displayedTime
+  
   return listCard;
 };
 
