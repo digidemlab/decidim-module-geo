@@ -23,7 +23,10 @@ module Decidim
           @image_url ||= if resource.respond_to?(:hero_image)
                            resource.attached_uploader(:hero_image).url(only_path: true)
                          elsif resource.respond_to?(:attachments) && resource.attachments.any?(&:photo?)
-                           resource.attachments.select(&:photo?).first&.url
+                           Rails.application.routes.url_helpers.rails_blob_url(
+                             resource.attachments.select(&:photo?).first&.file&.attachment,
+                             only_path: true
+                           )
                          end
         end
 
