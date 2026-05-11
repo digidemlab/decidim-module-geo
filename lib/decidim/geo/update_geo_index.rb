@@ -17,11 +17,7 @@ module Decidim
           updater = registry.updater_for(decidim_geo_manifest)
           raise "Internal error: no updater registred for #{decidim_geo_manifest}" unless updater
 
-          if Rails.env.development?
-            updater.perform_now(id)
-          else
-            updater.perform_later(id)
-          end
+          updater.perform_now(id)
         end
 
         private

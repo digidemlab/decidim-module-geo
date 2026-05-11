@@ -11,9 +11,9 @@ module Decidim
 
         decidim_geo_hash = with_machine_translations(decidim_geo_hash)
 
-        index = Decidim::Geo::Index.find_or_initialize_by(resource_id:, resource_type:) do |record|
-          record.assign_attributes(decidim_geo_hash)
-        end
+        index = Decidim::Geo::Index.find_or_initialize_by(resource_id:, resource_type:)
+
+        index.assign_attributes(decidim_geo_hash)
 
         index.lonlat = if lat && lon && !lat.nan? && !lon.nan?
                          factory = Decidim::Geo.point_factory
