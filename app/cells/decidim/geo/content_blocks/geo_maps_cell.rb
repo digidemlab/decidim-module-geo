@@ -146,6 +146,7 @@ module Decidim
           geo_i18n = supported_models.to_h
           {
             **geo_i18n,
+            "decidim.geo.time.formats.12h_24h": t("time.formats.12h_24h"),
             "decidim.geo.mobile.open_fullscreen": t("decidim.geo.mobile.open_fullscreen"),
             "decidim.geo.mobile.close_fullscreen": t("decidim.geo.mobile.close_fullscreen"),
             "decidim.geo.search": t("decidim.geo.search"),

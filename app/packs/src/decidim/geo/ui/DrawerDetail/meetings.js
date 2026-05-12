@@ -49,14 +49,14 @@ const meetings = (container, node) => {
   // Date
   let match = node.startDate.match(/([+-]\d{2}:\d{2})$/);
   let timezone = match ? match[1] : null;
-
+  
   let startDate = new TZDate(node.startDate, timezone)
   let endDate = new TZDate(node.endDate, timezone)
-  
-  let displayedDate = startDate.toLocaleDateString() + " — " + endDate.toLocaleDateString();
+
+  let displayedDate = format(startDate, "dd/MM/yyyy", { in: tz(timezone) })  + "-" + format(endDate, "dd/MM/yyyy", { in: tz(timezone) });
 
   if (isSameDay(startDate, endDate)) {
-    displayedDate = startDate.toLocaleDateString();
+    displayedDate = format(startDate, "dd/MM/yyyy", { in: tz(timezone) });
   }
   infoStart.textContent = displayedDate;
 
@@ -74,9 +74,16 @@ const meetings = (container, node) => {
     infoDescription
   );
 
-  let displayedTime = startDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-                      + " — " +
-                      endDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  let timeFormat = i18n["decidim.geo.time.formats.12h_24h"]
+
+  const formatMap = {
+    "%H:%M": "HH:mm",
+    "%I:%M %p": "hh:mm aa",
+  };
+
+  timeFormat = formatMap[timeFormat] || timeFormat;
+
+  let displayedTime = format(startDate, timeFormat, { in: tz(timezone) }) + "-" + format(endDate, timeFormat, { in: tz(timezone) });
 
   infoStartTime.textContent = displayedTime
   
