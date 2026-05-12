@@ -274,9 +274,10 @@
   }
 
   .decidimGeo__drawer__listCardDate {
+    text-wrap: nowrap;
     display: inline-flex;
     justify-content: space-between;
-    gap: 6px;
+    gap: 2px;
   }
   .decidimGeo__drawer__listCardStartDateSep,
   .decidimGeo__drawer__listCardStartTime,
