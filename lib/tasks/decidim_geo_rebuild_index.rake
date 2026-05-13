@@ -8,7 +8,9 @@ namespace :decidim_geo do
     Decidim::Geo::Index.destroy_all
 
     # For each organization update decidim index
-    Decidim::Organization.all.each(&:update_decidim_geo_index)
+    if Decidim.const_defined?("SpacePage")
+      Decidim::Organization.all.each(&:update_decidim_geo_index)
+    end
 
     # For each component, update decidim index
     Decidim::Component.all.each do |model|
