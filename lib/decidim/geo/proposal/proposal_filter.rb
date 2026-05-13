@@ -6,7 +6,7 @@ module Decidim
       class ProposalFilter < DefaultFilter
         def filter_past(query)
           query.where(
-            "resource_type = ? AND (resource_status IN ('rejected', 'withdrawn') OR end_date < ?)",
+            "LOWER(resource_type) = LOWER(?) AND (LOWER(resource_status) IN ('rejected', 'withdrawn') OR end_date < ?)",
             manifest_name,
             15.days.ago.to_date
           )
@@ -14,9 +14,8 @@ module Decidim
 
         def filter_active(query)
           query.where(
-            "resource_type = ? AND (resource_status NOT IN ('rejected', 'withdrawn') OR resource_status IS NULL) AND (end_date >= ? OR end_date IS NULL)",
-            manifest_name,
-            15.days.ago.to_date
+            "LOWER(resource_type) = LOWER(?) AND (LOWER(resource_status) NOT IN ('rejected', 'withdrawn') OR resource_status IS NULL)",
+            manifest_name
           )
         end
 

@@ -33,7 +33,7 @@ This means accountabilities that are still in implementation, even they started 
 Proposals does not have a start or end date, we choose then to classifies the proposal in the 
 less frictional way. 
 
-- We look up the space of the proposal (assembly, proposal)
+- We look up the space of the proposal (assembly, processes)
 - If the space is in the past, then put it on the past filter.
 - If the proposal is in rejected or withdrawn status, we put as well in the past
 - Else, the proposal will appear in both filter: active and future.
