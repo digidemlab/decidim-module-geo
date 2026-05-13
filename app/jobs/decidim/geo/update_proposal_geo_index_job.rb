@@ -32,7 +32,7 @@ module Decidim
                            title:,
                            short_description:,
                            description_html: description,
-                           resource_status: translated_attribute(proposal.proposal_state&.title),
+                           resource_status: proposal_status,
                            component_id: proposal.decidim_component_id,
                            participatory_space_id: proposal.participatory_space.id,
                            participatory_space_type: proposal.participatory_space.manifest.name.to_s,
@@ -56,6 +56,12 @@ module Decidim
         return unless Gem.loaded_specs["decidim-space_page"].present? && resource.organization.space_page?
 
         "https://#{resource.organization.host}#{resource_url}"
+      end
+
+      def proposal_status
+        return "withdrawn" if proposal.withdrawn?
+
+        proposal.proposal_state&.token
       end
 
       def space_page_host
