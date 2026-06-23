@@ -4,6 +4,7 @@ module Decidim
   module Geo
     class PointsController < ::Decidim::Api::ApplicationController
       before_action :set_default_format
+      before_action :ensure_geo_search_enabled, only: :search_title
 
       def count
         render json: { count: query.count }
@@ -23,7 +24,7 @@ module Decidim
                        .offset(offset_params)
                        .limit(first_params)
 
-        geo_scope_ids = query.select(:geo_scope_id).group(:geo_scope_id, :start_date, :id).pluck(:geo_scope_id).compact
+        geo_taxonomy_ids = query.select(:geo_taxonomy_id).group(:geo_taxonomy_id, :start_date, :id).pluck(:geo_taxonomy_id).compact
         render json: {
           meta: {
             fields: permitted_fields_params,
@@ -33,7 +34,7 @@ module Decidim
             first: first_params,
             offset: offset_params,
             has_more: results.count != 0,
-            geo_scope_ids: geo_scope_ids || []
+            geo_taxonomy_ids: geo_taxonomy_ids || []
           },
           data: results
         }
@@ -102,7 +103,7 @@ module Decidim
             descriptionHtml
             imageUrl
             lonlat
-            geoScopeId
+            geoTaxonomyId
             extendedData
             lonlat
           )
@@ -115,6 +116,10 @@ module Decidim
 
       def set_default_format
         request.format = :json
+      end
+
+      def ensure_geo_search_enabled
+        head :not_found unless current_organization.geo_search_enabled?
       end
     end
   end

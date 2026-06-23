@@ -4,7 +4,7 @@ stages:
   - publish
 
 publish_gem:
-  image: ruby:3.2.7
+  image: ruby:3.3.0
   stage: publish
   script:
     - echo "---" > .credentials
@@ -28,7 +28,7 @@ upload-translations:
 # Create a MR with the new translation
 mr-translations:
   stage: translations
-  image: node:20
+  image: node:22
   when: manual
   before_script:
     - apt-get update && apt-get install -y git

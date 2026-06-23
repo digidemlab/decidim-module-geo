@@ -6,6 +6,9 @@ module Decidim
       class GeoConfigsController < Decidim::Geo::Admin::ApplicationController
         before_action :authenticate_user!
         add_breadcrumb_item_from_menu :admin_geo_menu
+
+        helper_method :has_shapedata?, :has_taxonomy?
+
         def index
           redirect_to action: "show", id: geo_config.id
         end
@@ -14,6 +17,7 @@ module Decidim
           raise ActiveRecord::RecordNotFound unless current_organization.geo_enabled?
 
           @form = form(Decidim::Geo::Admin::GeoConfigForm).from_model(geo_config)
+          @form.taxonomy_id = shapefile.decidim_taxonomies_id unless shapefile.nil?
         end
 
         def create
@@ -22,6 +26,8 @@ module Decidim
 
         def update
           @form = form(Decidim::Geo::Admin::GeoConfigForm).from_params(params)
+
+          @form.decidim_geo_shapefiles_id = geo_config.decidim_geo_shapefiles_id unless params[:geo_config].has_key?(:decidim_geo_shapefiles_id)
 
           Admin::UpdateGeoConfig.call(geo_config, @form) do
             on(:ok) do
@@ -40,6 +46,24 @@ module Decidim
 
         def geo_config
           @geo_config ||= Decidim::Geo::GeoConfig.geo_config_default(current_organization)
+        end
+
+        def shapefile
+          Decidim::Geo::Shapefile.find_by(id: geo_config.decidim_geo_shapefiles_id)
+        end
+
+        def shapefiles
+          @shapefiles = Decidim::Geo::Shapefile.all
+        end
+
+        def has_shapedata?
+          return false unless has_taxonomy?
+
+          shapefile.taxonomy.children.find { |child| child.shapedata.present? }
+        end
+
+        def has_taxonomy?
+          shapefile && shapefile&.taxonomy
         end
       end
     end

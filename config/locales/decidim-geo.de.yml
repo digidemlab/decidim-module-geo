@@ -48,6 +48,11 @@ de:
       show:
         decidim_geo_space_address: Adresse
     geo:
+      system:
+        tab: Decidim Geo
+        enabled: Decidim Geo aktivieren
+        search_bar: Suche in der Geo-Schublade aktivieren
+        disabled_callout: Decidim Geo ist für diese Organisation deaktiviert.
       admin:
         geo_configs:
           map_config_title: Kartenkonfigurationen
@@ -146,7 +151,6 @@ de:
         type:
           label: "Filtern nach Typ"
           all: "Alle"
-          only_space_pages: "Organisationen"
           only_processes: "Prozesse"
           only_assemblies: "Gremien"
           only_proposals: "Vorschläge"

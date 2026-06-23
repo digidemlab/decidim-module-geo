@@ -33,7 +33,7 @@ export const geoDatasource = `
           latitude
           longitude
         }
-        scopeId:geoScopeId
+        taxonomyId:geoTaxonomyId
       }
     }
   }`;
@@ -62,9 +62,9 @@ export const geoConfig = `{
   }
 }`;
 
-export const geoScope = `
-  query geoScopeQuery ($defaultLocale: String!, $locale: String!) {
-    geoScope { 
+export const geoTaxonomy = `
+  query geoTaxonomyQuery ($defaultLocale: String!, $locale: String!) {
+    geoTaxonomy { 
       id
       name	{ 
         translation(locale: $locale)

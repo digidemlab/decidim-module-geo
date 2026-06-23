@@ -11,6 +11,11 @@ module Decidim
         after_commit :update_decidim_geo_index
 
         def update_decidim_geo_index
+          unless organization.geo_enabled?
+            Rails.logger.debug { "Decidim Geo is disabled. Skipping update for #{self.class.name}##{id}" }
+            return
+          end
+
           component_id = id
           registry = Decidim::Geo::ManifestRegistry.instance
           model_klass = registry.model_for(manifest_name)

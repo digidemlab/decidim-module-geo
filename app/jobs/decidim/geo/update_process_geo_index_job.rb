@@ -25,7 +25,7 @@ module Decidim
 
         upsert_index(process.id, manifest_name,
                      with_organization(
-                       with_scope(
+                       with_taxonomy(
                          with_coords(
                            resource_url:,
                            image_url:,
@@ -38,8 +38,6 @@ module Decidim
                            participatory_space_id: process.id,
                            participatory_space_type: manifest_name,
                            extended_data: {
-                             component_url:,
-                             space_page_host:,
                              default_locale:
                            }
                          )
@@ -49,16 +47,6 @@ module Decidim
       rescue StandardError => e
         Rails.logger.debug { "Can not index #{e}" }
         raise e
-      end
-
-      def component_url
-        return unless Gem.loaded_specs["decidim-space_page"].present? && resource.organization.space_page?
-
-        "https://#{resource.organization.host}#{resource_url}"
-      end
-
-      def space_page_host
-        resource.organization.host
       end
 
       def remove_process

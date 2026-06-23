@@ -94,11 +94,17 @@ export default class DrawerHeader {
       "leaflet-control decidimGeo__drawer",
       this.parent
     );
-    this.searchBox = L.DomUtil.create("div", "decidimGeo__drawerSearch", this.container);
 
-    const i18n = this.i18n();
+    const searchEnabled = window.DecidimToggle?.["decidim_geo.search_bar"];
 
-    this.searchBox.innerHTML = `
+    console.log("searchEnabled: ", searchEnabled)
+
+    if (searchEnabled) {
+      this.searchBox = L.DomUtil.create("div", "decidimGeo__drawerSearch", this.container);
+
+      const i18n = this.i18n();
+
+      this.searchBox.innerHTML = `
       <span class="decidimGeo__searchIcon">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
           <path d="M21 21l-4.35-4.35m1.6-5.15a7 7 0 11-14 0 7 7 0 0114 0z"
@@ -114,164 +120,165 @@ export default class DrawerHeader {
       />
     `;
 
-    this.resultsBox = L.DomUtil.create("ul", "decidimGeo__searchResults", this.searchBox);
+      this.resultsBox = L.DomUtil.create("ul", "decidimGeo__searchResults", this.searchBox);
 
-    L.DomEvent.disableClickPropagation(this.resultsBox);
-    L.DomEvent.disableScrollPropagation(this.resultsBox);
+      L.DomEvent.disableClickPropagation(this.resultsBox);
+      L.DomEvent.disableScrollPropagation(this.resultsBox);
 
-    const input = this.searchBox.querySelector(".decidimGeo__searchInput");
+      const input = this.searchBox.querySelector(".decidimGeo__searchInput");
 
-    L.DomEvent.disableClickPropagation(input);
-    L.DomEvent.disableScrollPropagation(input);
+      L.DomEvent.disableClickPropagation(input);
+      L.DomEvent.disableScrollPropagation(input);
 
-    L.DomEvent.on(input, "keydown", (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
+      L.DomEvent.on(input, "keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          const value = e.target.value.trim();
+          this.onSearchEnter(value);
+          input.blur();
+        }
+      });
+
+      this.onSearchEnter = function (value) {
+        let { activeFilters, setFilters } = filterStore.getState();
+        activeFilters = activeFilters.filter((f) => !f.searchFilter);
+        let filters = value
+          ? [...activeFilters, { searchFilter: { title: value } }]
+          : activeFilters;
+
+        pointsForFilters(filters);
+        this.pointCounterStore.updateCurrentCountForFilters(filters);
+        setFilters(filters);
+
+        this.resultsBox.classList.remove("is-open");
+
+        const searchItems = document.querySelectorAll(".decidimGeo__searchItem");
+        if (searchItems) {
+          searchItems.forEach((item) => item.remove());
+        }
+
+        const drawer = document.querySelector(".decidimGeo__drawerSearch");
+        if (drawer) {
+          drawer.classList.remove("has-results");
+        }
+
+        const { isAsideOpen } = configStore.getState();
+        if (isAsideOpen === false)
+          configStore.setState(({ isAsideOpen }) => ({ isAsideOpen: true }));
+      };
+
+      L.DomEvent.on(input, "input", (e) => {
         const value = e.target.value.trim();
-        this.onSearchEnter(value);
-        input.blur();
-      }
-    });
+        throttledOnSearchInput(value);
+      });
 
-    this.onSearchEnter = function (value) {
-      let { activeFilters, setFilters } = filterStore.getState();
-      activeFilters = activeFilters.filter((f) => !f.searchFilter);
-      let filters = value
-        ? [...activeFilters, { searchFilter: { title: value } }]
-        : activeFilters;
-
-      pointsForFilters(filters);
-      this.pointCounterStore.updateCurrentCountForFilters(filters);
-      setFilters(filters);
-
-      this.resultsBox.classList.remove("is-open");
-
-      const searchItems = document.querySelectorAll(".decidimGeo__searchItem");
-      if (searchItems) {
-        searchItems.forEach((item) => item.remove());
-      }
-
-      const drawer = document.querySelector(".decidimGeo__drawerSearch");
-      if (drawer) {
-        drawer.classList.remove("has-results");
-      }
-
-      const { isAsideOpen } = configStore.getState();
-      if (isAsideOpen === false)
-        configStore.setState(({ isAsideOpen }) => ({ isAsideOpen: true }));
-    };
-
-    L.DomEvent.on(input, "input", (e) => {
-      const value = e.target.value.trim();
-      throttledOnSearchInput(value);
-    });
-
-    const closeSearch = () => {
-      this.resultsBox.classList.remove("is-open");
-      const drawer = document.querySelector(".decidimGeo__drawerSearch");
-      if (drawer) {
-        drawer.classList.remove("has-results");
-      }
-      document
-        .querySelectorAll(".decidimGeo__searchItem")
-        .forEach((item) => item.remove());
-    };
-
-    input?.addEventListener("blur", closeSearch);
-    input?.addEventListener("change", closeSearch);
-
-    const throttledOnSearchInput = _.throttle(
-      (value) => {
-        this.onSearchInput(value.trim());
-      },
-      640,
-      { leading: false, trailing: true }
-    );
-
-    this.onSearchInput = async function (term) {
-      if (!term || term.length < 2) {
-        this.resultsBox.innerHTML = "";
+      const closeSearch = () => {
         this.resultsBox.classList.remove("is-open");
         const drawer = document.querySelector(".decidimGeo__drawerSearch");
         if (drawer) {
           drawer.classList.remove("has-results");
         }
-        return;
-      }
+        document
+          .querySelectorAll(".decidimGeo__searchItem")
+          .forEach((item) => item.remove());
+      };
 
-      const { activeFilters } = filterStore.getState();
+      input?.addEventListener("blur", closeSearch);
+      input?.addEventListener("change", closeSearch);
 
-      const filter = JSON.stringify({ searchFilter: { title: term } });
+      const throttledOnSearchInput = _.throttle(
+        (value) => {
+          this.onSearchInput(value.trim());
+        },
+        640,
+        { leading: false, trailing: true }
+      );
 
-      const response = await this.getResults(filter, activeFilters);
-      const data = response.data;
-      this.renderResults(data);
-    };
+      this.onSearchInput = async function (term) {
+        if (!term || term.length < 2) {
+          this.resultsBox.innerHTML = "";
+          this.resultsBox.classList.remove("is-open");
+          const drawer = document.querySelector(".decidimGeo__drawerSearch");
+          if (drawer) {
+            drawer.classList.remove("has-results");
+          }
+          return;
+        }
 
-    this.getResults = async function (filter, activeFilters) {
-      const params = new URLSearchParams({
-        "filters[]": filter,
-        locale: locale,
-        is_index: true
-      });
-      activeFilters.forEach((f) => {
-        params.append("filters[]", JSON.stringify(f));
-      });
-      try {
-        const response = await fetch("/api/decidim-geo/points/search?" + params);
-        if (response.ok) return await response.json();
-        else throw new Error(await response.text());
-      } catch (error) {
-        console.error(error);
-        throw error;
-      }
-    };
+        const { activeFilters } = filterStore.getState();
 
-    this.renderResults = function (data) {
-      this.resultsBox.innerHTML = "";
-      const drawer = document.querySelector(".decidimGeo__drawerSearch");
+        const filter = JSON.stringify({ searchFilter: { title: term } });
 
-      if (!data.length) {
-        this.resultsBox.innerHTML = `<div class="decidimGeo__searchItem">
+        const response = await this.getResults(filter, activeFilters);
+        const data = response.data;
+        this.renderResults(data);
+      };
+
+      this.getResults = async function (filter, activeFilters) {
+        const params = new URLSearchParams({
+          "filters[]": filter,
+          locale: locale,
+          is_index: true
+        });
+        activeFilters.forEach((f) => {
+          params.append("filters[]", JSON.stringify(f));
+        });
+        try {
+          const response = await fetch("/api/decidim-geo/points/search?" + params);
+          if (response.ok) return await response.json();
+          else throw new Error(await response.text());
+        } catch (error) {
+          console.error(error);
+          throw error;
+        }
+      };
+
+      this.renderResults = function (data) {
+        this.resultsBox.innerHTML = "";
+        const drawer = document.querySelector(".decidimGeo__drawerSearch");
+
+        if (!data.length) {
+          this.resultsBox.innerHTML = `<div class="decidimGeo__searchItem">
           ${i18n["decidim.geo.no_results"]}
         </div>`;
+          drawer.classList.add("has-results");
+          this.resultsBox.classList.add("is-open");
+          return;
+        }
+
+        data.forEach((point) => {
+          const item = L.DomUtil.create("li", "decidimGeo__searchItem", this.resultsBox);
+
+          L.DomEvent.disableClickPropagation(item);
+          L.DomEvent.disableScrollPropagation(item);
+
+          item.textContent = point.title[locale] || point.title[defaultLocale];
+
+          item.addEventListener("pointerup", (e) => {
+            const searchInput = document.querySelector(".decidimGeo__searchInput");
+            if (searchInput) {
+              searchInput.value = e.target.closest('li').textContent;
+            }
+
+            this.onSearchEnter(point.title[locale]);
+          });
+        });
         drawer.classList.add("has-results");
         this.resultsBox.classList.add("is-open");
-        return;
-      }
-
-      data.forEach((point) => {
-        const item = L.DomUtil.create("li", "decidimGeo__searchItem", this.resultsBox);
-
-        L.DomEvent.disableClickPropagation(item);
-        L.DomEvent.disableScrollPropagation(item);
-
-        item.textContent = point.title[locale] || point.title[defaultLocale];
-
-        item.addEventListener("pointerup", (e) => {
-          const searchInput = document.querySelector(".decidimGeo__searchInput");
-          if (searchInput) {
-            searchInput.value = e.target.closest('li').textContent;
-          }
-
-          this.onSearchEnter(point.title[locale]);
-        });
-      });
-      drawer.classList.add("has-results");
-      this.resultsBox.classList.add("is-open");
-    };
+      };
+    }
 
     this.menu = L.DomUtil.create("div", "decidimGeo__drawerHeader", this.parent);
 
     L.DomEvent.disableClickPropagation(this.menu);
     L.DomEvent.disableScrollPropagation(this.menu);
 
-    // We we change the available scopes, repaint.
+    // We we change the available taxonomies, repaint.
     geoStore.subscribe(
-      (state) => [state.selectedScope],
-      ([_geoScope], [prevGeoScope]) => {
-        if (prevGeoScope) {
-          prevGeoScope.repaint();
+      (state) => [state.selectedTaxonomy],
+      ([_geoTaxonomy], [prevGeoTaxonomy]) => {
+        if (prevGeoTaxonomy) {
+          prevGeoTaxonomy.repaint();
         }
         this.repaint();
       }
@@ -283,9 +290,9 @@ export default class DrawerHeader {
       }
     );
     pointStore.subscribe(
-      (state) => [state.scopes, state.isLoading],
-      ([scopes, isLoading]) => {
-        if (!scopes || scopes.length == 0 || isLoading) return;
+      (state) => [state.taxonomies, state.isLoading],
+      ([taxonomies, isLoading]) => {
+        if (!taxonomies || taxonomies.length == 0 || isLoading) return;
         this.repaint();
       }
     );

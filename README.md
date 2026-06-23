@@ -62,7 +62,7 @@ Displaying custom tiles allows more precise control over what is viewed, and can
 
 **Hide maps when there is nothing to show**<br />
 Maps will be hidden if there is no point to show. For example, a meeting without a location won't display a map in its details. 
-Scopes that do not contain any data will also be hidden, preventing the user from filtering something when there is no data to display.
+Taxonomies that do not contain any data will also be hidden, preventing the user from filtering something when there is no data to display.
 
 **Highlight points**<br />
 We've defined some rules to highlight points displayed on the current page:

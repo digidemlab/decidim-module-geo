@@ -1,5 +1,5 @@
 <div class="form__wrapper">
-  <div class="card" data-component="accordion" id="accordion-title">
+  <div class="card" data-controller="accordion" id="accordion-title">
     <div class="card-divider">
       <button class="card-divider-button" data-open="true" data-controls="panel-title" type="button">
         <%= icon "arrow-right-s-line" %>
@@ -8,7 +8,7 @@
           </h2>
       </button>
     </div>
-    <div id="panel-title" class="card-section">
+    <div id="panel-title" class="card-section form form-defaults">
       <div class="row column">
         <%= form.text_field :title %>
       </div>

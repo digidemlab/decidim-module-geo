@@ -33,14 +33,12 @@ module Decidim
           participatory_space_id: assembly.id,
           participatory_space_type: manifest_name,
           extended_data: {
-            component_url:,
-            space_page_host:,
             default_locale:
           }
         }
         upsert_index(assembly.id, manifest_name,
                      with_organization(
-                       with_scope(
+                       with_taxonomy(
                          with_coords(
                            with_dates(
                              index_payload
@@ -52,16 +50,6 @@ module Decidim
       rescue StandardError => e
         Rails.logger.debug { "Error: can not geo-index this assembly: #{e}" }
         false
-      end
-
-      def component_url
-        return unless Gem.loaded_specs["decidim-space_page"].present? && resource.organization.space_page?
-
-        "https://#{resource.organization.host}#{resource_url}"
-      end
-
-      def space_page_host
-        resource.organization.host
       end
 
       def with_dates(decidim_geo_hash)

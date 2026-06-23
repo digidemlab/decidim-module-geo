@@ -4,10 +4,11 @@ module Decidim
   module Geo
     # The data store for geo configuration default.
     class GeoConfig < ApplicationRecord
+      belongs_to :organization, foreign_key: :decidim_organization_id, class_name: "Decidim::Organization"
+
       self.table_name = "decidim_geo_configs"
       enum :default_geoencoded_filter, { force_geoencoded: 0, no_force_geoencoded: 1 }
       validates :longitude, :latitude, :zoom, presence: true
-      validates :decidim_organization_id, presence: true
 
       def self.geo_config_default(organization)
         Decidim::Geo::GeoConfig

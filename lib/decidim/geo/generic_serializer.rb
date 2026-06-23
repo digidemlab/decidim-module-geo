@@ -9,14 +9,14 @@ module Decidim
         attr_accessor :resource
         attr_accessor :resource_id
 
-        def scope
-          @scope ||= if resource.class.include? Decidim::HasComponent
-                       scope_for_resource
-                     elsif resource.instance_of?(Decidim::Component)
-                       scope_for_component
-                     elsif resource.class.include? Decidim::ScopableParticipatorySpace
-                       scope_for_participatory_space
-                     end
+        def taxonomy
+          @taxonomy ||= if resource.respond_to?(:component)
+                          taxonomy_for_resource
+                        elsif resource.instance_of?(Decidim::Component)
+                          taxonomy_for_component
+                        elsif resource.class.participatory_space?
+                          taxonomy_for_participatory_space
+                        end
         end
 
         def image_url
@@ -126,23 +126,22 @@ module Decidim
           value
         end
 
-        def scope_for_participatory_space(space = nil)
+        def taxonomy_for_resource
+          @taxonomy_for_resource ||= resource.taxonomies.select { |t| t.shapedata.present? }
+        end
+
+        def taxonomy_for_component(component = nil)
+          component ||= resource
+
+          @taxonomy_for_component ||= component.taxonomies.select { |t| t.shapedata.present? }
+        end
+
+        def taxonomy_for_participatory_space(space = nil)
           space ||= resource
 
-          @scope_for_participatory_space ||= (space.scope if space && space.scope)
-        end
+          return unless space && space.taxonomies
 
-        def scope_for_component(component = nil)
-          component ||= resource
-          @scope_for_component ||= if component && component.scope
-                                     component.scope
-                                   else
-                                     scope_for_participatory_space(component.participatory_space)
-                                   end
-        end
-
-        def scope_for_resource
-          @scope_for_resource ||= resource.scope.presence || scope_for_component(resource.component)
+          @taxonomy_for_participatory_space ||= space.taxonomies.select { |t| t.shapedata.present? }
         end
       end
     end

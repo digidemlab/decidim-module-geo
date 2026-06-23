@@ -19,7 +19,7 @@ const getGeoDataSource = async (params = {}, fetchAll = true, callback) => {
         "imageUrl",
         "latitude",
         "longitude",
-        "geoScopeId",
+        "geoTaxonomyId",
         "lonlat",
         "extendedData"
       ]

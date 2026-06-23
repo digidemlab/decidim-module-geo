@@ -4,6 +4,9 @@ require "decidim/dev/common_rake"
 
 def install_module(path)
   Dir.chdir(path) do
+    Bundler.with_unbundled_env do
+      sh "bundle exec rails decidim_toggle:install:migrations"
+    end
     system("bundle exec rails decidim:update")
   end
 end
@@ -21,16 +24,17 @@ end
 desc "Prepare for testing"
 task :prepare_tests do
   # Remove previous existing db, and recreate one.
-  Dir.chdir("development_app") do
-    system("bundle exec rake db:drop")
-    system("bundle exec rake db:create")
+  Dir.chdir("spec/decidim_dummy_app") do
+    Bundler.with_unbundled_env do
+      sh "env BUNDLE_GEMFILE=#{File.expand_path("Gemfile", __dir__)} RAILS_ENV=test DISABLE_SPRING=1 bundle exec rails db:drop db:create"
+    end
   end
   ENV["RAILS_ENV"] = "test"
   database_yml = {
     "test" => {
       "adapter" => "postgis",
       "encoding" => "unicode",
-      "host" => ENV.fetch("DATABASE_HOST", "localhost"),
+      "host" => ENV.fetch("DATABASE_HOST", "pg"),
       "port" => ENV.fetch("DATABASE_PORT", "5432").to_i,
       "username" => ENV.fetch("DATABASE_USERNAME", "decidim"),
       "password" => ENV.fetch("DATABASE_PASSWORD", "insecure-password"),
@@ -40,12 +44,15 @@ task :prepare_tests do
   config_file = File.expand_path("spec/decidim_dummy_app/config/database.yml", __dir__)
   File.open(config_file, "w") { |f| YAML.dump(database_yml, f) }
   Dir.chdir("spec/decidim_dummy_app") do
-    system("bundle exec rails db:migrate")
+    Bundler.with_unbundled_env do
+      sh "env BUNDLE_GEMFILE=#{File.expand_path("Gemfile", __dir__)} RAILS_ENV=test DISABLE_SPRING=1 bundle exec rails db:migrate"
+    end
   end
 end
 
 desc "Generates a decidim_dummy_app app for testing"
 task :test_app do
+  ENV["DISABLE_SPRING"] = "true"
   Bundler.with_original_env do
     generate_decidim_app(
       "spec/decidim_dummy_app",

@@ -32,7 +32,7 @@ module Decidim
         private
 
         def show_children_points
-          types = Decidim.participatory_space_registry.manifests.map { |manifest| manifest.name.to_s }
+          Decidim.participatory_space_registry.manifests.map { |manifest| manifest.name.to_s }
 
           actives_first = <<~SQL
             CASE
@@ -63,28 +63,6 @@ module Decidim
             END ASC
           SQL
 
-          if show_children_points? && show_children_points_params.first == "all"
-            return Decidim::Geo::Index
-                   .where("decidim_organization_id = :org OR resource_type NOT IN (:types)", org: organization.id, types:)
-                   .order(
-                     Arel.sql(actives_first),
-                     start_date: :desc,
-                     end_date: :desc,
-                     id: :desc
-                   )
-          end
-
-          if show_children_points? && show_children_points_params == ["children_only"]
-            return Decidim::Geo::Index
-                   .where.not("decidim_organization_id = :org OR resource_type IN (:types)", org: organization.id, types:)
-                   .order(
-                     Arel.sql(actives_first),
-                     start_date: :desc,
-                     end_date: :desc,
-                     id: :desc
-                   )
-          end
-
           Decidim::Geo::Index.where(decidim_organization_id: organization.id)
                              .order(
                                Arel.sql(actives_first),
@@ -94,16 +72,8 @@ module Decidim
                              )
         end
 
-        def show_children_points?
-          space_page? && organization.space_page_settings_attributes["show_children_points"]
-        end
-
         def active_time_filter
           @active_time_filter ||= time_filter_params && time_filter_params[:time_filter][:time]
-        end
-
-        def space_page?
-          Gem.loaded_specs["decidim-space_page"].present?
         end
 
         def computed_time_filters(query)
@@ -143,7 +113,7 @@ module Decidim
         end
 
         def scoped!(query)
-          return query.where(geo_scope_id: scope_ids_params) unless scope_ids_params.empty?
+          return query.where(geo_taxonomy_id: taxonomy_ids_params) unless taxonomy_ids_params.empty?
 
           query
         end
@@ -266,15 +236,9 @@ module Decidim
           graphql_params.find { |f| f[:geoencoded_filter].present? }
         end
 
-        def scope_ids_params
-          @scope_ids_params ||= graphql_params.select { |f| f[:scope_filter].present? }.map do |graphql_param|
-            graphql_param[:scope_filter][:scope_id]
-          end
-        end
-
-        def show_children_points_params
-          @show_children_points_param ||= graphql_params.select { |f| f[:source_filter].present? }.map do |graphql_param|
-            graphql_param[:source_filter][:source]
+        def taxonomy_ids_params
+          @taxonomy_ids_params ||= graphql_params.select { |f| f[:taxonomy_filter].present? }.map do |graphql_param|
+            graphql_param[:taxonomy_filter][:taxonomy_id]
           end
         end
 

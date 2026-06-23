@@ -1,0 +1,98 @@
+<% add_decidim_page_title(t(".title")) %>
+
+<div class="item_show__header">
+  <h1 class="item_show__header-title">
+    <%= t(".title") %>
+  </h1>
+</div>
+
+<div class="table-scroll">
+  <table class="table-list">
+    <thead>
+      <tr>
+        <th>
+          <%= I18n.t("fields.taxonomy", scope: "decidim.geo.admin.taxonomies_shapedatas" ) %>
+        </th>
+        <th>
+          <%= I18n.t("fields.shapedata", scope: "decidim.geo.admin.taxonomies_shapedatas" ) %>
+        </th>
+        <th>
+          <%= I18n.t("actions.title", scope: "decidim.geo.admin.taxonomies_shapedatas" ) %>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% taxonomy_children.each do |taxonomy_child| %>
+        <tr>
+          <td>
+            <%= translated_attribute(taxonomy_child.name) %><br>
+          </td>
+          <td>
+            <%= taxonomy_child&.shapedata&.data&.dig("NAME") %><br>
+          <td>
+          <%= link_to edit_taxonomies_shapedata_path(taxonomy_child.id), class: "js-drawer-editor" do %>
+            <%= icon "pencil-line" %>
+            <%= t("actions.edit", scope: "decidim.admin.taxonomies") %>
+          <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<%= decidim_drawer id: "item-form" do %>
+  <div data-dialog-container class="layout-content"></div>
+<% end %>
+
+<script>
+  document.addEventListener("decidim:loaded", function() {
+    var drawer = window.Decidim.currentDialogs["item-form"];
+    var drawerButtons = document.querySelectorAll(".js-drawer-editor");
+    var container = drawer.dialog.querySelector("[data-dialog-container]");
+
+    function setDrawerContent(content) {
+      container.innerHTML = content;
+
+      var form = container.querySelector("#taxonomy-shapedata-form");
+      if(!form) {
+        return location.reload();
+      }
+      window.initFoundation(container);
+
+      form.addEventListener("ajax:beforeSend", function(evt) {
+        form.classList.add("spinner-container");
+      });
+
+      form.addEventListener("ajax:success", function(evt) {
+        var [data, _status, xhr] = event.detail;
+        if(xhr.responseURL.indexOf(location.pathname) > -1) {
+          location.href = xhr.responseURL;
+        } else {
+          setDrawerContent(data.body.innerHTML)
+        }
+      });
+
+      form.addEventListener("ajax:error", function(evt) {
+        var [data, _status, xhr] = event.detail;
+        if(xhr.responseURL.indexOf(location.pathname) > -1) {
+          location.href = xhr.responseURL;
+        } else {
+          setDrawerContent(data.body.innerHTML)
+        }
+      });
+
+    }
+
+    drawerButtons.forEach(function(button) {
+      button.addEventListener("click", function(evt) {
+        evt.preventDefault();
+        container.innerHTML = '<div class="spinner-container">&nbsp;</div>';
+        fetch(button.getAttribute("href"))
+          .then(function(response) { return response.text() })
+          .then(function(html) { setDrawerContent(html) });
+        drawer.open();
+      });
+    });
+  });
+</script>

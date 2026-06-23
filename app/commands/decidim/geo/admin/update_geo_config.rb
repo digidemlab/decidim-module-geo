@@ -33,6 +33,7 @@ module Decidim
 
         def update_geo_config
           geo_config.update!(attributes)
+          update_shapefile
         end
 
         def create_geo_config
@@ -52,8 +53,21 @@ module Decidim
             only_processes: form.only_processes,
             focus_zoom_level: form.focus_zoom_level,
             default_geoencoded_filter: form.default_geoencoded_filter,
-            decidim_organization_id: form.organization.id
+            decidim_organization_id: form.organization.id,
+            decidim_geo_shapefiles_id: form.decidim_geo_shapefiles_id
           }
+        end
+
+        def update_shapefile
+          return unless form.decidim_geo_shapefiles_id
+          return unless shapefile
+
+          shapefile.decidim_taxonomies_id = form.taxonomy_id
+          shapefile.save!
+        end
+
+        def shapefile
+          @shapefile ||= Decidim::Geo::Shapefile.find_by(id: form.decidim_geo_shapefiles_id)
         end
       end
     end

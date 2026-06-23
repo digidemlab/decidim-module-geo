@@ -22,7 +22,6 @@ module Decidim
       include Decidim::Searchable
       include Decidim::TranslatableResource
       include Decidim::TranslatableAttributes
-      include Decidim::Endorsable
       include Decidim::Randomable
 
       if Decidim.version >= "0.27.4"
@@ -37,7 +36,7 @@ module Decidim
 
       translatable_fields :title, :description, :instructions, :information_updates
       searchable_fields({
-                          scope_id: :decidim_scope_id,
+                          taxonomy_id: :decidim_taxonomies_id,
                           participatory_space: { component: :participatory_space },
                           A: :title,
                           D: :description,

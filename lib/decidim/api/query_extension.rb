@@ -5,21 +5,21 @@ module Decidim
     # GeoQueryExtension
     module QueryExtension
       def self.included(type)
-        type.field :geo_shapefiles, [Decidim::Geo::GeoShapefileType], description: "Return's information about the shapefiles", null: true do
-          argument :title, [String], required: false
+        type.field :geo_shapefiles, [Decidim::Geo::GeoShapefileType], null: true, description: "Returns a list of geographic shapefiles, optionally filtered by title." do
+          argument :title, [String], required: false, description: "Filters the shapefiles by matching titles."
         end
 
-        type.field :geo_shapedata, [Decidim::Geo::GeoShapedataType], description: "Return's datas from shapefile",
-                                                                     null: true do
-          argument :name, [String], required: false
+        type.field :geo_shapedata, [Decidim::Geo::GeoShapedataType], null: true,
+                                                                     description: "Returns data records associated with a specific shapefile, optionally filtered by name." do
+          argument :name, [String], required: false, description: "Filters the records by matching names."
         end
 
         type.field :geo_config, Decidim::Geo::GeoConfigType, description: "Return's information about the geo config",
                                                              null: true
 
-        type.field :geo_scope, [Decidim::Geo::GeoScopeApiType], description: "Return's scopes with shapedatas",
-                                                                null: true do
-          argument :id, type: [Integer], required: false
+        type.field :geo_taxonomy, [Decidim::Geo::GeoTaxonomyApiType], null: true,
+                                                                      description: "Returns a list of geographic taxonomies, optionally including their associated shape data." do
+          argument :id, [Integer], required: false, description: "Filters the taxonomies by their unique IDs."
         end
       end
 
@@ -43,11 +43,11 @@ module Decidim
         @geo_config ||= Decidim::Geo::GeoConfig.geo_config_default(current_organization)
       end
 
-      def geo_scope(id: [])
-        scopes = Decidim::Scope.where(organization: current_organization).includes(:shapedata)
-        return scopes.all if id.empty?
+      def geo_taxonomy(id: [])
+        taxonomies = Decidim::Taxonomy.where(organization: current_organization).includes(:shapedata)
+        return taxonomies.all if id.empty?
 
-        scopes.where(id:)
+        taxonomies.where(id:)
       end
 
       private

@@ -186,7 +186,7 @@ export default class Drawer {
     L.DomEvent.disableScrollPropagation(this.cardList);
 
     geoStore.subscribe(
-      (state) => [state.selectedPoint, state.selectedScope],
+      (state) => [state.selectedPoint, state.selectedTaxonomy],
       () => {
         this.repaint();
       }

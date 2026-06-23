@@ -1,9 +1,9 @@
 import { createStore } from "zustand/vanilla";
 import configStore from "./configStore";
 
-import { getGeoDataSource, getGeoScopes } from "../api";
+import { getGeoDataSource, getGeoTaxonomies } from "../api";
 import GeoDatasourceNode from "../models/GeoDatasourceNode";
-import GeoScope from "../models/GeoScope";
+import GeoTaxonomy from "../models/GeoTaxonomy";
 import { subscribeWithSelector } from "zustand/middleware";
 import _ from "lodash";
 
@@ -28,19 +28,19 @@ const store = createStore(
      * Data Points
      */
     points: [],
-    scopes: [],
-    fetchedGeoScopes: [],
-    selectedGeoScopeIds: [],
+    taxonomies: [],
+    fetchedGeoTaxonomies: [],
+    selectedGeoTaxonomyIds: [],
     isInitialized: false,
     isLoading: 0,
     _lastFilter: "",
     _lastResponse: [],
     lastResponseCount: 0,
     fetchesRunning: 0,
-    scopeForId: (scopeId) => {
-      const scope = get().scopes.find(({ data }) => `${data.id}` === `${scopeId}`);
-      if (!scope || scope.isEmpty()) return null;
-      return scope;
+    taxonomyForId: (taxonomyId) => {
+      const taxonomy = get().taxonomies.find(({ data }) => `${data.id}` === `${taxonomyId}`);
+      if (!taxonomy || taxonomy.isEmpty()) return null;
+      return taxonomy;
     },
     clearCache: () => {
       set(() => ({ _lastFilter: "", _lastResponse: [], lastResponseCount: 0 }));
@@ -58,22 +58,22 @@ const store = createStore(
     getFilteredPoints: () => store.getState()._lastResponse,
     _updateCache: () => {
       const filteredPoints = filteredIdsStore.getState().activeFilterIds;
-      const { scopeLayer } = configStore.getState();
-      const { selectedGeoScopeIds, fetchedGeoScopes, points, scopes } = get();
-      scopes.forEach((scope) => scope.remove());
-      scopeLayer.clearLayers();
-      let geoScopes = [];
+      const { taxonomyLayer } = configStore.getState();
+      const { selectedGeoTaxonomyIds, fetchedGeoTaxonomies, points, taxonomies } = get();
+      taxonomies.forEach((taxonomy) => taxonomy.remove());
+      taxonomyLayer.clearLayers();
+      let geoTaxonomies = [];
 
-      if (fetchedGeoScopes.length > 0 && selectedGeoScopeIds.length > 0) {
-        geoScopes = selectedGeoScopeIds
-          .map((scopeId) => {
-            const match = fetchedGeoScopes.find(({ id }) => `${id}` === `${scopeId}`);
+      if (fetchedGeoTaxonomies.length > 0 && selectedGeoTaxonomyIds.length > 0) {
+        geoTaxonomies = selectedGeoTaxonomyIds
+          .map((taxonomyId) => {
+            const match = fetchedGeoTaxonomies.find(({ id }) => `${id}` === `${taxonomyId}`);
             if (!match) return null;
-            const geoScope = new GeoScope({
-              geoScope: match
+            const geoTaxonomy = new GeoTaxonomy({
+              geoTaxonomy: match
             });
-            geoScope.init(scopeLayer);
-            return geoScope;
+            geoTaxonomy.init(taxonomyLayer);
+            return geoTaxonomy;
           })
           .filter(Boolean);
       }
@@ -85,9 +85,9 @@ const store = createStore(
       set(() => ({
         _lastResponse: responsePoints,
         lastResponseCount: responsePoints.length,
-        scopes: geoScopes
+        taxonomies: geoTaxonomies
       }));
-      scopeLayer.eachLayer(function (layer) {
+      taxonomyLayer.eachLayer(function (layer) {
         layer.bringToBack();
       });
     },
@@ -114,26 +114,26 @@ const store = createStore(
           get()._updateCache();
           set(({ fetchesRunning }) => ({
             fetchesRunning: fetchesRunning - (hasMore ? 0 : 1),
-            selectedGeoScopeIds: meta.geo_scope_ids || []
+            selectedGeoTaxonomyIds: meta.geo_taxonomy_ids || []
           }));
         }
       );
 
       promises.push(
-        getGeoScopes({
+        getGeoTaxonomies({
           variables: { locale: locale }
-        }).then((scopes) => {
-          return { geoScopes: scopes };
+        }).then((taxonomies) => {
+          return { geoTaxonomies: taxonomies };
         })
       );
       await Promise.allSettled(promises).then((results) => {
         const rejected = results.filter((result) => result.status === "rejected");
         if (rejected.length > 0)
           console.error("ERR: fail to fetch." + rejected.map((r) => r.reason).join("."));
-        const [fetchedGeoScopes] = results
-          .filter(({ value }) => typeof value.geoScopes !== "undefined")
-          .map(({ value: { geoScopes } }) => geoScopes);
-        set(() => ({ fetchedGeoScopes }));
+        const [fetchedGeoTaxonomies] = results
+          .filter(({ value }) => typeof value.geoTaxonomies !== "undefined")
+          .map(({ value: { geoTaxonomies } }) => geoTaxonomies);
+        set(() => ({ fetchedGeoTaxonomies }));
         get()._updateCache();
       });
     },

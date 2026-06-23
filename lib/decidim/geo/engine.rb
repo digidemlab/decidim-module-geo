@@ -2,6 +2,7 @@
 
 require "rails"
 require "decidim/core"
+require "decidim/toggle"
 require "rgeo-geojson"
 
 module Decidim
@@ -13,7 +14,7 @@ module Decidim
       routes do
         scope :api do
           scope :"decidim-geo" do
-            resources :geo_scopes, only: [:index, :show]
+            resources :geo_taxonomies, only: [:index, :show]
             resources :points, only: [:index]
             get "points/count", to: "points#count", as: :count_point
             get "points/search", to: "points#search_title", as: :search_title
@@ -60,6 +61,9 @@ module Decidim
 
         Decidim::Organization.include(Decidim::Geo::OrganizationGeoExtensions)
 
+        # Override Taxonomy model to include Shapedata
+        Decidim::Taxonomy.include(Decidim::Geo::TaxonomyOverride)
+
         # Setup registry
         registry = Decidim::Geo::ManifestRegistry.instance
         if Decidim.const_defined?("Meetings")
@@ -80,22 +84,6 @@ module Decidim
             updater: Decidim::Geo::UpdateAssemblyGeoIndexJob
           )
           Decidim::Assembly.include(Decidim::Geo::UpdateGeoIndex)
-        end
-
-        if Decidim.const_defined?("SpacePage")
-          registry.register(
-            :space_pages,
-            time_filter: Decidim::Geo::SpacePageTimeFilter,
-            model: Decidim::Organization,
-            updater: Decidim::Geo::UpdateOrganizationGeoIndexJob
-          )
-          Decidim::Organization.include(Decidim::Geo::UpdateSpacePageOrganizationGeoIndex)
-          available_space_page_manifests = Decidim.participatory_space_manifests.map do |participatory_space_manifest|
-            participatory_space_manifest.model_class_name.constantize
-          end
-          available_space_page_manifests.each do |space_page_manifest|
-            space_page_manifest.include(Decidim::Geo::UpdateSpacePageGeoIndex)
-          end
         end
 
         if Decidim.const_defined?("ParticipatoryProcess")
@@ -193,6 +181,19 @@ module Decidim
 
       initializer "decidim_geo.assets.icons" do |_app|
         Decidim.icons.register(name: "map", icon: "map-2-fill", category: "system", description: "", engine: :core)
+      end
+
+      initializer "decidim_geo.organization_settings_tab",
+                  after: "decidim_toggle.organization_settings_tabs" do
+        Decidim::Toggle.settings_tabs :organization_settings do |tabs|
+          tabs.add_tab :decidim_geo,
+                       I18n.t("decidim.geo.system.tab"),
+                       form: Decidim::Geo::Admin::OrganizationConfigForm,
+                       command: Decidim::Toggle::UpdateModuleConfigCommand,
+                       module_name: :decidim_geo,
+                       partial: "decidim/geo/admin/organization_settings_fields",
+                       position: 15
+        end
       end
     end
   end
