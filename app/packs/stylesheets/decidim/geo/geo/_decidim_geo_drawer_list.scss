@@ -320,7 +320,7 @@
     text-decoration: none;
     float: right;
   }
-  .decidimGeo__scope__tooltip {
+  .decidimGeo__taxonomy__tooltip {
     background-color: transparent !important;
     border: transparent !important;
     box-shadow: none !important;
@@ -344,7 +344,7 @@
     text-overflow: ellipsis;
   }
 
-  .leaflet-tooltip-top.decidimGeo__scope__tooltip::before {
+  .leaflet-tooltip-top.decidimGeo__taxonomy__tooltip::before {
     border-top-color: transparent;
   }
 

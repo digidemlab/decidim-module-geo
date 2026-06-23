@@ -30,10 +30,10 @@ module Decidim
         decidim_geo_hash
       end
 
-      def with_scope(decidim_geo_hash)
-        return decidim_geo_hash unless scope
+      def with_taxonomy(decidim_geo_hash)
+        return decidim_geo_hash if taxonomy.first.nil?
 
-        decidim_geo_hash[:geo_scope_id] = scope.id
+        decidim_geo_hash[:geo_taxonomy_id] = taxonomy.first.id
         decidim_geo_hash
       end
 

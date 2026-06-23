@@ -112,7 +112,7 @@ export default class GeoDatasourceNode {
     const { map } = configStore.getState();
     map.eachLayer((layer) => {
       if (layer.feature) {
-        if (layer.feature.geometry.properties.id === this.geoScopeId) {
+        if (layer.feature.geometry.properties.id === this.geoTaxonomyId) {
           layer.setStyle(this.selectedState);
         } else {
           layer.setStyle(this.staledState);
@@ -133,11 +133,11 @@ export default class GeoDatasourceNode {
     return parseInt(`${this.data.id}`) || undefined;
   }
 
-  get scopeId() {
-    return parseInt(`${this.data.geoScopeId}`) || undefined;
+  get taxonomyId() {
+    return parseInt(`${this.data.geoTaxonomyId}`) || undefined;
   }
-  get geoScopeId() {
-    return this.scopeId;
+  get geoTaxonomyId() {
+    return this.taxonomyId;
   }
 
   async panToMarker() {

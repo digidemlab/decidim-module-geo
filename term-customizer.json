@@ -290,13 +290,13 @@
     "locale": "en"
   },
   {
-    "key": "decidim.geo.scopes.dropdown",
-    "value": "Scopes",
+    "key": "decidim.geo.taxonomies.dropdown",
+    "value": "Taxonomies",
     "locale": "en"
   },
   {
-    "key": "decidim.geo.scopes.all",
-    "value": "All Scopes",
+    "key": "decidim.geo.taxonomies.all",
+    "value": "All Taxonomies",
     "locale": "en"
   },
   {
@@ -417,11 +417,6 @@
   {
     "key": "decidim.geo.filters.type.all",
     "value": "All",
-    "locale": "en"
-  },
-  {
-    "key": "decidim.geo.filters.type.only_space_pages",
-    "value": "Organizations",
     "locale": "en"
   },
   {

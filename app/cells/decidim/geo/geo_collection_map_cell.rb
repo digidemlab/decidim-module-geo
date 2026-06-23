@@ -34,8 +34,8 @@ module Decidim
             { resourceTypeFilter: { resourceType: param_filter[key] } }
           when "term"
             { termFilter: { term: param_filter[key] } }
-          when "decidim_scope_id"
-            { scopeFilter: { scopeId: [param_filter[key]] } }
+          when "decidim_taxonomies_id"
+            { taxonomyFilter: { taxonomyId: [param_filter[key]] } }
           when "space_state"
             { termFilter: { space_state: param_filter[key] } }
           end
@@ -43,7 +43,7 @@ module Decidim
         {
           id: "Search",
           filters:,
-          scopes: []
+          taxonomies: []
         }
       end
 
@@ -53,7 +53,7 @@ module Decidim
           {
             id: "Assemblies",
             filters: assemblies_filter,
-            scopes: assemblies_scopes,
+            taxonomies: assemblies_taxonomies,
             hide_empty: true,
             is_index: true
           }
@@ -61,7 +61,7 @@ module Decidim
           {
             id: "Processes",
             filters: processes_filter,
-            scopes: processes_scopes,
+            taxonomies: processes_taxonomies,
             hide_empty: true,
             is_index: true
           }
@@ -76,9 +76,9 @@ module Decidim
         )
       end
 
-      def processes_scopes
+      def processes_taxonomies
         visible_processes.map do |a|
-          a.scopes.empty? ? [] : a.scopes.map(&:id)
+          a.taxonomies.empty? ? [] : a.taxonomies.map(&:id)
         end.flatten.uniq
       end
 
@@ -88,9 +88,9 @@ module Decidim
         )
       end
 
-      def assemblies_scopes
+      def assemblies_taxonomies
         visible_assemblies.map do |a|
-          a.scopes.empty? ? [] : a.scopes.map(&:id)
+          a.taxonomies.empty? ? [] : a.taxonomies.map(&:id)
         end.flatten.uniq
       end
 

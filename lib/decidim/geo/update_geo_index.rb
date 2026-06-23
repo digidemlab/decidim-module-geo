@@ -10,7 +10,7 @@ module Decidim
 
         def update_decidim_geo_index
           unless decidim_geo_enabled?
-            Rails.logger.debug { "manifest not enabled: '#{decidim_geo_manifest}'" }
+            Rails.logger.debug { "Decidim Geo is disabled. Skipping update for #{self.class.name}##{id}" }
             return
           end
           registry = Decidim::Geo::ManifestRegistry.instance
@@ -34,8 +34,27 @@ module Decidim
 
         def decidim_geo_enabled?
           return false unless decidim_geo_manifest
+          return false unless decidim_geo_organization&.geo_enabled?
 
           Decidim::Geo::ManifestRegistry.instance.enabled?(decidim_geo_manifest)
+        end
+
+        def decidim_geo_organization
+          @decidim_geo_organization ||= organization_from_record ||
+                                        organization_from_component ||
+                                        organization_from_participatory_space
+        end
+
+        def organization_from_record
+          organization if respond_to?(:organization) && organization.present?
+        end
+
+        def organization_from_component
+          component.organization if respond_to?(:component) && component&.organization
+        end
+
+        def organization_from_participatory_space
+          participatory_space.organization if respond_to?(:participatory_space) && participatory_space&.organization
         end
       end
     end

@@ -32,7 +32,7 @@ const createControl = (position) =>
         comp.onAdd(map);
       });
       geoStore.subscribe(
-        (state) => [state.selectedScope, state.selectedPoint],
+        (state) => [state.selectedTaxonomy, state.selectedPoint],
         () => this.repaint()
       );
       configStore.subscribe(

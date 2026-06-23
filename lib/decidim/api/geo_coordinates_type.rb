@@ -6,8 +6,8 @@ module Decidim
     class GeoCoordinatesType < Decidim::Api::Types::BaseObject
       description "Physical coordinates for a location"
 
-      field :latitude, GraphQL::Types::Float, "Latitude of this coordinate", null: true
-      field :longitude, GraphQL::Types::Float, "Longitude of this coordinate", null: true
+      field :latitude, GraphQL::Types::Float, null: true, description: "Latitude of this coordinate."
+      field :longitude, GraphQL::Types::Float, null: true, description: "Longitude of this coordinate."
     end
   end
 end

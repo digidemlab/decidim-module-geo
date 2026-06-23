@@ -16,7 +16,7 @@ const store = createStore(
     map: undefined,
     mapReady: false,
     pointsLayer: L.layerGroup(),
-    scopeLayer: L.layerGroup(),
+    taxonomyLayer: L.layerGroup(),
     isIndex: false,
     mapID: "Generic",
     map_config: {},
@@ -67,7 +67,7 @@ const store = createStore(
       setFilters(mapConfig.filters);
 
       dropdownFilterStore.getState().setDefaultFilters({
-        GeoScopeFilter: toFilterOptions("GeoScopeFilter", mapConfig.filters),
+        GeoTaxonomyFilter: toFilterOptions("GeoTaxonomyFilter", mapConfig.filters),
         GeoShowFilter: toFilterOptions("GeoShowFilter", mapConfig.filters),
         GeoTimeFilter: toFilterOptions("GeoTimeFilter", mapConfig.filters),
         GeoType: toFilterOptions("GeoType", mapConfig.filters),

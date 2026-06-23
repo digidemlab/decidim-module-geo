@@ -17,11 +17,11 @@ const store = createStore(
     /**
      *
      */
-    selectedScope: null,
+    selectedTaxonomy: null,
     previousState: null,
 
-    hasNoScopeSelected: () => {
-      return !get().selectedScope || get().selectedScope === null;
+    hasNoTaxonomySelected: () => {
+      return !get().selectedTaxonomy || get().selectedTaxonomy === null;
     },
 
     /**
@@ -37,30 +37,30 @@ const store = createStore(
       }));
     },
     /**
-     * Action when a scope is selected.
-     * - select the scope if any
+     * Action when a taxonomy is selected.
+     * - select the taxonomy if any
      * -
      */
-    selectScope: (scope) => {
+    selectTaxonomy: (taxonomy) => {
       const { saveState } = memoryStore.getState();
 
       saveState();
       dropdownFilterStore.setState(({ nextFilters, selectedFilters }) => ({
-        nextFilters: { ...nextFilters, GeoScopeFilter: `${scope?.id || "all"}` },
-        selectedFilters: { ...selectedFilters, GeoScopeFilter: `${scope?.id || "all"}` }
+        nextFilters: { ...nextFilters, GeoTaxonomyFilter: `${taxonomy?.id || "all"}` },
+        selectedFilters: { ...selectedFilters, GeoTaxonomyFilter: `${taxonomy?.id || "all"}` }
       }));
       set((state) => ({
-        selectedScope: scope || null,
-        ...(`${scope?.id}` !== `${state.selectedScope?.id}`
+        selectedTaxonomy: taxonomy || null,
+        ...(`${taxonomy?.id}` !== `${state.selectedTaxonomy?.id}`
           ? { previousState: state }
           : null),
-        // unselect point when moving away from its scope
+        // unselect point when moving away from its taxonomy
         selectedPoint:
-          state.selectedPoint && state.selectedPoint.geoScopeId === scope?.id
+          state.selectedPoint && state.selectedPoint.geoTaxonomyId === taxonomy?.id
             ? state.selectedPoint
             : null
       }));
-      if (scope) scope.repaint();
+      if (taxonomy) taxonomy.repaint();
     },
     /**
      * Go back to previous state
@@ -76,42 +76,42 @@ const store = createStore(
 );
 
 store.subscribe(
-  (state) => [state.selectedScope],
-  ([selectedScope]) => {
+  (state) => [state.selectedTaxonomy],
+  ([selectedTaxonomy]) => {
     // Close the drowp down
     dropdownFilterStore.getState().close();
 
-    // Update filter associated to the scope
-    const { activeFilters, setFilters, scopeFilter, defaultFilters } =
+    // Update filter associated to the taxonomy
+    const { activeFilters, setFilters, taxonomyFilter, defaultFilters } =
       filterStore.getState();
-    const filtersWithoutScopes = activeFilters.filter(({ scopeFilter }) => {
-      return !scopeFilter;
+    const filtersWithoutTaxonomies = activeFilters.filter(({ taxonomyFilter }) => {
+      return !taxonomyFilter;
     });
-    const currentScopeFilterId = scopeFilter(activeFilters);
-    if (`${currentScopeFilterId}` === `${selectedScope?.id}`) return;
-    if (selectedScope?.id) {
+    const currentTaxonomyFilterId = taxonomyFilter(activeFilters);
+    if (`${currentTaxonomyFilterId}` === `${selectedTaxonomy?.id}`) return;
+    if (selectedTaxonomy?.id) {
       const matchFilter = activeFilters.find(
-        ({ scopeFilter }) => scopeFilter?.scopeId === selectedScope.id
+        ({ taxonomyFilter }) => taxonomyFilter?.taxonomyId === selectedTaxonomy.id
       );
       if (!matchFilter)
         setFilters(
-          filtersWithoutScopes.concat({ scopeFilter: { scopeId: selectedScope.id } })
+          filtersWithoutTaxonomies.concat({ taxonomyFilter: { taxonomyId: selectedTaxonomy.id } })
         );
     } else {
-      const defaultScopeFilter = defaultFilters.find(({ scopeFiler }) => scopeFilter);
-      if (defaultScopeFilter) setFilters(filtersWithoutScopes.concat(defaultScopeFilter));
-      else setFilters(filtersWithoutScopes);
+      const defaultTaxonomyFilter = defaultFilters.find(({ taxonomyFiler }) => taxonomyFilter);
+      if (defaultTaxonomyFilter) setFilters(filtersWithoutTaxonomies.concat(defaultTaxonomyFilter));
+      else setFilters(filtersWithoutTaxonomies);
     }
   }
 );
 
 store.subscribe(
-  (state) => [state.selectedScope],
-  ([selectedScope], [previousScope]) => {
+  (state) => [state.selectedTaxonomy],
+  ([selectedTaxonomy], [previousTaxonomy]) => {
     // Close the filter dropdown
-    if (previousScope) previousScope.repaint();
-    if (selectedScope) {
-      selectedScope.repaint();
+    if (previousTaxonomy) previousTaxonomy.repaint();
+    if (selectedTaxonomy) {
+      selectedTaxonomy.repaint();
     }
     dropdownFilterStore.getState().close();
   }

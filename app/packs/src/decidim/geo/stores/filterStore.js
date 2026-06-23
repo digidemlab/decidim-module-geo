@@ -17,16 +17,16 @@ const store = createStore(
         defaultFilters: sortedFilters
       }));
     },
-    isFilteredByScope: (filters = undefined) => {
-      const { scopeFilter } = store.getState();
-      return !!scopeFilter(filters);
+    isFilteredByTaxonomy: (filters = undefined) => {
+      const { taxonomyFilter } = store.getState();
+      return !!taxonomyFilter(filters);
     },
-    scopeFilter: (filters = undefined) => {
+    taxonomyFilter: (filters = undefined) => {
       if (!filters) {
         const { activeFilters } = store.getState();
         filters = activeFilters;
       }
-      return filters.find(({ scopeFilter }) => scopeFilter)?.scopeFilter?.scopeId;
+      return filters.find(({ taxonomyFilter }) => taxonomyFilter)?.taxonomyFilter?.taxonomyId;
     },
     isFilteredByTime: (filters = undefined) => {
       if (!filters) {
@@ -97,15 +97,19 @@ const store = createStore(
           const geoencodedFilter = showFilterMatch.geoencodedFilter.geoencoded;
           if (geoencodedFilter === true) return "geoencoded";
           if (geoencodedFilter === false) return "virtual";
+
           return defaultFilters.GeoShowFilter;
-        case "GeoScopeFilter":
-          const filterGeoScope = filters.find(
-            ({ scopeFilter = undefined }) => scopeFilter
+
+        case "GeoTaxonomyFilter":
+          const filterGeoTaxonomy = filters.find(
+            ({ taxonomyFilter = undefined }) => taxonomyFilter
           );
-          if (!filterGeoScope) {
-            return defaultFilters.GeoScopeFilter;
+          if (!filterGeoTaxonomy) {
+            return defaultFilters.GeoTaxonomyFilter;
           }
-          return `${filterGeoScope.scopeFilter.scopeId}`;
+
+          return `${filterGeoTaxonomy.taxonomyFilter.taxonomyId}`;
+
         case "GeoTimeFilter":
           const timeFilterMatch = filters.find(
             ({ timeFilter = undefined }) => timeFilter
@@ -114,7 +118,9 @@ const store = createStore(
           if (!timeFilterMatch) return defaultFilters.GeoTimeFilter;
           const timeFilter = timeFilterMatch.timeFilter.time;
           if (timeFilter) return timeFilter;
+
           return defaultFilters.GeoTimeFilter;
+
         case "GeoType":
           const typeFilterMatch = filters.find(
             ({ resourceTypeFilter = undefined }) => resourceTypeFilter
@@ -145,7 +151,9 @@ const store = createStore(
           if (resourceType) {
             return `${resourceType}`;
           }
+
           return defaultFilters.GeoType;
+
         case "GeoSource":
           const sourceFilterMatch = filters.find(
             ({ sourceFilter = undefined }) => sourceFilter
@@ -158,22 +166,23 @@ const store = createStore(
   }))
 );
 
-const onFilteredByScope = (filters) => {
-  const { scopeFilter } = store.getState();
-  const { scopeForId } = pointStore.getState();
-  let scopeId;
-  const { selectedScope: previousScope } = geoStore.getState();
-  const { selectScope } = geoStore.getState();
-  if ((scopeId = scopeFilter(filters))) {
-    if (previousScope && `${scopeId}` === `${previousScope?.id}`) return;
-    const selectedScope = scopeForId(scopeId);
-    if (selectedScope) selectScope(selectedScope);
-    else selectScope(null);
+const onFilteredByTaxonomy = (filters) => {
+  const { taxonomyFilter } = store.getState();
+  const { taxonomyForId } = pointStore.getState();
+  let taxonomyId;
+  const { selectedTaxonomy: previousTaxonomy } = geoStore.getState();
+  const { selectTaxonomy } = geoStore.getState();
+  if ((taxonomyId = taxonomyFilter(filters))) {
+    if (previousTaxonomy && `${taxonomyId}` === `${previousTaxonomy?.id}`) return;
+    
+    const selectedTaxonomy = taxonomyForId(taxonomyId);
+    if (selectedTaxonomy) selectTaxonomy(selectedTaxonomy);
+    else selectTaxonomy(null);
   } else {
-    const toRepaintScope = scopeForId(previousScope?.id);
-    selectScope(null);
-    if (toRepaintScope) {
-      toRepaintScope.repaint();
+    const toRepaintTaxonomy = taxonomyForId(previousTaxonomy?.id);
+    selectTaxonomy(null);
+    if (toRepaintTaxonomy) {
+      toRepaintTaxonomy.repaint();
     }
   }
 };
@@ -185,16 +194,16 @@ store.subscribe(
   async ([activeFilters], [previousActiveFilter]) => {
     if (activeFilters && _.isEqual(activeFilters, previousActiveFilter)) return;
 
-    // Select/Unselect scopes if a scopeFilter is present
+    // Select/Unselect taxonomys if a taxonomyFilter is present
     if (activeFilters) {
       await pointStore.getState().pointsForFilters(activeFilters);
     }
-    onFilteredByScope(activeFilters);
+    onFilteredByTaxonomy(activeFilters);
 
     // Update the filter modal state
     const { toFilterOptions } = store.getState();
     const { setFilter } = dropdownFilterStore.getState();
-    setFilter("GeoScopeFilter", toFilterOptions("GeoScopeFilter", activeFilters));
+    setFilter("GeoTaxonomyFilter", toFilterOptions("GeoTaxonomyFilter", activeFilters));
     setFilter("GeoShowFilter", toFilterOptions("GeoShowFilter", activeFilters));
     setFilter("GeoTimeFilter", toFilterOptions("GeoTimeFilter", activeFilters));
     setFilter("GeoType", toFilterOptions("GeoType", activeFilters));

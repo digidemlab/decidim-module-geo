@@ -24,7 +24,7 @@ module Decidim
       end
 
       def as_json(options = {})
-        default_serialized = super(options)
+        default_serialized = super
 
         # Use deep_transform_keys to camelize all keys
         camelized = default_serialized.deep_transform_keys { |key| key.to_s.camelize(:lower) }

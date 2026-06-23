@@ -4,8 +4,8 @@ module Decidim
   module Geo
     module ContentBlocks
       class SpaceGeoMapsCell < GeoMapsCell
-        def initialize(*args, **kwargs)
-          super(*args, **kwargs)
+        def initialize(*, **)
+          super
           @options[:is_index] = false
           @options[:id] = "Space##{current_participatory_space.id}" if current_participatory_space?
         end

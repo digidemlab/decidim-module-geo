@@ -7,35 +7,14 @@ module Decidim
         delegate :decidim_page_title, to: :view_context
         include Decidim::SanitizeHelper
         include Decidim::LayoutHelper
-        def initialize(*args, **kwargs)
-          super(*args, **kwargs)
+        def initialize(*, **)
+          super
           @options[:filters] ||= []
           if current_component?
             @options[:filters].push({ resourceTypeFilter: { resourceType: "proposals" } })
             @options[:filters].push({ resourceTypeFilter: { resourceType: "debates" } })
             @options[:filters].push({ resourceTypeFilter: { resourceType: "meetings" } })
             @options[:filters].push({ resourceTypeFilter: { resourceType: "accountability" } })
-          end
-          options_for_spaces!
-
-          # Show children points and filter in generator organization
-          @options[:filters].push({ sourceFilter: { source: "all" } }) if space_page? && current_organization&.space_page_settings_attributes&.[]("show_children_points")
-        end
-
-        def options_for_spaces!
-          if current_participatory_space_manifest == "participatory_processes"
-            # Scope on the current process
-            @options[:filters].push({ process_filter: { id: current_participatory_space.id } })
-          elsif current_participatory_space_manifest == "assemblies"
-            # Scope on the current assembly and all its children
-            @options[:filters].concat(
-              [{ assembly_filter: { id: current_participatory_space.id } }],
-              Decidim::Assembly.published.where(
-                "parents_path ~ ?", "#{current_participatory_space.parents_path}.*"
-              ).where.not(id: current_participatory_space.id)
-              .ids
-              .map { |id| { assembly_filter: { id: } } }
-            )
           end
         end
 
@@ -50,10 +29,6 @@ module Decidim
         end
 
         protected
-
-        def space_page?
-          Gem.loaded_specs["decidim-space_page"].present?
-        end
 
         def current_participatory_space_manifest
           current_participatory_space.manifest.name.to_s if current_participatory_space?
@@ -93,7 +68,7 @@ module Decidim
           config = {
             locale: current_locale,
             default_locale:,
-            space_ids: @options[:scopes] || [],
+            space_ids: @options[:taxonomies] || [],
             selected_component: current_component_id || nil,
             selected_point: selecting_point ? params.require(:id).to_i : nil,
             images: {
@@ -123,7 +98,7 @@ module Decidim
           @options.has_key?(:is_index) ? @options[:is_index] : true
         end
 
-        def insert_scopes_mobile
+        def insert_taxonomies_mobile
           content_tag(:div, "", class: ["js-decidimgeo"])
         end
 
@@ -131,12 +106,7 @@ module Decidim
         # Get active registered manifests.
         # For space pages, avoid displaying a filter for generated orgs.
         def active_manifests
-          @active_manifests ||= ::Decidim::Geo.registry.active_manifests do |manifests|
-            is_generator = !::Decidim.const_defined?("SpacePage") || current_organization.space_page_generator?
-            manifests.filter do |manifest_key|
-              is_generator || manifest_key != "space_pages"
-            end
-          end
+          @active_manifests ||= ::Decidim::Geo.registry.active_manifests { |manifests| manifests }
         end
 
         def geo_i18n
@@ -151,8 +121,8 @@ module Decidim
             "decidim.geo.mobile.close_fullscreen": t("decidim.geo.mobile.close_fullscreen"),
             "decidim.geo.search": t("decidim.geo.search"),
             "decidim.geo.no_results": t("decidim.geo.no_results"),
-            "decidim_geo.scopes.all": t("decidim.geo.scopes.all"),
-            "decidim_geo.scopes.dropdown": t("decidim.geo.scopes.dropdown"),
+            "decidim_geo.taxonomies.all": t("decidim.geo.taxonomies.all"),
+            "decidim_geo.taxonomies.dropdown": t("decidim.geo.taxonomies.dropdown"),
 
             "decidim_geo.filters.results.one": t("decidim.geo.filters.results.one"),
             "decidim_geo.filters.results.zero": t("decidim.geo.filters.results.zero"),
@@ -174,7 +144,6 @@ module Decidim
             "decidim_geo.filters.time.future": t("decidim.geo.filters.time.only_future"),
             "decidim_geo.filters.type.label": t("decidim.geo.filters.type.label"),
             "decidim_geo.filters.type.all": t("decidim.geo.filters.type.all"),
-            "decidim_geo.filters.type.space_pages": t("decidim.geo.filters.type.only_space_pages"),
             "decidim_geo.filters.type.participatory_processes": t("decidim.geo.filters.type.only_processes"),
             "decidim_geo.filters.type.assemblies": t("decidim.geo.filters.type.only_assemblies"),
             "decidim_geo.filters.type.proposals": t("decidim.geo.filters.type.only_proposals"),

@@ -134,7 +134,7 @@ class FilterModal {
 
   applyValues(filters) {
     const defaultDropdownValues = {
-      GeoScopeFilter: "all",
+      GeoTaxonomyFilter: "all",
       GeoShowFilter: "all",
       GeoTimeFilter: "active",
       GeoType: "all"
@@ -149,24 +149,24 @@ class FilterModal {
     setFilters(fromOptionsToFilters(filters));
   }
 
-  scopeFields(scopes) {
+  taxonomyFields(taxonomies) {
     const i18n = this.i18n();
-    const i18nPrefix = "decidim_geo.scopes";
+    const i18nPrefix = "decidim_geo.taxonomies";
 
-    const scopesInfo = scopes.map((scope) => ({
-      name: scope.data.name.translation || scope.data.name.defaultTranslation,
-      id: String(scope.id)
+    const taxonomiesInfo = taxonomies.map((taxonomy) => ({
+      name: taxonomy.data.name.translation || taxonomy.data.name.defaultTranslation,
+      id: String(taxonomy.id)
     }));
 
-    // Ensure unique scopes in the filter list
-    const uniqueScopes = Array.from(
-      new Map(scopesInfo.map(item => [item.name, item.id]).values())
+    // Ensure unique taxonomies in the filter list
+    const uniqueTaxonomies = Array.from(
+      new Map(taxonomiesInfo.map(item => [item.name, item.id]).values())
     );
 
     return this.field(
       i18n[`${i18nPrefix}.dropdown`],
-      "GeoScopeFilter",
-      [[i18n[`${i18nPrefix}.all`], "all"]].concat(uniqueScopes),
+      "GeoTaxonomyFilter",
+      [[i18n[`${i18nPrefix}.all`], "all"]].concat(uniqueTaxonomies),
       []
     );
   }
@@ -195,8 +195,8 @@ class FilterModal {
     L.DomUtil.empty(this.fieldset);
     const i18n = this.i18n();
     const i18nPrefix = "decidim_geo.filters";
-    const { points, scopes } = pointStore.getState();
-    this.scopeFields(scopes);
+    const { points, taxonomies } = pointStore.getState();
+    this.taxonomyFields(taxonomies);
     this.geoFields(points);
     this.field(i18n[`${i18nPrefix}.time.label`], "GeoTimeFilter", [
       [i18n[`${i18nPrefix}.time.all`], "all"],
@@ -299,7 +299,7 @@ class FilterModal {
       () => this.repaint()
     );
     geoStore.subscribe(
-      (state) => [state.selectedScope],
+      (state) => [state.selectedTaxonomy],
       () => this.repaint()
     );
     pointCounterStore.subscribe(

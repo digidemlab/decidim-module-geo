@@ -371,12 +371,12 @@
     border-radius: 5px;
   }
   .leaflet-control-layers-toggle {
-    background-image: url(../images/decidim/vendor/leaflet/layers.png);
+    /* background-image: url(../images/decidim/vendor/leaflet/layers.png); */
     width: 36px;
     height: 36px;
   }
   .leaflet-retina .leaflet-control-layers-toggle {
-    background-image: url(../images/decidim/vendor/leaflet/layers-2x.png);
+    /* background-image: url(../images/decidim/vendor/leaflet/layers-2x.png); */
     background-size: 26px 26px;
   }
   .leaflet-touch .leaflet-control-layers-toggle {
@@ -420,7 +420,7 @@
   /* Default icon URLs */
   .leaflet-default-icon-path {
     /* used only in path-guessing heuristic, see L.Icon.Default */
-    background-image: url(../images/decidim/vendor/leaflet/marker-icon.png);
+    /* background-image: url(../images/decidim/vendor/leaflet/marker-icon.png); */
   }
 
   /* attribution and scale controls */

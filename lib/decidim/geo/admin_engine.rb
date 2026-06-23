@@ -16,6 +16,7 @@ module Decidim
             resources :attachments
           end
           resources :geo_configs
+          resources :taxonomies_shapedatas
 
           root to: "geo_configs#index"
         end
@@ -63,6 +64,14 @@ module Decidim
                           position: 2,
                           icon_name: "tools-line",
                           active: is_active_link?(decidim_admin_geo.shapefiles_path, :inclusive),
+                          if: defined?(current_user) && current_user&.read_attribute("admin")
+
+            menu.add_item :taxonomies,
+                          I18n.t("menu.geo", scope: "decidim.admin", default: "Taxonomies"),
+                          decidim_admin_geo.taxonomies_shapedatas_path,
+                          position: 3,
+                          icon_name: "price-tag-3-line",
+                          active: is_active_link?(decidim_admin_geo.taxonomies_shapedatas_path, :inclusive),
                           if: defined?(current_user) && current_user&.read_attribute("admin")
           end
         end

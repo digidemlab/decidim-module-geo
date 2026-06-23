@@ -25,7 +25,7 @@ module Decidim
 
         upsert_index(meeting.id, manifest_name,
                      with_organization(
-                       with_scope(
+                       with_taxonomy(
                          with_coords(
                            resource_url:,
                            image_url:,
@@ -38,8 +38,6 @@ module Decidim
                            participatory_space_id: meeting.participatory_space.id,
                            participatory_space_type: meeting.participatory_space.manifest.name.to_s,
                            extended_data: {
-                             component_url:,
-                             space_page_host:,
                              default_locale:
                            }
                          )
@@ -51,20 +49,10 @@ module Decidim
         false
       end
 
-      def component_url
-        return unless Gem.loaded_specs["decidim-space_page"].present? && resource.organization.space_page?
-
-        "https://#{resource.organization.host}#{resource_url}"
-      end
-
-      def space_page_host
-        resource.organization.host
-      end
-
       def with_coords(decidim_geo_hash)
         return decidim_geo_hash unless meeting.type_of_meeting == "in_person"
 
-        super(decidim_geo_hash)
+        super
       end
 
       def remove_meeting

@@ -1,5 +1,5 @@
 <div class="form__wrapper">
-  <div class="card" data-component="accordion" id="accordion-title">
+  <div class="card" data-controller="accordion" id="accordion-title">
     <div class="card-divider">
       <button class="card-divider-button" data-open="true" data-controls="panel-title" type="button">
         <%= icon "arrow-right-s-line" %>
@@ -37,7 +37,7 @@
     </div>
   </div>
 
-  <div class="card" data-component="accordion" id="accordion-config">
+  <div class="card" data-controller="accordion" id="accordion-config">
     <div class="card-divider">
       <button class="card-divider-button" data-open="true" data-controls="panel-config" type="button">
         <%= icon "arrow-right-s-line" %>
@@ -59,7 +59,7 @@
     </div>
   </div>
 
-  <div class="card" data-component="accordion" id="accordion-filter">
+  <div class="card" data-controller="accordion" id="accordion-filter">
     <div class="card-divider">
       <button class="card-divider-button" data-open="true" data-controls="panel-filter" type="button">
         <%= icon "arrow-right-s-line" %>
@@ -86,6 +86,59 @@
           form.object.default_geoencoded_filter), label: t("label",
           scope: "decidim.geo.admin.geo_configs.default_filter.geoencoded_filter" ) %>
       </div>
+    </div>
+  </div>
+
+  <div class="card" data-controller="accordion" id="accordion-filter">
+    <div class="card-divider">
+      <button class="card-divider-button" data-open="true" data-controls="panel-filter" type="button">
+        <%= icon "arrow-right-s-line" %>
+          <h2 class="card-title" id="title">
+            <%= t("shapefile.title", scope: "decidim.geo.admin.geo_configs" ) %>
+          </h2>
+      </button>
+    </div>
+
+    <div id="panel-filter" class="card-section">
+      <div class="row column">
+        <p>
+          <%= t("shapefile.help_text", scope: "decidim.geo.admin.geo_configs" ) %>
+        </p>
+      </div>
+      <% disable_shapefile = has_taxonomy? %>
+      <div class="row column">
+        <%= form.select :decidim_geo_shapefiles_id,
+          options_for_select(
+            Decidim::Geo::Shapefile.all.map { |shapefile| [shapefile.title, shapefile.id] },
+            @form.decidim_geo_shapefiles_id
+          ),
+          { include_blank: t("decidim.taxonomies.prompt"), label: t("shapefile.title", scope: "decidim.geo.admin.geo_configs" ) },
+          { disabled: disable_shapefile } %>
+          <% if disable_shapefile %>
+          <%= form.hidden_field :decidim_geo_shapefiles_id, value: @form.decidim_geo_shapefiles_id %>
+            <span class="help-text text-alert mt-2">
+              <%= t("shapefile.help_text_alert", scope: "decidim.geo.admin.geo_configs" ) %>
+            </span>
+          <% end %>
+      </div>
+      <% disable_taxonomy = has_shapedata? %>
+      <div class="row column">  
+        <%= form.select :taxonomy_id,
+          options_for_select(
+            Decidim::Taxonomy.where(parent_id: nil).map { |taxonomy| [taxonomy.translated_name, taxonomy.id] },
+            @form.taxonomy_id
+          ),
+          { include_blank: t("decidim.taxonomies.prompt") }, 
+          { disabled: disable_taxonomy } 
+        %>
+        <% if disable_taxonomy %>
+          <%= form.hidden_field :taxonomy_id, value: @form.taxonomy_id %>
+          <span class="help-text text-alert mt-2">
+            <%= t("taxonomy.help_text_alert", scope: "decidim.geo.admin.geo_configs" ) %>
+          </span>
+        <% end %>
+      </div>
+      
     </div>
   </div>
 </div>

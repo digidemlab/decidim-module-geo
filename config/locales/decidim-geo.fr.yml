@@ -54,7 +54,12 @@ fr:
         decidim_geo_space_address: Adresse
     geo:
       search: "Recherche..."
-      no_results: aucun résultat 
+      no_results: aucun résultat
+      system:
+        tab: Decidim Geo
+        enabled: Activer Decidim Geo
+        search_bar: Activer la recherche dans le tiroir geo
+        disabled_callout: Decidim Geo est désactivé pour cette organisation.
       admin:
         geo_configs:
           map_config_title: Configurations de la carte
@@ -153,7 +158,6 @@ fr:
         type:
           label: "Type"
           all: "Tout"
-          only_space_pages: "Organisations"
           only_processes: "Processus"
           only_assemblies: "Assemblées"
           only_proposals: "Propositions"

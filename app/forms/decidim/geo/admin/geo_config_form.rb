@@ -16,13 +16,22 @@ module Decidim
         attribute :only_processes, Boolean
         attribute :default_geoencoded_filter, String
         attribute :focus_zoom_level, Integer
+        attribute :decidim_geo_shapefiles_id, Integer
+        attribute :taxonomy_id, Integer
 
         alias organization current_organization
         validate :zoom_is_valid
+        validate :taxonomy_is_valid
 
         def zoom_is_valid
           errors.add(:zoom, :invalid_range) if zoom.present? && (zoom < 5 || zoom > 19)
           errors.add(:focus_zoom_level, :invalid_range) if focus_zoom_level.present? && (focus_zoom_level < 5 || zoom > 19)
+        end
+
+        def taxonomy_is_valid
+          return unless taxonomy_id
+
+          errors.add(:taxonomy_id, :invalid) if Decidim::Taxonomy.find(taxonomy_id).weight.negative?
         end
       end
     end

@@ -45,12 +45,12 @@ async function displayMap() {
   try {
     const { addProcess, removeProcess } = pointStore.getState();
     const { moveHandler, setSavedPosition } = memoryStore.getState();
-    const { map, pointsLayer, scopeLayer } = configStore.getState();
+    const { map, pointsLayer, taxonomyLayer } = configStore.getState();
     addProcess();
 
     // Be sure to fit all the points whenever you change
     // any filter.
-    map.addLayer(scopeLayer);
+    map.addLayer(taxonomyLayer);
     map.addLayer(pointsLayer);
 
     map.whenReady(async () => {
@@ -83,7 +83,7 @@ async function displayMap() {
           return;
         }
         const { map, pointsLayer, isSmallScreen } = configStore.getState();
-        const { selectedPoint, selectedScope } = geoStore.getState();
+        const { selectedPoint, selectedTaxonomy } = geoStore.getState();
         const pointInMap = getFilteredPoints().filter(
           (node) => typeof node.isGeoLocated !== "undefined" && node.isGeoLocated()
         );
@@ -106,11 +106,11 @@ async function displayMap() {
         }
         if (
           fetchesRunning === 0 &&
-          selectedScope?.layer &&
-          selectedScope &&
+          selectedTaxonomy?.layer &&
+          selectedTaxonomy &&
           !selectedPoint
         ) {
-          map.setView(selectedScope.layer.getBounds().getCenter(), map.getZoom(), {
+          map.setView(selectedTaxonomy.layer.getBounds().getCenter(), map.getZoom(), {
             animation: true
           });
         }
@@ -119,8 +119,8 @@ async function displayMap() {
 
     // Set active class on dropdown element
     geoStore.subscribe(
-      (state) => [state.selectedScope],
-      ([geoScope]) => {
+      (state) => [state.selectedTaxonomy],
+      ([geoTaxonomy]) => {
         // Remove all active classes.
         const activeList = document.getElementsByClassName(
           "decidimGeo__drawerHeader__listItem--active"
@@ -132,9 +132,9 @@ async function displayMap() {
         }
         const [container] = document.querySelectorAll(".decidimGeo__drawerHeader__list");
         if (!container) return;
-        if (geoScope?.id) {
+        if (geoTaxonomy?.id) {
           const [active] = document.querySelectorAll(
-            `.decidimGeo__drawerHeader__listItem[data-scope='${geoScope.id}']`
+            `.decidimGeo__drawerHeader__listItem[data-taxonomy='${geoTaxonomy.id}']`
           );
           if (active) {
             active.className += " decidimGeo__drawerHeader__listItem--active";
@@ -142,7 +142,7 @@ async function displayMap() {
           }
         } else {
           const [active] = document.querySelectorAll(
-            `.decidimGeo__drawerHeader__listItem[data-scope='all']`
+            `.decidimGeo__drawerHeader__listItem[data-taxonomy='all']`
           );
           if (active) {
             active.className += " decidimGeo__drawerHeader__listItem--active";
@@ -152,7 +152,7 @@ async function displayMap() {
       }
     );
     const [active] = document.querySelectorAll(
-      `.decidimGeo__drawerHeader__listItem[data-scope='all']`
+      `.decidimGeo__drawerHeader__listItem[data-taxonomy='all']`
     );
     if (active) active.className += " decidimGeo__drawerHeader__listItem--active";
 

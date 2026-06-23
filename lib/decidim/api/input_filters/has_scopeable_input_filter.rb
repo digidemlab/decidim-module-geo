@@ -6,10 +6,10 @@ module Decidim
       def self.included(child_class)
         child_class.argument :scope_id,
                              type: GraphQL::Types::ID,
-                             description: "List result by Scope using decidim_scope_id",
+                             description: "List result by Scope using decidim_taxonomies_id",
                              required: false,
-                             prepare: lambda { |scope_id, _ctx|
-                               { decidim_scope_id: scope_id }
+                             prepare: lambda { |_scope_id, _ctx|
+                               { decidim_taxonomies_id: taxonomy_id }
                              }
       end
     end

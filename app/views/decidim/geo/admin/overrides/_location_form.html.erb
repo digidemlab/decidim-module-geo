@@ -1,5 +1,5 @@
 <% if current_organization.geo_enabled? && Decidim::Map.available?(:geocoding) %>
-  <div class="card" data-component="accordion" id="accordion-decidim-geo">
+  <div class="card" data-controller="accordion" id="accordion-decidim-geo">
     <div class="card-divider">
       <button class="card-divider-button" data-open="true" data-controls="panel-decidim-geo" type="button">
         <%= icon "arrow-right-s-line" %>

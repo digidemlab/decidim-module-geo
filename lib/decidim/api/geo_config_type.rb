@@ -5,10 +5,10 @@ module Decidim
     class GeoConfigType < Decidim::Api::Types::BaseObject
       description "A geo admin config"
 
-      field :zoom, Float, null: false
-      field :longitude, Float, null: false
-      field :latitude, Float, null: false
-      field :tile, String, null: true
+      field :latitude, Float, null: false, description: "The geographic latitude coordinate in degrees."
+      field :longitude, Float, null: false, description: "The geographic longitude coordinate in degrees."
+      field :tile, String, null: true, description: "The URL template for the map tile server."
+      field :zoom, Float, null: false, description: "The default zoom level for the map view."
     end
   end
 end

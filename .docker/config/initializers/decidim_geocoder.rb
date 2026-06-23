@@ -3,7 +3,7 @@
 Decidim.configure do |config|
   config.maps = {
     provider: :osm,
-    api_key: Rails.application.secrets.maps[:api_key],
+    api_key: ENV.fetch("MAPS_API_KEY", ""),
     dynamic: {
       tile_layer: {
         url: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",

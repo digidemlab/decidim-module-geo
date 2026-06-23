@@ -7,14 +7,14 @@ const store = createStore(
   subscribeWithSelector((set, get) => ({
     isOpen: false,
     defaultFilters: {
-      GeoScopeFilter: "all",
+      GeoTaxonomyFilter: "all",
       GeoShowFilter: "all",
       GeoTimeFilter: "active",
       GeoType: "all",
       GeoSource: "all"
     },
     selectedFilters: {
-      GeoScopeFilter: "all",
+      GeoTaxonomyFilter: "all",
       GeoShowFilter: "all",
       GeoTimeFilter: "active",
       GeoType: "all",
@@ -50,10 +50,10 @@ const store = createStore(
           const [filterName] = Object.keys(f);
           return filterName !== "resourceTypeFilter";
         });
-      const withoutGeoScopeFilter = (filters) =>
+      const withoutGeoTaxonomyFilter = (filters) =>
         filters.filter((f) => {
           const [filterName] = Object.keys(f);
-          return filterName !== "scopeFilter";
+          return filterName !== "taxonomyFilter";
         });
       const withoutGeoSourceFilter = (filters) =>
         filters.filter((f) => {
@@ -114,17 +114,17 @@ const store = createStore(
           ];
           break;
       }
-      const filteredScopeId = filters.GeoScopeFilter || "all";
+      const filteredTaxonomyId = filters.GeoTaxonomyFilter || "all";
 
-      switch (filteredScopeId) {
+      switch (filteredTaxonomyId) {
         case "all":
-          newFilters = withoutGeoScopeFilter(newFilters);
+          newFilters = withoutGeoTaxonomyFilter(newFilters);
           break;
         default:
           newFilters = [
-            ...withoutGeoShowFilter(newFilters),
+            ...withoutGeoTaxonomyFilter(newFilters),
             {
-              scopeFilter: { scopeId: `${filteredScopeId}` }
+              taxonomyFilter: { taxonomyId: `${filteredTaxonomyId}` }
             }
           ];
           break;

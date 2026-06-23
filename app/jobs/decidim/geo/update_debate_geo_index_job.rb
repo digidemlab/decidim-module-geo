@@ -25,7 +25,7 @@ module Decidim
 
         upsert_index(debate.id, manifest_name,
                      with_organization(
-                       with_scope(
+                       with_taxonomy(
                          with_coords(
                            resource_url:,
                            image_url:,
@@ -39,8 +39,6 @@ module Decidim
                            extended_data: {
                              start_time: debate.start_time,
                              end_time: debate.end_time,
-                             component_url:,
-                             space_page_host:,
                              default_locale:
                            }
                          )
@@ -50,16 +48,6 @@ module Decidim
       rescue StandardError => e
         Rails.logger.debug { "Can index #{e}" }
         false
-      end
-
-      def component_url
-        return unless Gem.loaded_specs["decidim-space_page"].present? && resource.organization.space_page?
-
-        "https://#{resource.organization.host}#{resource_url}"
-      end
-
-      def space_page_host
-        resource.organization.host
       end
 
       def end_date

@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.email = ["hadrien@octree.ch", "renato@octree.ch", "simon@octree.ch"]
   s.license = "AGPL-3.0"
   s.homepage = "https://git.octree.ch/decidim/decidim-module-geo"
-  s.required_ruby_version = "~> 3.2"
+  s.required_ruby_version = "~> 3.3"
 
   s.name = "decidim-decidim_geo"
   s.summary = "A decidim geo module"
@@ -22,6 +22,8 @@ Gem::Specification.new do |s|
   s.add_dependency "decidim-admin", Decidim::Geo.decidim_version
   s.add_dependency "decidim-api", Decidim::Geo.decidim_version
   s.add_dependency "decidim-core", Decidim::Geo.decidim_version
+  s.add_dependency "decidim-system", Decidim::Geo.decidim_version
+  s.add_dependency "decidim-toggle", ">= 0.0.1"
   s.add_dependency "deface", "~> 1.9.0"
   s.add_dependency "ffi-geos", "~> 2.5"
   s.add_dependency "rgeo", "~> 3.0"

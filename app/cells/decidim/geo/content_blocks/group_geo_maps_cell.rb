@@ -4,8 +4,8 @@ module Decidim
   module Geo
     module ContentBlocks
       class GroupGeoMapsCell < GeoMapsCell
-        def initialize(*args, **kwargs)
-          super(*args, **kwargs)
+        def initialize(*, **)
+          super
           group = Decidim::ParticipatoryProcessGroup.find(
             model.scoped_resource_id
           )

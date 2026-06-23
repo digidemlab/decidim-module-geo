@@ -25,7 +25,7 @@ module Decidim
 
         upsert_index(proposal.id, manifest_name,
                      with_organization(
-                       with_scope(
+                       with_taxonomy(
                          with_coords(
                            resource_url:,
                            image_url:,
@@ -39,8 +39,6 @@ module Decidim
                            start_date:,
                            end_date:,
                            extended_data: {
-                             component_url:,
-                             space_page_host:,
                              default_locale:
                            }
                          )
@@ -52,20 +50,10 @@ module Decidim
         false
       end
 
-      def component_url
-        return unless Gem.loaded_specs["decidim-space_page"].present? && resource.organization.space_page?
-
-        "https://#{resource.organization.host}#{resource_url}"
-      end
-
       def proposal_status
         return "withdrawn" if proposal.withdrawn?
 
         proposal.proposal_state&.token
-      end
-
-      def space_page_host
-        resource.organization.host
       end
 
       def start_date

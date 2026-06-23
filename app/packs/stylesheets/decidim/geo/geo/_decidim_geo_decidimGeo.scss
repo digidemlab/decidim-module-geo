@@ -1,7 +1,7 @@
 @import "./decidim_geo_mixins";
 @import "./decidim_geo_globals";
 @import "./decidim_geo_zoom_controls";
-@import "./decidim_geo_scope_dropdown";
+@import "./decidim_geo_taxonomy_dropdown";
 @import "./decidim_geo_filter_dropdown";
 @import "./decidim_geo_drawer_list";
 
@@ -48,4 +48,10 @@
       box-sizing: border-box;
     }
   }
+}
+
+.decidimGeo__admin-components {
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
 }

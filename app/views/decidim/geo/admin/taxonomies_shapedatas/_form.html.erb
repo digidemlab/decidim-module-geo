@@ -1,0 +1,10 @@
+<%= display_flash_messages %>
+
+<div class="row column">
+  <%= form.select :shapedata_id,
+    options_for_select(
+      shapedata_options.map { |shapedata| [shapedata.data["NAME"], shapedata.id] }, 
+      @form.shapedata_id
+      ), 
+      { include_blank: I18n.t("decidim.taxonomies.prompt") } %>
+</div>
