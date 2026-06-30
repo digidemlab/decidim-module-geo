@@ -1,11 +1,5 @@
 ---
 fr:
-  decidim_toggle:
-    system:
-      decidim_geo:
-        tab: Decidim Geo
-        enabled: Activer Decidim Geo
-        search_bar: Activer la recherche dans le tiroir geo
   activemodel:
     attributes:
       assembly:
@@ -54,8 +48,6 @@ fr:
       show:
         decidim_geo_space_address: Adresse
     geo:
-      search: "Recherche..."
-      no_results: aucun résultat
       admin:
         geo_configs:
           map_config_title: Configurations de la carte

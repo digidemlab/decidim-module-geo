@@ -1,11 +1,5 @@
 ---
 de:
-  decidim_toggle:
-    system:
-      decidim_geo:
-        tab: Decidim Geo
-        enabled: Decidim Geo aktivieren
-        search_bar: Suche in der Geo-Schublade aktivieren
   activemodel:
     attributes:
       assembly:
@@ -152,6 +146,7 @@ de:
         type:
           label: "Filtern nach Typ"
           all: "Alle"
+          only_space_pages: "Organisationen"
           only_processes: "Prozesse"
           only_assemblies: "Gremien"
           only_proposals: "Vorschläge"
