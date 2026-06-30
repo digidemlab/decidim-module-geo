@@ -15,7 +15,13 @@ export default class GeoTaxonomy {
   }
 
   get activeState() {
-    return { fillColor: "#2952A370", color: "#2952A3" };
+    return { 
+      fillColor: "#2952A370", 
+      color: "#2952A3", 
+      lineJoin: "miter",
+      dashArray: "5, 10",
+      dashOffset: "5"
+    };
   }
 
   isEmpty(points = undefined) {
@@ -30,7 +36,13 @@ export default class GeoTaxonomy {
   }
 
   get staledState() {
-    return { fillColor: "#cccccc", color: "#999999" };
+    return { 
+      fillColor: "#cccccc",
+      color: "#999999",
+      lineJoin: "miter",
+      dashArray: "5, 10",
+      dashOffset: "5"
+    };
   }
 
   select() {
@@ -50,11 +62,14 @@ export default class GeoTaxonomy {
   }
 
   repaint() {
-    if (this.isActive()) {
-      this.layer?.setStyle(this.activeState);
-    } else {
-      this.layer?.setStyle(this.staledState);
-    }
+    if (!this.layer) return;
+
+    const { map } = configStore.getState();
+    const styleToApply = this.isActive() ? this.activeState : this.staledState;
+    this.layer.setStyle(styleToApply);
+    if (typeof this.layer.redraw === 'function') {
+      this.layer.redraw();
+    } 
   }
 
   get name() {
@@ -111,11 +126,11 @@ export default class GeoTaxonomy {
       label: this.name,
       onClick: () => {
         geoStore.getState().selectTaxonomy(this);
-        this.repaint();
       }
     });
     this.menuItem = itm;
     this.menuItemRepaint = repaintItm;
+
     if (this.data.geom?.type) {
       if (this.data.geom.type === "MultiPolygon") {
         this.centroid = polylabel(this.data.geom.coordinates[0], 1.0);
@@ -127,39 +142,41 @@ export default class GeoTaxonomy {
       });
       this.layer.bringToBack();
 
-      let layers = taxonomyLayer.getLayers()
-
-      // Add the layer to taxonomyLayer only if no layer exists for that taxonomy, preventing overlapping.
+      let layers = taxonomyLayer.getLayers();
       if (layers.length > 0) {
         let taxonomyId = this.id.toString();
-        let ids = []
+        let ids = [];
         taxonomyLayer.eachLayer((layer) => {
-          layer.eachLayer((layer) => { ids.push(layer.feature.geometry.properties.id) })
+           if(layer.eachLayer) { 
+             layer.eachLayer((innerLayer) => { ids.push(innerLayer.feature.geometry.properties.id); });
+           }
         });
         
-        if (!ids.includes(taxonomyId)) { taxonomyLayer.addLayer(this.layer) }
+        if (!ids.includes(taxonomyId)) { 
+          taxonomyLayer.addLayer(this.layer); 
+        }
       } else {
         taxonomyLayer.addLayer(this.layer);
       }
 
-      // Add the layer only when we are sure there is some point
-      // in the layer.
       pointStore.subscribe(
-        (state) => [state.isLoading],
-        ([isLoading]) => {
+        (state) => [state.isLoading, state.points], // Escute também mudanças nos pontos se necessário
+        ([isLoading, points]) => {
           const { map, mapReady } = configStore.getState();
+          
+          // 1. Se ainda está carregando, não faz nada
           if (isLoading) return;
-          // Points are loaded, we can check if the layer is empty,
-          // and thus remove it.
-          if (this.isEmpty() && this.layer) {
-            if (map.hasLayer(this.layer) && mapReady) {
-              map.removeLayer(this.layer);
-            }
+          
+          if (!this.layer) return;
+
+          if (this.isActive()) return; 
+
+          if (this.isEmpty() && map.hasLayer(this.layer) && mapReady) {
+            map.removeLayer(this.layer);
           }
         }
       );
-    }
-    this.repaint();
+    }    
     return this;
   }
 }

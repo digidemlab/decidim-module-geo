@@ -3,6 +3,8 @@
 module Decidim
   # This holds the decidim_geo version.
   module Geo
+    MODULE_NAME = "decidim_geo"
+
     def self.version
       "0.3.12" # DO NOT UPDATE MANUALLY
     end

@@ -20,7 +20,7 @@ module AdminAccountabilities
     insert_after: ".card:nth-child(1)",
     text: <<~ERB
       <% if current_organization.geo_enabled? %>
-        <%= render partial: "decidim/geo/admin/overrides/location_form" %>
+        <%= render partial: "decidim/geo/admin/overrides/location_form", locals: { form: } %>
       <% end %>
     ERB
   )

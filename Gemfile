@@ -18,7 +18,7 @@ gem "decidim", DECIDIM_VERSION
 
 gem "decidim-toggle",
     git: "https://git.octree.ch/decidim/vocacity/decidim-modules/decidim-toggle",
-    tag: "v0.0.1"
+    tag: "v0.1.1"
 
 gem "decidim-decidim_geo", path: base_path
 

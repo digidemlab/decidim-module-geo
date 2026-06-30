@@ -10,9 +10,10 @@ module Decidim
       alias proposal resource
       alias proposal= resource=
 
-      def perform(proposal_id)
-        @resource_id = proposal_id
-        @resource = Decidim::Proposals::Proposal.where(id: proposal_id).first
+      def perform(decidim_geo_hash, resource)
+        @decidim_geo_hash = decidim_geo_hash
+        @resource = resource
+        @resource_id = decidim_geo_hash[:resource_id]
         return remove_proposal unless resource
 
         sync_proposal
@@ -23,49 +24,11 @@ module Decidim
       def sync_proposal
         return remove_proposal if remove_from_index?
 
-        upsert_index(proposal.id, manifest_name,
-                     with_organization(
-                       with_taxonomy(
-                         with_coords(
-                           resource_url:,
-                           image_url:,
-                           title:,
-                           short_description:,
-                           description_html: description,
-                           resource_status: proposal_status,
-                           component_id: proposal.decidim_component_id,
-                           participatory_space_id: proposal.participatory_space.id,
-                           participatory_space_type: proposal.participatory_space.manifest.name.to_s,
-                           start_date:,
-                           end_date:,
-                           extended_data: {
-                             default_locale:
-                           }
-                         )
-                       )
-                     ))
+        upsert_index(@resource_id, manifest_name, with_organization(with_taxonomy(with_coords(@decidim_geo_hash))))
         true
       rescue StandardError => e
         Rails.logger.warn { "ERROR:  #{e}" }
         false
-      end
-
-      def proposal_status
-        return "withdrawn" if proposal.withdrawn?
-
-        proposal.proposal_state&.token
-      end
-
-      def start_date
-        space_wrapper.start_date
-      end
-
-      def end_date
-        space_wrapper.end_date
-      end
-
-      def space_wrapper
-        @space_wrapper ||= Decidim::Geo::ResourceWrapper.new(proposal.participatory_space)
       end
 
       def remove_proposal

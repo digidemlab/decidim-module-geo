@@ -3,15 +3,18 @@
 module Decidim
   module Geo
     class AutomaticTaxonomyJob < ::ApplicationJob
+      include Decidim::Geo::GeoIndexMethods
       queue_as :default
 
       def perform
         # Select all the components where space's taxonomy is nil
         # and get the component Ids.
         # loop over all the resources that have no taxonomy
-        registry.registered_manifests.each do |manifest|
-          model = registry.model_for(manifest)
-          model_resources(model)
+        transaction do
+          registry.registered_manifests.each do |manifest|
+            model = registry.model_for(manifest)
+            model_resources(model)
+          end
         end
       end
 

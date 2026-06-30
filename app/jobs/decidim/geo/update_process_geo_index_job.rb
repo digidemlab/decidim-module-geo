@@ -10,9 +10,10 @@ module Decidim
       alias process resource
       alias process= resource=
 
-      def perform(process_id)
-        @resource_id = process_id
-        @resource = Decidim::ParticipatoryProcess.where(id: process_id).first
+      def perform(decidim_geo_hash, resource)
+        @decidim_geo_hash = decidim_geo_hash
+        @resource = resource
+        @resource_id = decidim_geo_hash[:resource_id]
         return remove_process unless resource
 
         sync_process
@@ -23,26 +24,7 @@ module Decidim
       def sync_process
         return remove_process if remove_from_index?
 
-        upsert_index(process.id, manifest_name,
-                     with_organization(
-                       with_taxonomy(
-                         with_coords(
-                           resource_url:,
-                           image_url:,
-                           title:,
-                           short_description:,
-                           description_html: description,
-                           component_id: nil,
-                           start_date:,
-                           end_date:,
-                           participatory_space_id: process.id,
-                           participatory_space_type: manifest_name,
-                           extended_data: {
-                             default_locale:
-                           }
-                         )
-                       )
-                     ))
+        upsert_index(@resource_id, manifest_name, with_organization(with_taxonomy(with_coords(@decidim_geo_hash))))
         true
       rescue StandardError => e
         Rails.logger.debug { "Can not index #{e}" }

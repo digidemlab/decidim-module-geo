@@ -89,17 +89,16 @@ export default class DrawerHeader {
     const { pointsForFilters } = pointStore.getState();
     const { locale, defaultLocale } = configStore.getState();
 
-    this.container = L.DomUtil.create(
-      "div",
-      "leaflet-control decidimGeo__drawer",
-      this.parent
-    );
-
     const searchEnabled = window.DecidimToggle?.["decidim_geo.search_bar"];
 
-    console.log("searchEnabled: ", searchEnabled)
-
     if (searchEnabled) {
+
+      this.container = L.DomUtil.create(
+        "div",
+        "leaflet-control decidimGeo__drawer",
+        this.parent
+      );
+      
       this.searchBox = L.DomUtil.create("div", "decidimGeo__drawerSearch", this.container);
 
       const i18n = this.i18n();

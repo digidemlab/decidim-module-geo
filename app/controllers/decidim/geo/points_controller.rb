@@ -2,8 +2,9 @@
 
 module Decidim
   module Geo
-    class PointsController < ::Decidim::Api::ApplicationController
+    class PointsController < ::Decidim::Geo::ApiController
       before_action :set_default_format
+      before_action :ensure_geo_enabled, only: %i(index count)
       before_action :ensure_geo_search_enabled, only: :search_title
 
       def count
@@ -116,6 +117,10 @@ module Decidim
 
       def set_default_format
         request.format = :json
+      end
+
+      def ensure_geo_enabled
+        head :not_found unless current_organization.geo_enabled?
       end
 
       def ensure_geo_search_enabled

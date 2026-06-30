@@ -1,5 +1,11 @@
 ---
 pt:
+  decidim_toggle:
+    system:
+      decidim_geo:
+        tab: Decidim Geo
+        enabled: Ativar Decidim Geo
+        search_bar: Ativar pesquisa na gaveta geo
   activemodel:
     attributes:
       assembly:
@@ -48,11 +54,6 @@ pt:
       show:
         decidim_geo_space_address: Endereço
     geo:
-      system:
-        tab: Decidim Geo
-        enabled: Ativar Decidim Geo
-        search_bar: Ativar pesquisa na gaveta geo
-        disabled_callout: Decidim Geo está desativado para esta organização.
       admin:
         geo_configs:
           map_config_title: Configurações do mapa

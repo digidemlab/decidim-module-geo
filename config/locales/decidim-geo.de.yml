@@ -1,5 +1,11 @@
 ---
 de:
+  decidim_toggle:
+    system:
+      decidim_geo:
+        tab: Decidim Geo
+        enabled: Decidim Geo aktivieren
+        search_bar: Suche in der Geo-Schublade aktivieren
   activemodel:
     attributes:
       assembly:
@@ -9,7 +15,7 @@ de:
       component:
         decidim_geo_avoid_index: Lokalisierte Punkte ausserhalb dieses Prozesses verbergen.
         decidim_geo_avoid_index_within_group: Lokalisierte Punkte außerhalb der Prozessgruppe %{space_name} ausblenden
-        hide_map: Hide Map from %{component_name} pages
+        hide_map: Karte auf den Seiten von «%{component_name}» ausblenden
     errors:
       models:
         geo_config:
@@ -23,7 +29,7 @@ de:
       components:
         form:
           geo_avoid_index: Wenn aktiviert, werden die Punkte auf anderen Karten der Plattform (z.B. der Homepage) ausgeblendet
-          hide_map: If checked, the map will not be displayed in subpages (but stays available in homepage blocks)
+          hide_map: Wenn aktiviert, wird die Karte nicht in Unterseiten angezeigt (bleibt aber in Homepage-Blöcken verfügbar)
     accountability:
       admin:
         results:
@@ -48,11 +54,6 @@ de:
       show:
         decidim_geo_space_address: Adresse
     geo:
-      system:
-        tab: Decidim Geo
-        enabled: Decidim Geo aktivieren
-        search_bar: Suche in der Geo-Schublade aktivieren
-        disabled_callout: Decidim Geo ist für diese Organisation deaktiviert.
       admin:
         geo_configs:
           map_config_title: Kartenkonfigurationen
@@ -82,7 +83,7 @@ de:
             latitude: Breitengrad
             tile: Kachel
             maptiler_api_key: Map tiler API Key (Optional)
-            esri_tile_enabled: Esri Tiles ?
+            esri_tile_enabled: ESRI-Kacheln?
           actions:
             update:
               success: Einstellungen aktualisiert
@@ -158,10 +159,10 @@ de:
           only_debates: "Debatten"
           only_accountabilities: "Verantwortlichkeiten"
         source:
-          label: "Source"
-          all: "All"
-          children_only: "External points"
-          generator_only: "Internal points"
+          label: "Quelle"
+          all: "Alle"
+          children_only: "Externe Punkte"
+          generator_only: "Interne Punkte"
     components:
       pagination:
         page_title: "%{component_name}"

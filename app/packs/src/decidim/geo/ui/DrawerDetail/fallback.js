@@ -59,8 +59,8 @@ const fallback = (container, node) => {
     );
   }
 
-  if (node.descriptionHtml) {
-    const text = node.descriptionHtml[locale] || node.descriptionHtml[defaultLocale];
+  if (node.shortDescription) {
+    const text = node.shortDescription[locale] || node.shortDescription[defaultLocale];
 
     if (text && !text.includes("Translation missing")) {
       const infoDescription = L.DomUtil.create(

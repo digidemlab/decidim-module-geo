@@ -10,9 +10,10 @@ module Decidim
       alias meeting resource
       alias meeting= resource=
 
-      def perform(meeting_id)
-        @resource_id = meeting_id
-        @resource = Decidim::Meetings::Meeting.where(id: meeting_id).first
+      def perform(decidim_geo_hash, resource)
+        @decidim_geo_hash = decidim_geo_hash
+        @resource = resource
+        @resource_id = decidim_geo_hash[:resource_id]
         return remove_meeting unless resource
 
         sync_meeting
@@ -23,36 +24,13 @@ module Decidim
       def sync_meeting
         return remove_meeting if remove_from_index?
 
-        upsert_index(meeting.id, manifest_name,
-                     with_organization(
-                       with_taxonomy(
-                         with_coords(
-                           resource_url:,
-                           image_url:,
-                           title:,
-                           short_description:,
-                           description_html: description,
-                           start_date: meeting.start_time,
-                           end_date: meeting.end_time,
-                           component_id: meeting.decidim_component_id,
-                           participatory_space_id: meeting.participatory_space.id,
-                           participatory_space_type: meeting.participatory_space.manifest.name.to_s,
-                           extended_data: {
-                             default_locale:
-                           }
-                         )
-                       )
-                     ))
-        true
+        transaction do
+          upsert_index(@resource_id, manifest_name, with_organization(with_taxonomy(with_coords(@decidim_geo_hash))))
+          true
+        end
       rescue StandardError => e
         Rails.logger.debug { "Can index #{e}" }
         false
-      end
-
-      def with_coords(decidim_geo_hash)
-        return decidim_geo_hash unless meeting.type_of_meeting == "in_person"
-
-        super
       end
 
       def remove_meeting

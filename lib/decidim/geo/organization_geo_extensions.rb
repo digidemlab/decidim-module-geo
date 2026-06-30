@@ -7,7 +7,7 @@ module Decidim
 
       included do
         def geo_features_toggle
-          @geo_features_toggle ||= Decidim::Toggle.config_for(self, :decidim_geo)
+          @geo_features_toggle ||= Decidim::Toggle.config_for(self, Decidim::Geo::MODULE_NAME)
         end
 
         def geo_enabled?

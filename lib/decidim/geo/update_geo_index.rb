@@ -17,7 +17,10 @@ module Decidim
           updater = registry.updater_for(decidim_geo_manifest)
           raise "Internal error: no updater registred for #{decidim_geo_manifest}" unless updater
 
-          updater.perform_now(id)
+          model = registry.model_for(decidim_geo_manifest)
+          resource = model.where(id: id).first
+
+          updater.process(resource)
         end
 
         private

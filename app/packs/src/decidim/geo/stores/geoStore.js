@@ -14,9 +14,6 @@ const store = createStore(
      * data point that is currently clicked
      */
     selectedPoint: undefined,
-    /**
-     *
-     */
     selectedTaxonomy: null,
     previousState: null,
 
@@ -43,24 +40,27 @@ const store = createStore(
      */
     selectTaxonomy: (taxonomy) => {
       const { saveState } = memoryStore.getState();
-
       saveState();
+
       dropdownFilterStore.setState(({ nextFilters, selectedFilters }) => ({
         nextFilters: { ...nextFilters, GeoTaxonomyFilter: `${taxonomy?.id || "all"}` },
         selectedFilters: { ...selectedFilters, GeoTaxonomyFilter: `${taxonomy?.id || "all"}` }
       }));
+
       set((state) => ({
         selectedTaxonomy: taxonomy || null,
         ...(`${taxonomy?.id}` !== `${state.selectedTaxonomy?.id}`
           ? { previousState: state }
           : null),
-        // unselect point when moving away from its taxonomy
         selectedPoint:
           state.selectedPoint && state.selectedPoint.geoTaxonomyId === taxonomy?.id
             ? state.selectedPoint
             : null
       }));
-      if (taxonomy) taxonomy.repaint();
+      if (taxonomy) {
+        taxonomy.repaint(); 
+        if (taxonomy.menuItemRepaint) taxonomy.menuItemRepaint();
+      }
     },
     /**
      * Go back to previous state
@@ -77,43 +77,44 @@ const store = createStore(
 
 store.subscribe(
   (state) => [state.selectedTaxonomy],
-  ([selectedTaxonomy]) => {
-    // Close the drowp down
+  ([selectedTaxonomy], [previousTaxonomy]) => {
     dropdownFilterStore.getState().close();
 
-    // Update filter associated to the taxonomy
-    const { activeFilters, setFilters, taxonomyFilter, defaultFilters } =
-      filterStore.getState();
-    const filtersWithoutTaxonomies = activeFilters.filter(({ taxonomyFilter }) => {
-      return !taxonomyFilter;
-    });
+    const { activeFilters, setFilters, taxonomyFilter, defaultFilters } = filterStore.getState();
+    const filtersWithoutTaxonomies = activeFilters.filter(({ taxonomyFilter }) => !taxonomyFilter);
     const currentTaxonomyFilterId = taxonomyFilter(activeFilters);
-    if (`${currentTaxonomyFilterId}` === `${selectedTaxonomy?.id}`) return;
-    if (selectedTaxonomy?.id) {
-      const matchFilter = activeFilters.find(
-        ({ taxonomyFilter }) => taxonomyFilter?.taxonomyId === selectedTaxonomy.id
-      );
-      if (!matchFilter)
-        setFilters(
-          filtersWithoutTaxonomies.concat({ taxonomyFilter: { taxonomyId: selectedTaxonomy.id } })
+    
+    if (`${currentTaxonomyFilterId}` !== `${selectedTaxonomy?.id}`) {
+      if (selectedTaxonomy?.id) {
+        const matchFilter = activeFilters.find(
+          ({ taxonomyFilter }) => taxonomyFilter?.taxonomyId === selectedTaxonomy.id
         );
-    } else {
-      const defaultTaxonomyFilter = defaultFilters.find(({ taxonomyFiler }) => taxonomyFilter);
-      if (defaultTaxonomyFilter) setFilters(filtersWithoutTaxonomies.concat(defaultTaxonomyFilter));
-      else setFilters(filtersWithoutTaxonomies);
+        if (!matchFilter) {
+          setFilters(filtersWithoutTaxonomies.concat({ taxonomyFilter: { taxonomyId: selectedTaxonomy.id } }));
+        }
+      } else {
+        const defaultTaxonomyFilter = defaultFilters.find(({ taxonomyFiler }) => taxonomyFilter);
+        if (defaultTaxonomyFilter) setFilters(filtersWithoutTaxonomies.concat(defaultTaxonomyFilter));
+        else setFilters(filtersWithoutTaxonomies);
+      }
     }
-  }
-);
 
-store.subscribe(
-  (state) => [state.selectedTaxonomy],
-  ([selectedTaxonomy], [previousTaxonomy]) => {
-    // Close the filter dropdown
-    if (previousTaxonomy) previousTaxonomy.repaint();
+    if (previousTaxonomy && previousTaxonomy !== selectedTaxonomy) {
+      previousTaxonomy.repaint();
+      if (previousTaxonomy.menuItemRepaint) previousTaxonomy.menuItemRepaint();
+    }
+
     if (selectedTaxonomy) {
       selectedTaxonomy.repaint();
+      if (selectedTaxonomy.menuItemRepaint) selectedTaxonomy.menuItemRepaint();
+
+      const { map } = configStore.getState();
+      if (map && selectedTaxonomy.centroid) {
+        const lat = selectedTaxonomy.centroid[1];
+        const lng = selectedTaxonomy.centroid[0];
+        map.panTo([lat, lng]);
+      }
     }
-    dropdownFilterStore.getState().close();
   }
 );
 
@@ -123,11 +124,8 @@ store.subscribe(
     if (!selectedPoint) {
       return;
     }
-    // Close the filter dropdown
     dropdownFilterStore.getState().close();
-    // Open drawer
     configStore.getState().openAside();
-    // Center to the marker
     selectedPoint.repaint();
     await selectedPoint.panToMarker();
 

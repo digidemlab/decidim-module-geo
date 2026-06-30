@@ -10,9 +10,10 @@ module Decidim
       alias accountability_result resource
       alias accountability_result= resource=
 
-      def perform(accountability_result_id)
-        @resource_id = accountability_result_id
-        @resource = Decidim::Accountability::Result.where(id: accountability_result_id).first
+      def perform(decidim_geo_hash, resource)
+        @decidim_geo_hash = decidim_geo_hash
+        @resource = resource
+        @resource_id = decidim_geo_hash[:resource_id]
         return remove_accountability_result unless resource
 
         sync_accountability_result
@@ -23,27 +24,7 @@ module Decidim
       def sync_accountability_result
         return remove_accountability_result if remove_from_index?
 
-        upsert_index(accountability_result.id, manifest_name,
-                     with_organization(
-                       with_taxonomy(
-                         with_coords(
-                           resource_url:,
-                           image_url:,
-                           title:,
-                           short_description:,
-                           description_html: description,
-                           end_date:,
-                           start_date:,
-                           resource_status: nil,
-                           component_id: accountability_result.decidim_component_id,
-                           participatory_space_id: accountability_result.participatory_space.id,
-                           participatory_space_type: accountability_result.participatory_space.manifest.name.to_s,
-                           extended_data: {
-                             default_locale:
-                           }
-                         )
-                       )
-                     ))
+        upsert_index(@resource_id, manifest_name, with_organization(with_taxonomy(with_coords(@decidim_geo_hash))))
         true
       rescue StandardError => e
         Rails.logger.debug { "Can't index #{e}" }

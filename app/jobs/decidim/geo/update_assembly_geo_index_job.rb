@@ -10,9 +10,10 @@ module Decidim
       alias assembly resource
       alias assembly= resource=
 
-      def perform(assembly_id)
-        @resource_id = assembly_id
-        @resource = Decidim::Assembly.where(id: assembly_id).first
+      def perform(decidim_geo_hash, resource)
+        @decidim_geo_hash = decidim_geo_hash
+        @resource = resource
+        @resource_id = decidim_geo_hash[:resource_id]
         return remove_assembly unless resource
 
         sync_assembly
@@ -23,39 +24,11 @@ module Decidim
       def sync_assembly
         return remove_assembly if remove_from_index?
 
-        index_payload = {
-          resource_url:,
-          image_url:,
-          title:,
-          short_description:,
-          description_html: description,
-          component_id: nil,
-          participatory_space_id: assembly.id,
-          participatory_space_type: manifest_name,
-          extended_data: {
-            default_locale:
-          }
-        }
-        upsert_index(assembly.id, manifest_name,
-                     with_organization(
-                       with_taxonomy(
-                         with_coords(
-                           with_dates(
-                             index_payload
-                           )
-                         )
-                       )
-                     ))
+        upsert_index(upsert_index(@resource_id, manifest_name, with_organization(with_taxonomy(with_coords(@decidim_geo_hash)))))
         true
       rescue StandardError => e
         Rails.logger.debug { "Error: can not geo-index this assembly: #{e}" }
         false
-      end
-
-      def with_dates(decidim_geo_hash)
-        decidim_geo_hash[:start_date] = assembly.included_at.to_date if assembly.included_at
-        decidim_geo_hash[:end_date] = assembly.closing_date.to_date if assembly.closing_date
-        decidim_geo_hash
       end
 
       def remove_assembly

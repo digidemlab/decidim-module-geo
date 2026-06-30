@@ -16,7 +16,7 @@ RUN cd /home/decidim \
     && echo "gem \"rgeo\", \"~> 3.0\"" >> Gemfile.modules \
     && echo "gem \"rgeo-shapefile\", \">= 3.1\"" >> Gemfile.modules \
     && echo "gem \"rgeo-geojson\", \">= 2.2\"" >> Gemfile.modules \
-    && echo "gem \"decidim-toggle\", git: \"https://git.octree.ch/decidim/vocacity/decidim-modules/decidim-toggle\", tag: \"v0.0.1\"" >> Gemfile.modules \
+    && echo "gem \"decidim-toggle\", git: \"https://git.octree.ch/decidim/vocacity/decidim-modules/decidim-toggle\", tag: \"v0.1.1\"" >> Gemfile.modules \
     && bundle install
     
 FROM octree/decidim-dev:0.31
