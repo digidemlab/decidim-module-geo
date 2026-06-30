@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative "geo/version"
 require "rgeo"
 require "rgeo/shapefile"
 require "decidim/geo/manifest_registry"
