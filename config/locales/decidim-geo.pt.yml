@@ -1,11 +1,5 @@
 ---
 pt:
-  decidim_toggle:
-    system:
-      decidim_geo:
-        tab: Decidim Geo
-        enabled: Ativar Decidim Geo
-        search_bar: Ativar pesquisa na gaveta geo
   activemodel:
     attributes:
       assembly:
@@ -152,6 +146,7 @@ pt:
         type:
           label: "Filtrar por tipo"
           all: "Todos"
+          only_space_pages: "Organizations"
           only_processes: "Processos"
           only_assemblies: "Reuniões"
           only_proposals: "Sugestão"
