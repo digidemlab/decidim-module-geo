@@ -10,7 +10,7 @@ module Decidim
     end
 
     def self.decidim_version
-      [">= 0.29"].freeze
+      [">= 0.29", "< 0.32"].freeze
     end
   end
 end

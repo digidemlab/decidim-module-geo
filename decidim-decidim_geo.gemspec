@@ -16,9 +16,9 @@ Gem::Specification.new do |s|
   s.summary = "A decidim geo module"
   s.description = "Component for manage geo files, like shapefiles, in a participatory space."
 
-  s.files = Dir["{app,config,lib,vendor,db}/**/*", "LICENSE-AGPLv3.txt", "Rakefile", "README.md"]
+  s.files = Dir["{app,config,lib,db}/**/*", "LICENSE-AGPLv3.txt", "Rakefile", "README.md"]
 
-  s.add_dependency "activerecord-postgis-adapter"
+  s.add_dependency "activerecord-postgis-adapter", "~> 10.0"
   s.add_dependency "decidim-admin", Decidim::Geo.decidim_version
   s.add_dependency "decidim-api", Decidim::Geo.decidim_version
   s.add_dependency "decidim-core", Decidim::Geo.decidim_version
