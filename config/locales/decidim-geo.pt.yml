@@ -1,5 +1,11 @@
 ---
 pt:
+  decidim_toggle:
+    system:
+      decidim_geo:
+        tab: Decidim Geo
+        enabled: Ativar Decidim Geo
+        search_bar: Ativar pesquisa na gaveta geo
   activemodel:
     attributes:
       assembly:

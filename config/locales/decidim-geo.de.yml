@@ -1,5 +1,11 @@
 ---
 de:
+  decidim_toggle:
+    system:
+      decidim_geo:
+        tab: Decidim Geo
+        enabled: Decidim Geo aktivieren
+        search_bar: Suche in der Geo-Schublade aktivieren
   activemodel:
     attributes:
       assembly:
