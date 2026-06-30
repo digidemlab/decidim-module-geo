@@ -10,9 +10,10 @@ module Decidim
       alias debate resource
       alias debate= resource=
 
-      def perform(debate_id)
-        @resource_id = debate_id
-        @resource = Decidim::Debates::Debate.where(id: debate_id).first
+      def perform(decidim_geo_hash, resource)
+        @decidim_geo_hash = decidim_geo_hash
+        @resource = resource
+        @resource_id = decidim_geo_hash[:resource_id]
         return remove_debate unless resource
 
         sync_debate
@@ -23,35 +24,11 @@ module Decidim
       def sync_debate
         return remove_debate if remove_from_index?
 
-        upsert_index(debate.id, manifest_name,
-                     with_organization(
-                       with_taxonomy(
-                         with_coords(
-                           resource_url:,
-                           image_url:,
-                           title:,
-                           short_description:,
-                           description_html: description,
-                           end_date:,
-                           component_id: debate.decidim_component_id,
-                           participatory_space_id: debate.participatory_space.id,
-                           participatory_space_type: debate.participatory_space.manifest.name.to_s,
-                           extended_data: {
-                             start_time: debate.start_time,
-                             end_time: debate.end_time,
-                             default_locale:
-                           }
-                         )
-                       )
-                     ))
+        upsert_index(upsert_index(@resource_id, manifest_name, with_organization(with_taxonomy(with_coords(@decidim_geo_hash)))))
         true
       rescue StandardError => e
         Rails.logger.debug { "Can index #{e}" }
         false
-      end
-
-      def end_date
-        resource.closed_at.to_date if resource.closed_at
       end
 
       def remove_debate

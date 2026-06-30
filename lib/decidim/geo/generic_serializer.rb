@@ -31,19 +31,54 @@ module Decidim
         end
 
         def start_date
-          @start_date ||= if resource.respond_to?(:start_time)
-                            resource.start_time.to_date
-                          elsif resource.respond_to?(:start_date)
-                            resource.start_date
-                          end
+          if manifest_name == "proposals"
+            space = resource.participatory_space
+            space.manifest.name.to_s
+            return resource.participatory_space.included_at if space.manifest.name.to_s == "assemblies" &&
+                                                               space.included_at?
+            return space.start_date if space.manifest.name.to_s == "participatory_processes"
+          end
+
+          return resource.start_time if manifest_name == "meetings"
+
+          return resource.included_at if manifest_name == "assemblies" && resource.included_at?
+
+          resource.start_date if %w(participatory_processes accountability).include?(manifest_name)
+        end
+
+        def start_time
+          resource.start_time if manifest_name == "debates"
         end
 
         def end_date
-          @end_date ||= if resource.respond_to?(:end_time)
-                          resource.end_time.to_date
-                        elsif resource.respond_to?(:end_date)
-                          resource.end_date
-                        end
+          return proposal_end_date if manifest_name == "proposals"
+
+          return resource.end_time if manifest_name == "meetings"
+
+          return resource.closed_at if manifest_name == "debates" && resource.closed_at?
+
+          return resource.closing_date if manifest_name == "assemblies" && resource.closing_date?
+
+          return resource.end_date if manifest_name == "participatory_processes"
+
+          resource.end_date if manifest_name == "accountability"
+        end
+
+        def proposal_end_date
+          space = resource.participatory_space
+          space.manifest.name.to_s
+          return resource.participatory_space.closing_date if space.manifest.name.to_s == "assemblies" &&
+                                                              space.closing_date?
+
+          space.end_date if space.respond_to?(:end_date)
+        end
+
+        def end_time
+          resource.end_time if manifest_name == "debates"
+        end
+
+        def resource_id
+          @resource_id ||= resource.id
         end
 
         def resource_url
@@ -74,6 +109,27 @@ module Decidim
                            elsif resource.respond_to?(:description)
                              truncate_translated(resource.description, keep_html: true)
                            end
+        end
+
+        def resource_status
+          return unless resource.respond_to?("withdrawn?")
+          return "withdrawn" if resource.withdrawn?
+
+          resource.proposal_state&.token if manifest_name == "proposals"
+        end
+
+        def component_id
+          resource.decidim_component_id if %w(proposals meetings debates accountability).include?(manifest_name)
+        end
+
+        def participatory_space_id
+          return resource.participatory_space.id if %w(proposals meetings debates accountability).include?(manifest_name)
+
+          resource.id if %w(participatory_processes assemblies).include?(manifest_name)
+        end
+
+        def participatory_space_type
+          resource.participatory_space.manifest.name.to_s if %w(proposals meetings debates accountability).include?(manifest_name)
         end
 
         def latitude

@@ -187,11 +187,10 @@ module Decidim
                   after: "decidim_toggle.organization_settings_tabs" do
         Decidim::Toggle.settings_tabs :organization_settings do |tabs|
           tabs.add_tab :decidim_geo,
-                       I18n.t("decidim.geo.system.tab"),
+                       I18n.t("decidim_toggle.system.#{Decidim::Geo::MODULE_NAME}.tab"),
                        form: Decidim::Geo::Admin::OrganizationConfigForm,
                        command: Decidim::Toggle::UpdateModuleConfigCommand,
-                       module_name: :decidim_geo,
-                       partial: "decidim/geo/admin/organization_settings_fields",
+                       module_name: Decidim::Geo::MODULE_NAME,
                        position: 15
         end
       end

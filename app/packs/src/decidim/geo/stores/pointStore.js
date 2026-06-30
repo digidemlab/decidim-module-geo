@@ -60,33 +60,50 @@ const store = createStore(
       const filteredPoints = filteredIdsStore.getState().activeFilterIds;
       const { taxonomyLayer } = configStore.getState();
       const { selectedGeoTaxonomyIds, fetchedGeoTaxonomies, points, taxonomies } = get();
-      taxonomies.forEach((taxonomy) => taxonomy.remove());
-      taxonomyLayer.clearLayers();
-      let geoTaxonomies = [];
+      
+      const targetIds = new Set(selectedGeoTaxonomyIds);
+      
+      const taxonomiesToKeep = [];
+      const taxonomiesToRemove = [];
 
-      if (fetchedGeoTaxonomies.length > 0 && selectedGeoTaxonomyIds.length > 0) {
-        geoTaxonomies = selectedGeoTaxonomyIds
-          .map((taxonomyId) => {
-            const match = fetchedGeoTaxonomies.find(({ id }) => `${id}` === `${taxonomyId}`);
-            if (!match) return null;
-            const geoTaxonomy = new GeoTaxonomy({
-              geoTaxonomy: match
-            });
+      taxonomies.forEach(t => {
+        if (targetIds.has(t.id)) {
+          taxonomiesToKeep.push(t);
+        } else {
+          taxonomiesToRemove.push(t);
+        }
+      });
+
+      taxonomiesToRemove.forEach(t => {
+        t.remove();
+      });
+
+      const existingIds = new Set(taxonomiesToKeep.map(t => t.id));
+      const newTaxonomies = [];
+
+      selectedGeoTaxonomyIds.forEach(id => {
+        if (!existingIds.has(id)) {
+          const match = fetchedGeoTaxonomies.find(({ id: fid }) => `${fid}` === `${id}`);
+          if (match) {
+            const geoTaxonomy = new GeoTaxonomy({ geoTaxonomy: match });
             geoTaxonomy.init(taxonomyLayer);
-            return geoTaxonomy;
-          })
-          .filter(Boolean);
-      }
+            newTaxonomies.push(geoTaxonomy);
+          }
+        }
+      });
+
+      const geoTaxonomies = [...taxonomiesToKeep, ...newTaxonomies];
+
       const responsePoints = filteredPoints
-        .map(({ id: needleId }) => {
-          return points.find(({ id }) => `${needleId}` === `${id}`);
-        })
+        .map(({ id: needleId }) => points.find(({ id }) => `${needleId}` === `${id}`))
         .filter(Boolean);
+
       set(() => ({
         _lastResponse: responsePoints,
         lastResponseCount: responsePoints.length,
         taxonomies: geoTaxonomies
       }));
+
       taxonomyLayer.eachLayer(function (layer) {
         layer.bringToBack();
       });
@@ -114,7 +131,7 @@ const store = createStore(
           get()._updateCache();
           set(({ fetchesRunning }) => ({
             fetchesRunning: fetchesRunning - (hasMore ? 0 : 1),
-            selectedGeoTaxonomyIds: meta.geo_taxonomy_ids || []
+            selectedGeoTaxonomyIds: meta.geo_taxonomy_ids ? [...new Set(meta.geo_taxonomy_ids)] : []
           }));
         }
       );

@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency "decidim-api", Decidim::Geo.decidim_version
   s.add_dependency "decidim-core", Decidim::Geo.decidim_version
   s.add_dependency "decidim-system", Decidim::Geo.decidim_version
-  s.add_dependency "decidim-toggle", ">= 0.0.1"
+  s.add_dependency "decidim-toggle", "~> 0.1.1"
   s.add_dependency "deface", "~> 1.9.0"
   s.add_dependency "ffi-geos", "~> 2.5"
   s.add_dependency "rgeo", "~> 3.0"

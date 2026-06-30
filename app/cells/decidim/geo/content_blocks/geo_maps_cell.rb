@@ -16,6 +16,24 @@ module Decidim
             @options[:filters].push({ resourceTypeFilter: { resourceType: "meetings" } })
             @options[:filters].push({ resourceTypeFilter: { resourceType: "accountability" } })
           end
+          options_for_spaces!
+        end
+
+        def options_for_spaces!
+          if current_participatory_space_manifest == "participatory_processes"
+            # Current process
+            @options[:filters].push({ process_filter: { id: current_participatory_space.id } })
+          elsif current_participatory_space_manifest == "assemblies"
+            # Current assembly and all its children
+            @options[:filters].concat(
+              [{ assembly_filter: { id: current_participatory_space.id } }],
+              Decidim::Assembly.published.where(
+                "parents_path ~ ?", "#{current_participatory_space.parents_path}.*"
+              ).where.not(id: current_participatory_space.id)
+              .ids
+              .map { |id| { assembly_filter: { id: } } }
+            )
+          end
         end
 
         def show

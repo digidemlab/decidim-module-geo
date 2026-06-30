@@ -1,5 +1,11 @@
 ---
 en:
+  decidim_toggle:
+    system:
+      decidim_geo:
+        tab: Decidim Geo
+        enabled: Enable Decidim Geo
+        search_bar: Enable search in geo drawer
   time:
     formats:
       12h_24h: "%H:%M"  
@@ -8,7 +14,7 @@ en:
       assembly:
         decidim_geo_space_address: Address
       participatory_process:
-        decidim_geo_space_address: Adresse
+        decidim_geo_space_address: Address
       component:
         decidim_geo_avoid_index: Hide geolocated points outside this process.
         decidim_geo_avoid_index_within_group: Hide geolocated points outside process group %{space_name}
@@ -60,12 +66,12 @@ en:
     geo:
       search: "Search..."
       no_results: no results
-      system:
-        tab: Decidim Geo
-        enabled: Enable Decidim Geo
-        search_bar: Enable search in geo drawer
-        disabled_callout: Decidim Geo is disabled for this organization.
       admin:
+        overrides:
+          location_form:
+            decidim_geo_space_address: Physical Address
+            decidim_geo_space_address_help: If the Result has a physical address, fill this field with its address.
+            decidim_geo_filter_help_text: If empty the project remains forever active
         geo_configs: 
           map_config_title: Map Configurations
           spaces_config_title: Configurations for Participatory Spaces

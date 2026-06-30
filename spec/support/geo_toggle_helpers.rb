@@ -4,7 +4,7 @@ module GeoToggleHelpers
   def seed_geo_toggle(organization, enabled:, search_bar: false)
     Decidim::Toggle.save_config!(
       organization,
-      :decidim_geo,
+      Decidim::Geo::MODULE_NAME,
       { enabled:, search_bar: }
     )
   end

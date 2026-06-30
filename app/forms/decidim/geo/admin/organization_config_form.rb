@@ -7,7 +7,7 @@ module Decidim
         include Decidim::Toggle::ModuleConfigForm
         include Decidim::Toggle::ExposeAttributesToJs
 
-        self.module_config_name = "decidim_geo"
+        self.module_config_name = Decidim::Geo::MODULE_NAME
 
         mimic :organization
 
@@ -17,6 +17,10 @@ module Decidim
         expose_to_javascript :enabled, :search_bar
 
         validate :coerce_search_bar_when_disabled
+
+        def attribute_disabled?(attribute)
+          attribute.to_sym == :search_bar && !enabled
+        end
 
         private
 

@@ -3,17 +3,27 @@ import configStore from "../../stores/configStore";
 const openFullscreen = () => {
   const { map } = configStore.getState();
 
-  const searchBox = document.querySelector(".decidimGeo__drawerSearch");
-  const searchResults = document.querySelector(".decidimGeo__searchResults");
+  const searchEnabled = window.DecidimToggle?.["decidim_geo.search_bar"];
+  
+  let searchBox = null;
+  let searchResults = null;
+
+  if (searchEnabled) {
+    searchBox = document.querySelector(".decidimGeo__drawerSearch");
+    searchResults = document.querySelector(".decidimGeo__searchResults");
+  }
+
   const topLeft = map.getContainer().querySelector(".leaflet-top.leaflet-left");
 
-  if (
-    !searchBox.parentNode ||
-    (searchBox.parentNode !== topLeft && !searchResults.parentNode) ||
-    searchResults.parentNode !== topLeft
-  ) {
-    topLeft.appendChild(searchBox);
-    topLeft.appendChild(searchResults);
+  if (searchEnabled && searchBox && searchResults) {
+    if (
+      !searchBox.parentNode ||
+      (searchBox.parentNode !== topLeft && !searchResults.parentNode) ||
+      searchResults.parentNode !== topLeft
+    ) {
+      topLeft.appendChild(searchBox);
+      topLeft.appendChild(searchResults);
+    }
   }
 
   map.toggleFullscreen();

@@ -4,25 +4,65 @@ module Decidim
   module Geo
     module GeoIndexMethods
       include Decidim::Geo::GenericSerializer
+      extend ActiveSupport::Concern
+
+      included do
+        def self.process(resource)
+          job_instance = new
+          job_instance.resource = resource
+          decidim_geo_hash = job_instance.payload
+
+          if Rails.env.production?
+            perform_later(decidim_geo_hash, resource)
+          else
+            perform_now(decidim_geo_hash, resource)
+          end
+        end
+      end
+
+      def payload
+        {
+          resource_id:,
+          resource_url:,
+          image_url:,
+          title:,
+          short_description:,
+          description_html: description,
+          resource_status:,
+          component_id:,
+          start_date:,
+          end_date:,
+          participatory_space_id:,
+          participatory_space_type: manifest_name,
+          extended_data: {
+            start_time: start_time,
+            end_time: end_time,
+            default_locale:
+          }
+        }
+      end
+
       def upsert_index(resource_id, resource_type, decidim_geo_hash)
-        decidim_geo_hash = with_no_index(decidim_geo_hash)
-        lat = decidim_geo_hash.delete(:latitude)
-        lon = decidim_geo_hash.delete(:longitude)
+        transaction do
+          decidim_geo_hash = with_no_index(decidim_geo_hash)
+          lat = decidim_geo_hash.delete(:latitude)
+          lon = decidim_geo_hash.delete(:longitude)
 
-        decidim_geo_hash = with_machine_translations(decidim_geo_hash)
+          decidim_geo_hash = with_machine_translations(decidim_geo_hash)
 
-        index = Decidim::Geo::Index.find_or_initialize_by(resource_id:, resource_type:)
+          index = Decidim::Geo::Index.find_or_initialize_by(resource_id:, resource_type:)
 
-        index.assign_attributes(decidim_geo_hash)
+          index.assign_attributes(decidim_geo_hash)
 
-        index.lonlat = if lat && lon && !lat.nan? && !lon.nan?
-                         factory = Decidim::Geo.point_factory
-                         factory.point(lon, lat)
-                       end
+          index.lonlat = if lat && lon && !lat.nan? && !lon.nan?
+                           factory = Decidim::Geo.point_factory
+                           factory.point(lon, lat)
+                         end
 
-        index.resource_id = resource_id
-        index.resource_type = resource_type
-        index.save!
+          index.resource_id = resource_id
+          index.resource_type = resource_type
+          index.save!
+        end
       end
 
       def with_organization(decidim_geo_hash)
@@ -96,6 +136,11 @@ module Decidim
             manifest_name: active_manifest_names
           )
         end
+      end
+
+      def transaction(&)
+        Rails.logger.warn { "Perform #{self.class.name} for id: #{@resource_id}" }
+        ActiveRecord::Base.transaction(&) if block_given?
       end
     end
   end
