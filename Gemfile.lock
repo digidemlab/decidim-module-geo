@@ -27,12 +27,12 @@ GIT
 PATH
   remote: .
   specs:
-    decidim-decidim_geo (0.3.11)
-      activerecord-postgis-adapter
-      decidim-admin (>= 0.29)
-      decidim-api (>= 0.29)
-      decidim-core (>= 0.29)
-      decidim-system (>= 0.29)
+    decidim-decidim_geo (0.4.0)
+      activerecord-postgis-adapter (~> 10.0)
+      decidim-admin (>= 0.29, < 0.32)
+      decidim-api (>= 0.29, < 0.32)
+      decidim-core (>= 0.29, < 0.32)
+      decidim-system (>= 0.29, < 0.32)
       decidim-toggle (~> 0.1.1)
       deface (~> 1.9.0)
       ffi-geos (~> 2.5)

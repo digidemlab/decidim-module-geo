@@ -5,12 +5,16 @@ class MigrateDecidimScopeTypesToTaxonomies < ActiveRecord::Migration[7.2]
     add_reference :decidim_geo_shapefiles, :decidim_taxonomies, index: { unique: true }, foreign_key: true
     add_reference :decidim_geo_shapefile_datas, :decidim_taxonomies, index: { unique: true }, foreign_key: true, null: true
     migrate_scope_type_taxonomy
+    remove_reference :decidim_geo_shapefiles, :decidim_scope_types, index: true, foreign_key: true
+    remove_reference :decidim_geo_shapefile_datas, :decidim_scopes, index: true, foreign_key: true, null: true
   end
 
   def down
     add_reference :decidim_geo_shapefiles, :decidim_scope_types, index: true, foreign_key: true
     add_reference :decidim_geo_shapefile_datas, :decidim_scopes, index: true, foreign_key: true, null: true
     rollback_scope_type_taxonomy
+    remove_reference :decidim_geo_shapefiles, :decidim_taxonomies, index: { unique: true }, foreign_key: true
+    remove_reference :decidim_geo_shapefile_datas, :decidim_taxonomies, index: { unique: true }, foreign_key: true, null: true
   end
 
   private
@@ -52,8 +56,6 @@ class MigrateDecidimScopeTypesToTaxonomies < ActiveRecord::Migration[7.2]
     has_associations = Decidim::Geo::Shapefile.where.not(decidim_scope_types_id: nil).exists?
 
     raise ActiveRecord::ActiveRecordError, "Migration aborted: Cannot remove reference because Shapefiles are still associated with Scope Types." if has_associations
-
-    remove_reference :decidim_geo_shapefiles, :decidim_scope_types, index: true, foreign_key: true
   end
 
   def migrate_scope_taxonomy(scope_type, taxonomy)
@@ -92,7 +94,6 @@ class MigrateDecidimScopeTypesToTaxonomies < ActiveRecord::Migration[7.2]
 
     raise ActiveRecord::ActiveRecordError, "Migration aborted: Cannot remove reference because Shapedata are still associated with Scope." if has_associations
 
-    remove_reference :decidim_geo_shapefile_datas, :decidim_scopes, index: true, foreign_key: true, null: true
   end
 
   def rollback_scope_type_taxonomy
@@ -123,7 +124,6 @@ class MigrateDecidimScopeTypesToTaxonomies < ActiveRecord::Migration[7.2]
 
     raise ActiveRecord::ActiveRecordError, "Migration aborted: Cannot remove reference because Shapefiles are still associated with Scope Types." if has_associations
 
-    remove_reference :decidim_geo_shapefiles, :decidim_taxonomies, index: true, foreign_key: true
   end
 
   def rollback_scope_taxonomy(scope_type, taxonomy)
@@ -151,7 +151,5 @@ class MigrateDecidimScopeTypesToTaxonomies < ActiveRecord::Migration[7.2]
     has_associations = Decidim::Geo::Shapedata.where.not(decidim_taxonomies_id: nil).exists?
 
     raise ActiveRecord::ActiveRecordError, "Migration aborted: Cannot remove reference because Shapedata are still associated with Taxonomies." if has_associations
-
-    remove_reference :decidim_geo_shapefile_datas, :decidim_taxonomies, index: true, foreign_key: true
   end
 end
