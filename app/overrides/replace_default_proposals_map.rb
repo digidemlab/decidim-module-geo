@@ -14,17 +14,17 @@ module ReplaceDefaultProposalsMap
                                is_index: false,
                                filters: if current_participatory_space.taxonomies.present?
                                          taxonomy = current_participatory_space.taxonomies.select { |t| t.shapedata.present? }
-                                         [{ taxonomyFilter: { taxonomyId: taxonomy.sole.id } }]
-                               else
-                                   []
-                               end,
+                                         taxonomy.present? ? [{ taxonomyFilter: { taxonomyId: taxonomy.first.id } }] : []
+                                        else
+                                            []
+                                        end,
                                taxonomies: if current_participatory_space.taxonomies.present?
-                                           taxonomy = current_participatory_space.taxonomies.select { |t| t.shapedata.present? }
-                                           [taxonomy.sole.id]
-                               else
-                                   []
-                               end
-                           ) %>#{"                     "}
+                                            taxonomy = current_participatory_space.taxonomies.select { |t| t.shapedata.present? }
+                                            taxonomy.present? ? [taxonomy.first.id] : nil
+                                           else
+                                               []
+                                           end
+                           ) %>
                          <% else %>
                            <% if Decidim::Map.available?(:geocoding, :dynamic) && component_settings.geocoding_enabled? %>
                              <div class="proposal-list__map">

@@ -33,7 +33,7 @@ module Decidim
           start_date:,
           end_date:,
           participatory_space_id:,
-          participatory_space_type: manifest_name,
+          participatory_space_type:,
           extended_data: {
             start_time: start_time,
             end_time: end_time,
@@ -63,6 +63,12 @@ module Decidim
           index.resource_type = resource_type
           index.save!
         end
+      end
+
+      def participatory_space_type
+        return resource.participatory_space.manifest.name.to_s if resource.respond_to?("participatory_space")
+
+        resource.manifest.name.to_s
       end
 
       def with_organization(decidim_geo_hash)

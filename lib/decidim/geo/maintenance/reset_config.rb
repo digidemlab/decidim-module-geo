@@ -13,7 +13,7 @@ module Decidim
         attr_reader :dry_run, :result
 
         def run!
-          log "Resetting decidim-geo config#{dry_run ? ' (DRY RUN)' : ''}"
+          log "Resetting decidim-geo config#{dry_run ? " (DRY RUN)" : ""}"
 
           clear_geo_config_shapefile_links!
           delete_shapedatas!
@@ -37,7 +37,7 @@ module Decidim
           log "  decidim_geo_configs shapefile links: #{count}"
           return if dry_run || count.zero?
 
-          scope.update_all(decidim_geo_shapefiles_id: nil)
+          scope.update_all(decidim_geo_shapefiles_id: nil) # rubocop:disable Rails/SkipsModelValidations
           result[:geo_config_shapefile_links] += count
         end
 
@@ -76,7 +76,7 @@ module Decidim
           log "  decidim_geo_indexes taxonomy links: #{count}"
           return if dry_run || count.zero?
 
-          scope.update_all(geo_taxonomy_id: nil)
+          scope.update_all(geo_taxonomy_id: nil) # rubocop:disable Rails/SkipsModelValidations
           result[:geo_index_taxonomy_links] += count
         end
 
@@ -89,7 +89,7 @@ module Decidim
           log "  decidim_geo_indexes scope links: #{count}"
           return if dry_run || count.zero?
 
-          scope.update_all(geo_scope_id: nil)
+          scope.update_all(geo_scope_id: nil) # rubocop:disable Rails/SkipsModelValidations
           result[:geo_index_scope_links] += count
         end
 

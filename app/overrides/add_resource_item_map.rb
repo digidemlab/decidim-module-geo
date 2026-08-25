@@ -15,13 +15,13 @@ module AddResourceItemMap
                                container_classnames: "decidimGeo__container--item",
                                filters: if current_participatory_space.taxonomies.present?
                                            taxonomy = current_participatory_space.taxonomies.select { |t| t.shapedata.present? }
-                                           [{ taxonomyFilter: { taxonomyId: taxonomy.sole.id } }]
+                                           taxonomy.present? ? [{ taxonomyFilter: { taxonomyId: taxonomy.first.id } }] : []
                                else
                                    []
                                end,
                                taxonomies: if current_participatory_space.taxonomies.present?
                                              taxonomy = current_participatory_space.taxonomies.select { |t| t.shapedata.present? }
-                                             [taxonomy.sole.id]
+                                             taxonomy.present? ? [taxonomy.first.id] : nil
                                else
                                    []
                                end

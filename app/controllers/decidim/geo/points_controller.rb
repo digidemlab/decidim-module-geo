@@ -4,7 +4,7 @@ module Decidim
   module Geo
     class PointsController < ::Decidim::Geo::ApiController
       before_action :set_default_format
-      before_action :ensure_geo_enabled, only: %i(index count)
+      before_action :ensure_geo_enabled, only: [:index, :count]
       before_action :ensure_geo_search_enabled, only: :search_title
 
       def count
