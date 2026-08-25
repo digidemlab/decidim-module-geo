@@ -15,13 +15,13 @@ module ReplaceDefaultMeetingsMap
                                  is_index: false,
                                  filters: if current_participatory_space.taxonomies.present?
                                            taxonomy = current_participatory_space.taxonomies.select { |t| t.shapedata.present? }
-                                           [{ taxonomyFilter: { taxonomyId: taxonomy.sole.id } }]
-                                 else
-                                     []
-                                 end,
+                                           taxonomy.present? ? [{ taxonomyFilter: { taxonomyId: taxonomy.first.id } }] : []
+                                          else
+                                           []
+                                          end,
                                  taxonomies: if current_participatory_space.taxonomies.present?
                                                taxonomy = current_participatory_space.taxonomies.select { |t| t.shapedata.present? }
-                                               [taxonomy.sole.id]
+                                               taxonomy.present? ? [taxonomy.first.id] : nil
                                  else
                                      []
                                  end

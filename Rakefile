@@ -26,7 +26,7 @@ task :prepare_tests do
   # Remove previous existing db, and recreate one.
   Dir.chdir("spec/decidim_dummy_app") do
     Bundler.with_unbundled_env do
-      sh "env BUNDLE_GEMFILE=#{File.expand_path("Gemfile", __dir__)} RAILS_ENV=test DISABLE_SPRING=1 bundle exec rails db:drop db:create"
+      sh "env BUNDLE_GEMFILE=#{File.expand_path("Gemfile", __dir__)} DISABLE_SPRING=1 bundle exec rails db:drop db:create"
     end
   end
   ENV["RAILS_ENV"] = "test"

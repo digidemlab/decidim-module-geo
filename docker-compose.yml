@@ -11,7 +11,7 @@ services:
       - SECRET_KEY_BASE=0cfe5cc502a5fbcf0718ad8c96f7872270e655ffd11d857395abef0bb7f4dad7307fc9d97f2c971bc6a9c385b2eaf629b1e410cc5936c89a21548e30767e6fbf
       - DECIDIM_SYSTEM_PASSWORD=decidim123456
       - DECIDIM_SYSTEM_EMAIL=system@example.org
-      - WEB_CONCURRENCY=0
+      - WEB_CONCURRENCY=2
       - RAILS_MAX_THREADS=2
       - RAILS_MIN_THREADS=1
       - RAILS_FORCE_SSL=false
@@ -19,10 +19,9 @@ services:
     depends_on:
       pg:
         condition: service_healthy
-    links:
-      - pg
     ports:
-      - 3000:3000
+      # Avoid clashing with another process bound to host :3000
+      - 3001:3000
       - 3035:3035
     volumes:
       - .:/home/decidim_module_geo
@@ -32,9 +31,6 @@ services:
       - public:/home/decidim/public
       - tmp:/home/decidim/tmp
       - .docker/dump/:/home/decidim/tmp/dump
-    networks:
-      - private
-      - default
 
   pg:
     image: postgis/postgis:17-3.5-alpine
@@ -46,8 +42,6 @@ services:
       - POSTGRES_PASSWORD=insecure-password
       - POSTGRES_USER=decidim
       - POSTGRES_DB=decidim
-    networks:
-      - private
     ports:
       - 5432:5432
     healthcheck:
@@ -60,6 +54,3 @@ volumes:
   public: {}
   node_modules: {}
   tmp: {}
-networks:
-  private:
-    internal: true
