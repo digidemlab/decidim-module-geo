@@ -1,6 +1,6 @@
 {
   "name": "decidim-geo",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "private": true,
   "dependencies": {
     "@date-fns/tz": "^1.4.1",
