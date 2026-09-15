@@ -115,7 +115,7 @@ module Decidim
           return unless resource.respond_to?("withdrawn?")
           return "withdrawn" if resource.withdrawn?
 
-          resource.proposal_state&.token if manifest_name == "proposals"
+          resource.proposal_state&.title.to_json if manifest_name == "proposals"
         end
 
         def component_id
