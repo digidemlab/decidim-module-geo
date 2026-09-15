@@ -48,8 +48,9 @@ const proposals = (node) => {
   );
   infoTitleTxt.textContent = getHashtagFromNode(node, locale, defaultLocale);
 
-  const status = node.resourceStatus || null;
-  if (status) {
+  const rawStatus = JSON.parse(node.resourceStatus) || null;
+  if (rawStatus) {
+    const status = rawStatus?.[locale] || rawStatus?.[defaultLocale]
     const infoStatus = L.DomUtil.create(
       "div",
       createClasses("decidimGeo__drawer__listCardStatus", [status.toLowerCase()]),
