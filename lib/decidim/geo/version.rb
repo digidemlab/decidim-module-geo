@@ -6,7 +6,7 @@ module Decidim
     MODULE_NAME = "decidim_geo"
 
     def self.version
-      "0.4.2" # DO NOT UPDATE MANUALLY
+      "0.4.3" # DO NOT UPDATE MANUALLY
     end
 
     def self.decidim_version
