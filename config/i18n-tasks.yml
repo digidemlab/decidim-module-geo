@@ -62,6 +62,7 @@ locales:
   - en
   - fr
   - pt
+  - sv
 
 # Find translate calls
 search:

@@ -1,0 +1,213 @@
+---
+sv:
+  decidim_toggle:
+    system:
+      decidim_geo:
+        tab: Decidim Geo
+        enabled: Aktivera Decidim Geo
+        search_bar: Aktivera sökning i kartpanelen
+  time:
+    formats:
+      12h_24h: "%H:%M"
+  activemodel:
+    attributes:
+      assembly:
+        decidim_geo_space_address: Adress
+      participatory_process:
+        decidim_geo_space_address: Adress
+      component:
+        decidim_geo_avoid_index: Dölj geolokaliserade punkter utanför den här processen.
+        decidim_geo_avoid_index_within_group: Dölj geolokaliserade punkter utanför processgruppen %{space_name}
+        hide_map: Dölj kartan på sidorna för %{component_name}
+    errors:
+      models:
+        geo_config:
+          attributes:
+            zoom:
+              invalid_range: "måste vara mellan 5 och 19"
+            focus_zoom_level:
+              invalid_range: "måste vara mellan 5 och 19"
+            taxonomy_id:
+              has_resource: "har kopplade utrymmen"
+  activerecord:
+    models:
+      decidim/organization:
+        one: "Organisation"
+        other: "Organisationer"
+  decidim:
+    admin:
+      components:
+        form:
+          geo_avoid_index: Om ikryssad döljs punkterna från andra kartor på plattformen, till exempel startsidan
+          hide_map: Om ikryssad visas inte kartan på undersidor (men den finns kvar i startsidans block)
+    accountability:
+      admin:
+        results:
+          form:
+            decidim_geo_space_address: Fysisk adress
+            decidim_geo_space_address_help: Om resultatet har en fysisk adress, fyll i den här.
+            decidim_geo_filter_help_text: Om fältet är tomt förblir projektet aktivt för alltid
+    assemblies:
+      admin:
+        assemblies:
+          form:
+            decidim_geo_space_address: Fysisk adress
+            decidim_geo_space_address_help: Om samrådet har en fysisk adress, fyll i den här.
+      show:
+        decidim_geo_space_location: Adress
+    participatory_processes:
+      admin:
+        participatory_processes:
+          form:
+            decidim_geo_space_address: Fysisk adress
+            decidim_geo_space_address_help: Om processen har en fysisk adress, fyll i den här.
+      show:
+        decidim_geo_space_address: Adress
+    geo:
+      search: "Sök..."
+      no_results: inga resultat
+      admin:
+        overrides:
+          location_form:
+            decidim_geo_space_address: Fysisk adress
+            decidim_geo_space_address_help: Om resultatet har en fysisk adress, fyll i den här.
+            decidim_geo_filter_help_text: Om fältet är tomt förblir projektet aktivt för alltid
+        geo_configs:
+          map_config_title: Kartinställningar
+          spaces_config_title: Inställningar för deltagandeutrymmen
+          only_assemblies: Visa endast samråd under Samråd
+          only_processes: Visa endast processer under Processer
+          default_filter:
+            title: Tillgängliga punkter
+            help_text: |
+              Ställ in vilka punkter som är tillgängliga i Decidim Geo. Inställningen gäller hela plattformen.
+            geoencoded_filter:
+              label: Filtrera punkter efter plats
+              fields:
+                force_geoencoded: "Endast punkter på kartan"
+                no_force_geoencoded: "Alla punkter"
+          default_geoencoded_filter: Filter
+          shapefile:
+            title: Shapefil
+            help_text: Koppla shapefilen till en kategori (endast kategorier på översta nivån)
+            help_text_alert: Kategorin måste kopplas bort från shapefilen innan den kan ändras.
+          taxonomy:
+            help_text_alert: Underkategorierna måste kopplas bort från formdatan innan den här kategorin kan ändras.
+          show:
+            title: Inställningar
+            save: Spara
+          edit:
+            title: Inställningar
+            save: Spara
+          fields:
+            zoom: Zoom
+            focus_zoom_level: Zoom vid fokus
+            longitude: Longitud
+            latitude: Latitud
+            tile: Kartlager
+            maptiler_api_key: API-nyckel för MapTiler (valfritt)
+            esri_tile_enabled: Esri-kartlager?
+          actions:
+            update:
+              success: Inställningarna har uppdaterats
+        shapefiles:
+          title: Shapefiler
+          new:
+            title: Ladda upp shapefil
+            create: Skapa
+          actions:
+            new_shapefile: Ny shapefil
+            new:
+              attachment_legend: Lägg din zip-fil här
+            create:
+              success: Filen har laddats upp
+              invalid: Uppladdningen misslyckades
+          fields:
+            title: Namn
+            url: URL
+            file_name: Filnamn
+            created_at: Skapad
+            description: Beskrivning
+            actions: Åtgärder
+          form:
+            attachment_legend: Ladda upp shapefilen komprimerad som zip-fil
+            attachment_format: Shapefilen måste använda datum WGS84
+            attachment_max_size: Maxstorlek 10 MB
+            support_shape_overlaping: Överlappande former stöds inte i nuläget
+        taxonomies_shapedatas:
+          index:
+            title: Kategorier och formdata
+          edit:
+            title: Redigera formdata för %{taxonomy}
+            update: Uppdatera
+          fields:
+            taxonomy: Kategorier
+            shapedata: Formdata
+          actions:
+            title: Åtgärder
+            edit: Redigera
+            update:
+              title: Uppdatera
+              success: Inställningarna har uppdaterats
+      content_blocks:
+        name: Geokartor
+        fields:
+          zoom: Zoom
+          lng: Longitud
+          lat: Latitud
+      taxonomies:
+        dropdown: "Kategorier"
+        all: "Alla kategorier"
+      actions:
+        view: Visa
+      mobile:
+        open_fullscreen: "Öppna kartan i helskärm"
+        close_fullscreen: "Stäng kartan"
+      filters:
+        back: "Tillbaka"
+        button: "Filter"
+        reset_button: "Återställ"
+        apply_button: "Tillämpa"
+        results:
+          warn_empty: Inget här, ändra filtren för att uppdatera
+          zero: inga resultat
+          one: 1 resultat
+          other: "%count% resultat"
+        empty:
+          message: "Inget här, ändra filtren för att uppdatera"
+          update_button: "Uppdatera"
+        geo:
+          label: Visa
+          all: Alla
+          only_geoencoded: "Endast aktiviteter på kartan"
+          only_virtual: "Endast övriga aktiviteter"
+        time:
+          label: "Efter tid"
+          all: "Alla"
+          only_past: "Tidigare"
+          only_active: "Pågående"
+          only_future: "Kommande"
+        type:
+          label: "Filtrera efter typ"
+          all: "Alla"
+          only_processes: "Processer"
+          only_assemblies: "Samråd"
+          only_proposals: "Förslag"
+          only_meetings: "Möten"
+          only_debates: "Debatter"
+          only_accountabilities: "Resultat"
+        source:
+          label: "Källa"
+          all: "Alla"
+          children_only: "Externa punkter"
+          generator_only: "Interna punkter"
+    components:
+      pagination:
+        page_title: "%{component_name}"
+      geo:
+        name: Geo
+        settings:
+          global:
+            announcement: Meddelande
+          step:
+            announcement: Meddelande
